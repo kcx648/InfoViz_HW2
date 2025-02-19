@@ -64,6 +64,7 @@
 
         const width = 600, height = 600, margin = { top: 50, right: 50, bottom: 50, left: 100 };
         const minOwnedUsers = Math.max(1, d3.min(data, d => d.owned_users));
+        const maxOwnedUsers = d3.max(data, d => d.owned_users);
         const maxRating = d3.max(data, d => d.rating_average);
 
         let xScale = d3.scaleLog()
