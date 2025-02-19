@@ -55,7 +55,7 @@
 <script>
     d3.json("./bgg_dataset_cleaned.json").then(function(data) {
         data.forEach((d, i) => {
-            d.play_time = +d.play_time;
+            d.owned_users = +d.owned_users;
             d.rating_average = +d.rating_average;
             d.index = i;
         });
@@ -63,14 +63,17 @@
         let visibleIndices = data.map(d => d.index);
 
         const width = 600, height = 600, margin = { top: 50, right: 50, bottom: 50, left: 100 };
-        const maxPlayTime = d3.max(data, d => d.play_time);
+        const minOwnedUsers = Math.max(1, d3.min(data, d => d.owned_users));
         const maxRating = d3.max(data, d => d.rating_average);
 
-        let xScale = d3.scaleLinear().domain([0, maxPlayTime]).range([margin.left, width - margin.right]);
+        let xScale = d3.scaleLog()
+            .domain([minOwnedUsers, maxOwnedUsers])
+            .range([margin.left, width - margin.right]);
+
         let yScale = d3.scaleLinear().domain([0, maxRating]).range([height - margin.bottom, margin.top]);
 
         const svg = d3.select("#scatter");
-        let xAxis = svg.append("g").attr("transform", `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale));
+        let xAxis = svg.append("g").attr("transform", `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).ticks(10, "~s"));
         let yAxis = svg.append("g").attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(yScale));
 
         svg.append("text")
@@ -78,7 +81,7 @@
             .attr("text-anchor", "end")
             .attr("x", width / 2 + margin.left)
             .attr("y", height + margin.bottom - 30)
-            .text("Play Time");
+            .text("Popularity (Log Scale)");
 
         svg.append("text")
             .attr("class", "label")
@@ -93,17 +96,17 @@
             .data(data)
             .enter()
             .append("circle")
-            .attr("cx", d => xScale(d.play_time))
+            .attr("cx", d => xScale(d.owned_users))
             .attr("cy", d => yScale(d.rating_average))
             .attr("r", 2)
             .attr("fill", "steelblue")
             .attr("opacity", 0.7);
 
-        let xRange = [0, maxPlayTime], yRange = [0, maxRating];
+        let xRange = [minOwnedUsers, maxOwnedUsers], yRange = [0, maxRating];
 
         function updateChart() {
             const filteredData = data.filter(d => 
-                d.play_time >= xRange[0] && d.play_time <= xRange[1] &&
+                d.owned_users >= xRange[0] && d.owned_users <= xRange[1] &&
                 d.rating_average >= yRange[0] && d.rating_average <= yRange[1]
             );
 
@@ -114,14 +117,14 @@
 
             updatedCircles.enter()
                 .append("circle")
-                .attr("cx", d => xScale(d.play_time))
+                .attr("cx", d => xScale(d.owned_users))
                 .attr("cy", d => yScale(d.rating_average))
                 .attr("r", 2)
                 .attr("fill", "steelblue")
                 .attr("opacity", 0.7)
                 .merge(updatedCircles)
                 .transition().duration(200)
-                .attr("cx", d => xScale(d.play_time))
+                .attr("cx", d => xScale(d.owned_users))
                 .attr("cy", d => yScale(d.rating_average));
 
             updatedCircles.exit().remove();
@@ -161,7 +164,7 @@
             yAxis.transition().duration(500).call(d3.axisLeft(yScale));
             svg.selectAll("circle")
                 .transition().duration(500)
-                .attr("cx", d => xScale(d.play_time))
+                .attr("cx", d => xScale(d.owned_users))
                 .attr("cy", d => yScale(d.rating_average));
 
             xBrushG.call(xBrush.move, [xScale(xRange[0]), xScale(xRange[1])]);
@@ -169,9 +172,9 @@
         }
 
         function resetChart() {
-            xScale.domain([0, maxPlayTime]);
+            xScale.domain([minOwnedUsers, maxOwnedUsers]);
             yScale.domain([0, maxRating]);
-            xRange = [0, maxPlayTime];
+            xRange = [minOwnedUsers, maxOwnedUsers];
             yRange = [0, maxRating];
 
             xAxis.transition().duration(500).call(d3.axisBottom(xScale));
