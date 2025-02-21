@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>INFO4310 HW2</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -8,23 +9,28 @@
         .viz {
             margin: 20px;
         }
+
         .button-container {
             margin: 10px;
         }
+
         .title {
             font-size: 36px;
             color: rgb(53, 76, 66);
             font-family: 'Merriweather', serif;
         }
+
         .text {
             font-size: 16px;
             color: rgb(81, 113, 88);
             font-family: 'Merriweather', serif;
         }
+
         .label {
             font-size: 12px;
             font-family: 'Merriweather', serif;
         }
+
         button {
             padding: 10px;
             font-size: 14px;
@@ -34,6 +40,7 @@
             stroke-width: 1.5px;
             cursor: pointer;
         }
+
         .brush .selection {
             fill: rgba(0, 0, 255, 0.2);
             stroke: rgb(192, 192, 230);
@@ -41,157 +48,244 @@
         }
     </style>
 </head>
+
 <body>
 
-<div class="button-container">
-    <button id="zoom-btn">Zoom</button>
-    <button id="reset-btn">Reset</button>
-</div>
+    <div class="button-container">
+        <button id="zoom-btn">Zoom</button>
+        <button id="reset-btn">Reset</button>
+    </div>
 
-<div class="viz">
-    <svg id="scatter" width="800" height="800"></svg>
-</div>
+    <div class="viz" style="display: flex; flex-direction: row">
+        <svg id="scatter" width="800" height="800"></svg>
+        <svg id="bggTable" width="500" height="500"></svg>
+    </div>
 
-<script>
-    d3.json("./bgg_dataset_cleaned.json").then(function(data) {
-        data.forEach((d, i) => {
-            d.owned_users = +d.owned_users;
-            d.rating_average = +d.rating_average;
-            d.index = i;
-        });
+    <script>
+        const table = d3.select("#bggTable");
+        const tableWidth = table.attr("width");
+        const tableHeight = table.attr("height");
+        d3.json("./bgg_dataset_cleaned.json").then(function (data) {
+            data.forEach((d, i) => {
+                d.owned_users = +d.owned_users;
+                d.rating_average = +d.rating_average;
+                d.index = i;
+            });
 
-        let visibleIndices = data.map(d => d.index);
+            let visibleIndices = data.map(d => d.index);
 
-        const width = 600, height = 600, margin = { top: 50, right: 50, bottom: 50, left: 100 };
-        const minOwnedUsers = Math.max(1, d3.min(data, d => d.owned_users));
-        const maxOwnedUsers = d3.max(data, d => d.owned_users);
-        const maxRating = d3.max(data, d => d.rating_average);
+            const width = 600, height = 600, margin = { top: 50, right: 50, bottom: 50, left: 100 };
+            const minOwnedUsers = Math.max(1, d3.min(data, d => d.owned_users));
+            const maxOwnedUsers = d3.max(data, d => d.owned_users);
+            const maxRating = d3.max(data, d => d.rating_average);
 
-        let xScale = d3.scaleLog()
-            .domain([minOwnedUsers, maxOwnedUsers])
-            .range([margin.left, width - margin.right]);
+            let xScale = d3.scaleLog()
+                .domain([minOwnedUsers, maxOwnedUsers])
+                .range([margin.left, width - margin.right]);
 
-        let yScale = d3.scaleLinear().domain([0, maxRating]).range([height - margin.bottom, margin.top]);
+            let yScale = d3.scaleLinear().domain([0, maxRating]).range([height - margin.bottom, margin.top]);
 
-        const svg = d3.select("#scatter");
-        let xAxis = svg.append("g").attr("transform", `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).ticks(10, "~s"));
-        let yAxis = svg.append("g").attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(yScale));
+            const svg = d3.select("#scatter");
+            let xAxis = svg.append("g").attr("transform", `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).ticks(10, "~s"));
+            let yAxis = svg.append("g").attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(yScale));
 
-        svg.append("text")
-            .attr("class", "label")
-            .attr("text-anchor", "end")
-            .attr("x", width / 2 + margin.left)
-            .attr("y", height + margin.bottom - 30)
-            .text("Popularity (Log Scale)");
+            svg.append("text")
+                .attr("class", "label")
+                .attr("text-anchor", "end")
+                .attr("x", width / 2 + margin.left)
+                .attr("y", height + margin.bottom - 30)
+                .text("Popularity (Log Scale)");
 
-        svg.append("text")
-            .attr("class", "label")
-            .attr("text-anchor", "end")
-            .attr("x", -height / 2 + margin.top)
-            .attr("y", margin.left - 60)
-            .attr("dy", ".75em")
-            .attr("transform", "rotate(-90)")
-            .text("Average Rating");
+            svg.append("text")
+                .attr("class", "label")
+                .attr("text-anchor", "end")
+                .attr("x", -height / 2 + margin.top)
+                .attr("y", margin.left - 60)
+                .attr("dy", ".75em")
+                .attr("transform", "rotate(-90)")
+                .text("Average Rating");
 
-        let circles = svg.selectAll("circle")
-            .data(data)
-            .enter()
-            .append("circle")
-            .attr("cx", d => xScale(d.owned_users))
-            .attr("cy", d => yScale(d.rating_average))
-            .attr("r", 2)
-            .attr("fill", "steelblue")
-            .attr("opacity", 0.7);
+            let uniqueDomains = Array.from(new Set(data.map(d => d.domains1)));
+            console.log(uniqueDomains);
 
-        let xRange = [minOwnedUsers, maxOwnedUsers], yRange = [0, maxRating];
-
-        function updateChart() {
-            const filteredData = data.filter(d => 
-                d.owned_users >= xRange[0] && d.owned_users <= xRange[1] &&
-                d.rating_average >= yRange[0] && d.rating_average <= yRange[1]
-            );
-
-            visibleIndices = filteredData.map(d => d.index);
-            console.log("Visible Indices:", visibleIndices);
-
-            let updatedCircles = svg.selectAll("circle").data(filteredData, d => d.id);
-
-            updatedCircles.enter()
+            let circles = svg.selectAll("circle")
+                .data(data)
+                .enter()
                 .append("circle")
                 .attr("cx", d => xScale(d.owned_users))
                 .attr("cy", d => yScale(d.rating_average))
                 .attr("r", 2)
                 .attr("fill", "steelblue")
                 .attr("opacity", 0.7)
-                .merge(updatedCircles)
-                .transition().duration(200)
-                .attr("cx", d => xScale(d.owned_users))
-                .attr("cy", d => yScale(d.rating_average));
+                .on("mouseover", function (event, d) {
 
-            updatedCircles.exit().remove();
-        }
+                    table.append("circle")
+                        .attr("class", "hover-table")
+                        .attr("cx", 250)
+                        .attr("cy", 250)
+                        .attr("r", 150)
+                        .attr("fill", "blue")
+                        .attr("opacity", 0.5);
 
-        const xBrush = d3.brushX()
-            .extent([[margin.left, height - margin.bottom + 5], [width - margin.right, height - margin.bottom + 25]])
-            .on("brush end", (event) => {
-                if (event.selection) {
-                    xRange = [xScale.invert(event.selection[0]), xScale.invert(event.selection[1])];
-                } else {
-                    xRange = [0, maxPlayTime];
-                }
-                updateChart();
-            });
+                    let centerX = 250;
+                    let centerY = 250;
+                    let radius = 150;
+                    let maxPlayers = parseInt(d["max_players"], 10)
+                    console.log(maxPlayers);
 
-        const xBrushG = svg.append("g").attr("class", "brush x-brush").call(xBrush);
-        const yBrush = d3.brushY()
-            .extent([[margin.left - 25, margin.top], [margin.left - 5, height - margin.bottom]])
-            .on("brush end", (event) => {
-                if (event.selection) {
-                    yRange = [yScale.invert(event.selection[1]), yScale.invert(event.selection[0])];
-                } else {
-                    yRange = [0, maxRating];
-                }
-                updateChart();
-            });
+                    for (let i = 0; i < maxPlayers; i++) {
+                        let angle = (i / maxPlayers) * 2 * Math.PI;
+                        let seatX = centerX + (radius + 45) * Math.cos(angle);
+                        let seatY = centerY + (radius + 45) * Math.sin(angle);
+                        let rotateDeg = (angle * 180) / Math.PI + 90;
 
-        const yBrushG = svg.append("g").attr("class", "brush y-brush").call(yBrush);
-        xBrushG.call(xBrush.move, [margin.left, width - margin.right]);
-        yBrushG.call(yBrush.move, [margin.top, height - margin.bottom]);
+                        let seatSize = maxPlayers > 10 ? 40 : 50;
+                        let offset = seatSize / 2;
 
-        function zoomChart() {
-            xScale.domain(xRange);
-            yScale.domain(yRange);
-            xAxis.transition().duration(500).call(d3.axisBottom(xScale));
-            yAxis.transition().duration(500).call(d3.axisLeft(yScale));
-            svg.selectAll("circle")
-                .transition().duration(500)
-                .attr("cx", d => xScale(d.owned_users))
-                .attr("cy", d => yScale(d.rating_average));
+                        table.append("image")
+                            .attr("class", "seat-icon")
+                            .attr("xlink:href", "seat_empty.png")
+                            .attr("x", seatX - offset)
+                            .attr("y", seatY - offset)
+                            .attr("width", seatSize)
+                            .attr("height", seatSize)
+                            .attr("transform", `rotate(${rotateDeg}, ${seatX}, ${seatY})`);
+                    }
+                })
+                .on("mouseout", function () {
+                    table.selectAll(".hover-table").remove();
+                    table.selectAll(".seat-icon").remove();
+                });
 
-            xBrushG.call(xBrush.move, [xScale(xRange[0]), xScale(xRange[1])]);
-            yBrushG.call(yBrush.move, [yScale(yRange[1]), yScale(yRange[0])]);
-        }
+            let xRange = [minOwnedUsers, maxOwnedUsers], yRange = [0, maxRating];
 
-        function resetChart() {
-            xScale.domain([minOwnedUsers, maxOwnedUsers]);
-            yScale.domain([0, maxRating]);
-            xRange = [minOwnedUsers, maxOwnedUsers];
-            yRange = [0, maxRating];
+            function updateChart() {
+                const filteredData = data.filter(d =>
+                    d.owned_users >= xRange[0] && d.owned_users <= xRange[1] &&
+                    d.rating_average >= yRange[0] && d.rating_average <= yRange[1]
+                );
 
-            xAxis.transition().duration(500).call(d3.axisBottom(xScale));
-            yAxis.transition().duration(500).call(d3.axisLeft(yScale));
+                visibleIndices = filteredData.map(d => d.index);
+                console.log("Visible Indices:", visibleIndices);
 
-            updateChart();
+                let updatedCircles = svg.selectAll("circle").data(filteredData, d => d.id)
+                    .on("mouseover", function (event, d) {
 
+                        table.append("circle")
+                            .attr("class", "hover-table")
+                            .attr("cx", 250)
+                            .attr("cy", 250)
+                            .attr("r", 150)
+                            .attr("fill", "blue")
+                            .attr("opacity", 0.5);
+
+                        let centerX = 250;
+                        let centerY = 250;
+                        let radius = 150;
+                        let maxPlayers = parseInt(d["max_players"], 10)
+                        console.log(maxPlayers);
+
+                        for (let i = 0; i < maxPlayers; i++) {
+                            let angle = (i / maxPlayers) * 2 * Math.PI;
+                            let seatX = centerX + (radius + 45) * Math.cos(angle);
+                            let seatY = centerY + (radius + 45) * Math.sin(angle);
+                            let rotateDeg = (angle * 180) / Math.PI + 90;
+
+                            let seatSize = maxPlayers > 15 ? 35 : 50;
+                            let offset = seatSize / 2;
+
+                            table.append("image")
+                                .attr("class", "seat-icon")
+                                .attr("xlink:href", "seat_empty.png")
+                                .attr("x", seatX - offset)
+                                .attr("y", seatY - offset)
+                                .attr("width", seatSize)
+                                .attr("height", seatSize)
+                                .attr("transform", `rotate(${rotateDeg}, ${seatX}, ${seatY})`);
+                        }
+                    })
+                    .on("mouseout", function () {
+                        table.selectAll(".hover-table").remove();
+                        table.selectAll(".seat-icon").remove();
+                    });
+
+                updatedCircles.enter()
+                    .append("circle")
+                    .attr("cx", d => xScale(d.owned_users))
+                    .attr("cy", d => yScale(d.rating_average))
+                    .attr("r", 2)
+                    .attr("fill", "steelblue")
+                    .attr("opacity", 0.7)
+                    .merge(updatedCircles)
+                    .transition().duration(200)
+                    .attr("cx", d => xScale(d.owned_users))
+                    .attr("cy", d => yScale(d.rating_average))
+
+                updatedCircles.exit().remove();
+            }
+
+            const xBrush = d3.brushX()
+                .extent([[margin.left, height - margin.bottom + 5], [width - margin.right, height - margin.bottom + 25]])
+                .on("brush end", (event) => {
+                    if (event.selection) {
+                        xRange = [xScale.invert(event.selection[0]), xScale.invert(event.selection[1])];
+                    } else {
+                        xRange = [0, maxPlayTime];
+                    }
+                    updateChart();
+                });
+
+            const xBrushG = svg.append("g").attr("class", "brush x-brush").call(xBrush);
+            const yBrush = d3.brushY()
+                .extent([[margin.left - 25, margin.top], [margin.left - 5, height - margin.bottom]])
+                .on("brush end", (event) => {
+                    if (event.selection) {
+                        yRange = [yScale.invert(event.selection[1]), yScale.invert(event.selection[0])];
+                    } else {
+                        yRange = [0, maxRating];
+                    }
+                    updateChart();
+                });
+
+            const yBrushG = svg.append("g").attr("class", "brush y-brush").call(yBrush);
             xBrushG.call(xBrush.move, [margin.left, width - margin.right]);
             yBrushG.call(yBrush.move, [margin.top, height - margin.bottom]);
-        }
 
-        document.getElementById("zoom-btn").addEventListener("click", zoomChart);
-        document.getElementById("reset-btn").addEventListener("click", resetChart);
+            function zoomChart() {
+                xScale.domain(xRange);
+                yScale.domain(yRange);
+                xAxis.transition().duration(500).call(d3.axisBottom(xScale));
+                yAxis.transition().duration(500).call(d3.axisLeft(yScale));
+                svg.selectAll("circle")
+                    .transition().duration(500)
+                    .attr("cx", d => xScale(d.owned_users))
+                    .attr("cy", d => yScale(d.rating_average));
 
-    }).catch(error => console.log("Error loading data:", error));
-</script>
+                xBrushG.call(xBrush.move, [xScale(xRange[0]), xScale(xRange[1])]);
+                yBrushG.call(yBrush.move, [yScale(yRange[1]), yScale(yRange[0])]);
+            }
+
+            function resetChart() {
+                xScale.domain([minOwnedUsers, maxOwnedUsers]);
+                yScale.domain([0, maxRating]);
+                xRange = [minOwnedUsers, maxOwnedUsers];
+                yRange = [0, maxRating];
+
+                xAxis.transition().duration(500).call(d3.axisBottom(xScale));
+                yAxis.transition().duration(500).call(d3.axisLeft(yScale));
+
+                updateChart();
+
+                xBrushG.call(xBrush.move, [margin.left, width - margin.right]);
+                yBrushG.call(yBrush.move, [margin.top, height - margin.bottom]);
+            }
+
+            document.getElementById("zoom-btn").addEventListener("click", zoomChart);
+            document.getElementById("reset-btn").addEventListener("click", resetChart);
+
+        }).catch(error => console.log("Error loading data:", error));
+    </script>
 
 </body>
+
 </html>
