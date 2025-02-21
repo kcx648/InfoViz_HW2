@@ -166,6 +166,25 @@
                             .attr("height", seatSize)
                             .attr("transform", `rotate(${rotateDeg}, ${seatX}, ${seatY})`);
                     }
+
+                    for (let j = 0; j < minPlayers; j++) {
+                            let angle = (j / maxPlayers) * 2 * Math.PI;
+                            let seatX = centerX + (radius + 40) * Math.cos(angle);
+                            let seatY = centerY + (radius + 40) * Math.sin(angle);
+                            let rotateDeg = (angle * 180) / Math.PI + 90;
+
+                            let seatSize = maxPlayers > 15 ? 35 : 50;
+                            let offset = seatSize / 2;
+
+                            table.append("image")
+                                .attr("class", "seat-icon")
+                                .attr("xlink:href", "seat_default.png")
+                                .attr("x", seatX - offset)
+                                .attr("y", seatY - offset)
+                                .attr("width", seatSize)
+                                .attr("height", seatSize)
+                                .attr("transform", `rotate(${rotateDeg}, ${seatX}, ${seatY})`);
+                        }
                 })
                 .on("mouseout", function () {
                     table.selectAll(".hover-table").remove();
@@ -200,6 +219,7 @@
                         let centerY = 250;
                         let radius = 150;
                         let maxPlayers = parseInt(d["max_players"], 10)
+                        let minPlayers = parseInt(d["min_players"], 10)
                         console.log(maxPlayers);
 
                         for (let i = 0; i < maxPlayers; i++) {
@@ -214,6 +234,25 @@
                             table.append("image")
                                 .attr("class", "seat-icon")
                                 .attr("xlink:href", "seat_empty.png")
+                                .attr("x", seatX - offset)
+                                .attr("y", seatY - offset)
+                                .attr("width", seatSize)
+                                .attr("height", seatSize)
+                                .attr("transform", `rotate(${rotateDeg}, ${seatX}, ${seatY})`);
+                        }
+
+                        for (let j = 0; j < minPlayers; j++) {
+                            let angle = (j / maxPlayers) * 2 * Math.PI;
+                            let seatX = centerX + (radius + 40) * Math.cos(angle);
+                            let seatY = centerY + (radius + 40) * Math.sin(angle);
+                            let rotateDeg = (angle * 180) / Math.PI + 90;
+
+                            let seatSize = maxPlayers > 15 ? 35 : 50;
+                            let offset = seatSize / 2;
+
+                            table.append("image")
+                                .attr("class", "seat-icon")
+                                .attr("xlink:href", "seat_default.png")
                                 .attr("x", seatX - offset)
                                 .attr("y", seatY - offset)
                                 .attr("width", seatSize)
