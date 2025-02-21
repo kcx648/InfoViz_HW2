@@ -108,6 +108,20 @@
             let uniqueDomains = Array.from(new Set(data.map(d => d.domains1)));
             console.log(uniqueDomains);
 
+            let domainColors = {
+                "Strategy Games": "#4ec8fc",
+                "Thematic Games": "#fcc544",
+                "Family Games": "#ffe608",
+                "Customizable Games": "#c291fa",
+                "Abstract Games": "#48e05c",
+                "Party Games": "#fa7646",
+                "Wargames": "#c43400",
+                "Children's Games": "#fec2ff"
+            };
+
+            let tableColorScale = d3.scaleOrdinal().domain(Object.keys(domainColors)).range(Object.values(domainColors));
+
+
             let circles = svg.selectAll("circle")
                 .data(data)
                 .enter()
@@ -118,14 +132,15 @@
                 .attr("fill", "steelblue")
                 .attr("opacity", 0.7)
                 .on("mouseover", function (event, d) {
-
+                    let tableColor = tableColorScale(d.domains1);
                     table.append("circle")
                         .attr("class", "hover-table")
                         .attr("cx", 250)
                         .attr("cy", 250)
                         .attr("r", 150)
-                        .attr("fill", "blue")
-                        .attr("opacity", 0.5);
+                        .attr("fill", talbeColor)
+                        .attr("stroke-width", 2)
+                        .attr("stroke", "grey");
 
                     let centerX = 250;
                     let centerY = 250;
@@ -135,8 +150,8 @@
 
                     for (let i = 0; i < maxPlayers; i++) {
                         let angle = (i / maxPlayers) * 2 * Math.PI;
-                        let seatX = centerX + (radius + 45) * Math.cos(angle);
-                        let seatY = centerY + (radius + 45) * Math.sin(angle);
+                        let seatX = centerX + (radius + 40) * Math.cos(angle);
+                        let seatY = centerY + (radius + 40) * Math.sin(angle);
                         let rotateDeg = (angle * 180) / Math.PI + 90;
 
                         let seatSize = maxPlayers > 10 ? 40 : 50;
@@ -170,14 +185,16 @@
 
                 let updatedCircles = svg.selectAll("circle").data(filteredData, d => d.id)
                     .on("mouseover", function (event, d) {
+                        let tableColor = tableColorScale(d.domains1);
 
                         table.append("circle")
                             .attr("class", "hover-table")
                             .attr("cx", 250)
                             .attr("cy", 250)
                             .attr("r", 150)
-                            .attr("fill", "blue")
-                            .attr("opacity", 0.5);
+                            .attr("fill", tableColor)
+                            .attr("stroke-width", 2)
+                            .attr("stroke", "grey");
 
                         let centerX = 250;
                         let centerY = 250;
@@ -187,8 +204,8 @@
 
                         for (let i = 0; i < maxPlayers; i++) {
                             let angle = (i / maxPlayers) * 2 * Math.PI;
-                            let seatX = centerX + (radius + 45) * Math.cos(angle);
-                            let seatY = centerY + (radius + 45) * Math.sin(angle);
+                            let seatX = centerX + (radius + 40) * Math.cos(angle);
+                            let seatY = centerY + (radius + 40) * Math.sin(angle);
                             let rotateDeg = (angle * 180) / Math.PI + 90;
 
                             let seatSize = maxPlayers > 15 ? 35 : 50;
