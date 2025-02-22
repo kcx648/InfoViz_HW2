@@ -136,6 +136,14 @@
                 .attr("fill", d => tableColorScale(d.domains1))
                 .attr("opacity", 0.7)
                 .on("mouseover", function (event, d) {
+                    d3.select(this)
+                        .transition()
+                        .duration(200)
+                        .attr("r", 8)
+                        .attr("stroke", "black")
+                        .attr("stroke-width", 3)
+                        .attr("opacity",1);
+
                     let tableColor = tableColorScale(d.domains1);
                     table.append("circle")
                         .attr("class", "hover-table")
@@ -143,9 +151,8 @@
                         .attr("cy", 250)
                         .attr("r", 170)
                         .attr("fill", tableColor)
-                        .attr("stroke-width", 2)
+                        .attr("stroke-width", 3)
                         .attr("stroke", "grey");
-
 
                     let textGroup = table.append("g")
                         .attr("class", "table-text")
@@ -154,13 +161,15 @@
                         .attr("font-family", "Gill Sans")
                         .attr("font-size", "12px")
 
-                    const [beforeColon, afterColon] = d.name.split(":", 2);
+                    const words = d.name.split(/\s+/);
+                    const firstPart = words.slice(0, 4).join(' ');
+                    const rest = words.slice(4).join(' ');
                     textGroup.append("text")
-                        .text(beforeColon)
+                        .text(firstPart)
                         .attr("y", -40)
                         .attr("font-weight", "bold");
                     textGroup.append("text")
-                        .text(afterColon)
+                        .text(rest)
                         .attr("y", -20)
                         .attr("font-weight", "bold");
                     textGroup.append("text")
@@ -233,6 +242,13 @@
                     table.selectAll(".hover-table").remove();
                     table.selectAll(".seat-icon").remove();
                     table.selectAll(".table-text").remove();
+                    d3.select(this)
+                        .transition()
+                        .duration(200)
+                        .attr("r", 2)
+                        .attr("stroke", "none")
+                        .attr("stroke-width", 0)
+                        .attr("opacity",0.7);
                 });
 
             let xRange = [minOwnedUsers, maxOwnedUsers], yRange = [0, maxRating];
@@ -248,6 +264,13 @@
 
                 let updatedCircles = svg.selectAll("circle").data(filteredData, d => d.id)
                     .on("mouseover", function (event, d) {
+                        d3.select(this)
+                            .transition()
+                            .duration(200)
+                            .attr("r", 8)
+                            .attr("stroke", "black")
+                            .attr("stroke-width", 3)
+                            .attr("opacity",1);
                         let tableColor = tableColorScale(d.domains1);
 
                         table.append("circle")
@@ -256,7 +279,7 @@
                             .attr("cy", 250)
                             .attr("r", 170)
                             .attr("fill", tableColor)
-                            .attr("stroke-width", 2)
+                            .attr("stroke-width", 3)
                             .attr("stroke", "grey");
 
                         let textGroup = table.append("g")
@@ -266,13 +289,15 @@
                             .attr("font-family", "Gill Sans")
                             .attr("font-size", "13px")
 
-                        const [beforeColon, afterColon] = d.name.split(":", 2);
+                        const words = d.name.split(/\s+/);
+                        const firstPart = words.slice(0, 4).join(' ');
+                        const rest = words.slice(4).join(' ');
                         textGroup.append("text")
-                            .text(beforeColon)
+                            .text(firstPart)
                             .attr("y", -60)
                             .attr("font-weight", "bold");
                         textGroup.append("text")
-                            .text(afterColon)
+                            .text(rest)
                             .attr("y", -40)
                             .attr("font-weight", "bold");
                         textGroup.append("text")
@@ -347,6 +372,13 @@
                         table.selectAll(".hover-table").remove();
                         table.selectAll(".seat-icon").remove();
                         table.selectAll(".table-text").remove();
+                        d3.select(this)
+                            .transition()
+                            .duration(200)
+                            .attr("r", 2)
+                            .attr("stroke", "none")
+                            .attr("stroke-width", 0)
+                            .attr("opacity",0.7);
                     });
 
                 updatedCircles.enter()
