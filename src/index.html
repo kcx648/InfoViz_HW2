@@ -46,6 +46,10 @@
             stroke: rgb(192, 192, 230);
             stroke-width: 1.5px;
         }
+
+        body {
+            color: #ffffff;
+        }
     </style>
 </head>
 
@@ -115,7 +119,7 @@
                 "Customizable Games": "#c291fa",
                 "Abstract Games": "#48e05c",
                 "Party Games": "#fa7646",
-                "Wargames": "#c43400",
+                "Wargames": "#ba3440",
                 "Children's Games": "#fec2ff"
             };
 
@@ -129,7 +133,7 @@
                 .attr("cx", d => xScale(d.owned_users))
                 .attr("cy", d => yScale(d.rating_average))
                 .attr("r", 2)
-                .attr("fill", "steelblue")
+                .attr("fill", d => tableColorScale(d.domains1))
                 .attr("opacity", 0.7)
                 .on("mouseover", function (event, d) {
                     let tableColor = tableColorScale(d.domains1);
@@ -137,14 +141,53 @@
                         .attr("class", "hover-table")
                         .attr("cx", 250)
                         .attr("cy", 250)
-                        .attr("r", 150)
-                        .attr("fill", talbeColor)
+                        .attr("r", 170)
+                        .attr("fill", tableColor)
                         .attr("stroke-width", 2)
                         .attr("stroke", "grey");
 
+
+                    let textGroup = table.append("g")
+                        .attr("class", "table-text")
+                        .attr("transform", "translate(250, 230)")
+                        .attr("text-anchor", "middle")
+                        .attr("font-family", "Gill Sans")
+                        .attr("font-size", "12px")
+
+                    const [beforeColon, afterColon] = d.name.split(":", 2);
+                    textGroup.append("text")
+                        .text(beforeColon)
+                        .attr("y", -40)
+                        .attr("font-weight", "bold");
+                    textGroup.append("text")
+                        .text(afterColon)
+                        .attr("y", -20)
+                        .attr("font-weight", "bold");
+                    textGroup.append("text")
+                        .text(`Year published: ${d.year_published}`)
+                        .attr("y", 0);
+                    textGroup.append("text")
+                        .text(`Players allowed: ${d.min_players} (Min) - ${d.max_players} (Max)`)
+                        .attr("y", 20);
+                    textGroup.append("text")
+                        .text(`Suggested play time: ${d.play_time} min`)
+                        .attr("y", 40);
+                    textGroup.append("text")
+                        .text(`Game Age Limit: ${d.min_age}+`)
+                        .attr("y", 60);
+                    textGroup.append("text")
+                        .text(`Rating for the game: ${d.rating_average}`)
+                        .attr("y", 80);
+                    textGroup.append("text")
+                        .text(`Game Complexity : ${d.complexity_average}`)
+                        .attr("y", 100);
+                    textGroup.append("text")
+                        .text(`Number of people downloaded : ${d.owned_users}`)
+                        .attr("y", 120);
+
                     let centerX = 250;
                     let centerY = 250;
-                    let radius = 150;
+                    let radius = 170;
                     let maxPlayers = parseInt(d["max_players"], 10)
                     console.log(maxPlayers);
 
@@ -154,7 +197,7 @@
                         let seatY = centerY + (radius + 40) * Math.sin(angle);
                         let rotateDeg = (angle * 180) / Math.PI + 90;
 
-                        let seatSize = maxPlayers > 10 ? 40 : 50;
+                        let seatSize = maxPlayers > 10 ? 35 : 60;
                         let offset = seatSize / 2;
 
                         table.append("image")
@@ -168,27 +211,28 @@
                     }
 
                     for (let j = 0; j < minPlayers; j++) {
-                            let angle = (j / maxPlayers) * 2 * Math.PI;
-                            let seatX = centerX + (radius + 40) * Math.cos(angle);
-                            let seatY = centerY + (radius + 40) * Math.sin(angle);
-                            let rotateDeg = (angle * 180) / Math.PI + 90;
+                        let angle = (j / maxPlayers) * 2 * Math.PI;
+                        let seatX = centerX + (radius + 40) * Math.cos(angle);
+                        let seatY = centerY + (radius + 40) * Math.sin(angle);
+                        let rotateDeg = (angle * 180) / Math.PI + 90;
 
-                            let seatSize = maxPlayers > 15 ? 35 : 50;
-                            let offset = seatSize / 2;
+                        let seatSize = maxPlayers > 15 ? 40 : 60;
+                        let offset = seatSize / 2;
 
-                            table.append("image")
-                                .attr("class", "seat-icon")
-                                .attr("xlink:href", "seat_default.png")
-                                .attr("x", seatX - offset)
-                                .attr("y", seatY - offset)
-                                .attr("width", seatSize)
-                                .attr("height", seatSize)
-                                .attr("transform", `rotate(${rotateDeg}, ${seatX}, ${seatY})`);
-                        }
+                        table.append("image")
+                            .attr("class", "seat-icon")
+                            .attr("xlink:href", "seat_default.png")
+                            .attr("x", seatX - offset)
+                            .attr("y", seatY - offset)
+                            .attr("width", seatSize)
+                            .attr("height", seatSize)
+                            .attr("transform", `rotate(${rotateDeg}, ${seatX}, ${seatY})`);
+                    }
                 })
                 .on("mouseout", function () {
                     table.selectAll(".hover-table").remove();
                     table.selectAll(".seat-icon").remove();
+                    table.selectAll(".table-text").remove();
                 });
 
             let xRange = [minOwnedUsers, maxOwnedUsers], yRange = [0, maxRating];
@@ -210,14 +254,53 @@
                             .attr("class", "hover-table")
                             .attr("cx", 250)
                             .attr("cy", 250)
-                            .attr("r", 150)
+                            .attr("r", 170)
                             .attr("fill", tableColor)
                             .attr("stroke-width", 2)
                             .attr("stroke", "grey");
 
+                        let textGroup = table.append("g")
+                            .attr("class", "table-text")
+                            .attr("transform", "translate(250, 230)")
+                            .attr("text-anchor", "middle")
+                            .attr("font-family", "Gill Sans")
+                            .attr("font-size", "13px")
+
+                        const [beforeColon, afterColon] = d.name.split(":", 2);
+                        textGroup.append("text")
+                            .text(beforeColon)
+                            .attr("y", -60)
+                            .attr("font-weight", "bold");
+                        textGroup.append("text")
+                            .text(afterColon)
+                            .attr("y", -40)
+                            .attr("font-weight", "bold");
+                        textGroup.append("text")
+                            .text(`Year published: ${d.year_published}`)
+                            .attr("y", -20);
+                        textGroup.append("text")
+                            .text(`Players allowed: ${d.min_players} (Min) - ${d.max_players} (Max)`)
+                            .attr("y", 0);
+                        textGroup.append("text")
+                            .text(`Suggested play time: ${d.play_time} min`)
+                            .attr("y", 20);
+                        textGroup.append("text")
+                            .text(`Game Age Limit: ${d.min_age}+`)
+                            .attr("y", 40);
+                        textGroup.append("text")
+                            .text(`Rating for the game: ${d.rating_average}`)
+                            .attr("y", 60);
+                        textGroup.append("text")
+                            .text(`Game Complexity : ${d.complexity_average}`)
+                            .attr("y", 80);
+                        textGroup.append("text")
+                            .text(`Number of people downloaded : ${d.owned_users}`)
+                            .attr("y", 100);
+
+
                         let centerX = 250;
                         let centerY = 250;
-                        let radius = 150;
+                        let radius = 170;
                         let maxPlayers = parseInt(d["max_players"], 10)
                         let minPlayers = parseInt(d["min_players"], 10)
                         console.log(maxPlayers);
@@ -228,7 +311,7 @@
                             let seatY = centerY + (radius + 40) * Math.sin(angle);
                             let rotateDeg = (angle * 180) / Math.PI + 90;
 
-                            let seatSize = maxPlayers > 15 ? 35 : 50;
+                            let seatSize = maxPlayers > 15 ? 40 : 60;
                             let offset = seatSize / 2;
 
                             table.append("image")
@@ -247,7 +330,7 @@
                             let seatY = centerY + (radius + 40) * Math.sin(angle);
                             let rotateDeg = (angle * 180) / Math.PI + 90;
 
-                            let seatSize = maxPlayers > 15 ? 35 : 50;
+                            let seatSize = maxPlayers > 15 ? 40 : 60;
                             let offset = seatSize / 2;
 
                             table.append("image")
@@ -263,6 +346,7 @@
                     .on("mouseout", function () {
                         table.selectAll(".hover-table").remove();
                         table.selectAll(".seat-icon").remove();
+                        table.selectAll(".table-text").remove();
                     });
 
                 updatedCircles.enter()
@@ -270,7 +354,7 @@
                     .attr("cx", d => xScale(d.owned_users))
                     .attr("cy", d => yScale(d.rating_average))
                     .attr("r", 2)
-                    .attr("fill", "steelblue")
+                    .attr("fill", d => tableColorScale(d.domains1))
                     .attr("opacity", 0.7)
                     .merge(updatedCircles)
                     .transition().duration(200)
