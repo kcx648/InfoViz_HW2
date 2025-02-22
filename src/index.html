@@ -16,13 +16,13 @@
 
         .title {
             font-size: 36px;
-            color: rgb(53, 76, 66);
+            color: rgb(241, 241, 241);
             font-family: 'Merriweather', serif;
         }
 
         .text {
             font-size: 16px;
-            color: rgb(81, 113, 88);
+            color: rgb(241, 241, 241);
             font-family: 'Merriweather', serif;
         }
 
@@ -36,33 +36,55 @@
             font-size: 14px;
             margin-right: 10px;
             font-family: 'Merriweather', serif;
-            background-color: rgba(214, 214, 231, 0.2);
+            background-color: rgba(214, 214, 231, 0.494);
             stroke-width: 1.5px;
             cursor: pointer;
         }
 
         .brush .selection {
-            fill: rgba(0, 0, 255, 0.2);
-            stroke: rgb(192, 192, 230);
+            fill: rgba(214, 214, 231, 0.539);
+            stroke: rgba(255, 255, 255, 0.524);
             stroke-width: 1.5px;
         }
 
         body {
-            color: #ffffff;
+            background-color: #050030;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .axis{
+            color:white;
         }
     </style>
 </head>
 
 <body>
-
-    <div class="button-container">
-        <button id="zoom-btn">Zoom</button>
-        <button id="reset-btn">Reset</button>
-    </div>
-
-    <div class="viz" style="display: flex; flex-direction: row">
-        <svg id="scatter" width="800" height="800"></svg>
-        <svg id="bggTable" width="500" height="500"></svg>
+    <h1 style="font-family: Gill Sans, 'Times New Roman', Times, serif; color:azure; font-size: 40px;">Pick the Perfect
+        <span style="color: #ffe608; font-size: 50px;">B</span><span
+            style="color: #fa7646; font-size: 50px;">O</span><span style="color:#fec2ff; font-size: 50px;">A</span><span
+            style="color:#4ec8fc; font-size: 50px; padding-left: 2px;">R</span><span
+            style="color: #c291fa; font-size: 50px; padding-left: 2px">D</span>
+        GAME for Tonight's Game Night!
+    </h1>
+    "Strategy Games": "#4ec8fc",
+    "Thematic Games": "#fcc544",
+    "Family Games": "#ffe608",
+    "Customizable Games": "#c291fa",
+    "Abstract Games": "#48e05c",
+    "Party Games": "#fa7646",
+    "Wargames": "#ba3440",
+    "Children's Games": "#fec2ff"
+    <div>
+        <div class="button-container">
+            <button id="zoom-btn">Zoom</button>
+            <button id="reset-btn">Reset</button>
+        </div>
+        <div class="viz" style="display: flex; flex-direction: row">
+            <svg id="scatter" width="800" height="800"></svg>
+            <svg id="bggTable" width="500" height="500"></svg>
+        </div>
     </div>
 
     <script>
@@ -90,14 +112,15 @@
             let yScale = d3.scaleLinear().domain([0, maxRating]).range([height - margin.bottom, margin.top]);
 
             const svg = d3.select("#scatter");
-            let xAxis = svg.append("g").attr("transform", `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).ticks(10, "~s"));
-            let yAxis = svg.append("g").attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(yScale));
+            let xAxis = svg.append("g").attr("class","axis").attr("transform", `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).ticks(10, "~s"));
+            let yAxis = svg.append("g").attr("class","axis").attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(yScale));
 
             svg.append("text")
                 .attr("class", "label")
                 .attr("text-anchor", "end")
                 .attr("x", width / 2 + margin.left)
-                .attr("y", height + margin.bottom - 30)
+                .attr("y", height + margin.bottom - 40)
+                .attr("fill","white")
                 .text("Popularity (Log Scale)");
 
             svg.append("text")
@@ -107,6 +130,7 @@
                 .attr("y", margin.left - 60)
                 .attr("dy", ".75em")
                 .attr("transform", "rotate(-90)")
+                .attr("fill","white")
                 .text("Average Rating");
 
             let uniqueDomains = Array.from(new Set(data.map(d => d.domains1)));
@@ -125,6 +149,31 @@
 
             let tableColorScale = d3.scaleOrdinal().domain(Object.keys(domainColors)).range(Object.values(domainColors));
 
+            table.append("circle")
+                .attr("class", "default-table")
+                .attr("cx", 250)
+                .attr("cy", 250)
+                .attr("r", 170)
+                .attr("fill", "none")
+                .attr("stroke-width", 3)
+                .attr("stroke", "grey");
+
+            table.append("text")
+                .attr("transform", "translate(250, 220)")
+                .attr("text-anchor", "middle")
+                .attr("font-family", "Gill Sans")
+                .attr("font-size", "18px")
+                .text(String.fromCodePoint(0x1F50D) + " Hoever a dot on the left to")
+                .attr("fill", "white");
+
+            table.append("text")
+                .attr("transform", "translate(250, 250)")
+                .attr("text-anchor", "middle")
+                .attr("font-family", "Gill Sans")
+                .attr("font-size", "18px")
+                .text("pick a boardgame for details " + String.fromCodePoint(0x1F50D))
+                .attr("fill", "white");
+
 
             let circles = svg.selectAll("circle")
                 .data(data)
@@ -142,7 +191,7 @@
                         .attr("r", 8)
                         .attr("stroke", "black")
                         .attr("stroke-width", 3)
-                        .attr("opacity",1);
+                        .attr("opacity", 1);
 
                     let tableColor = tableColorScale(d.domains1);
                     table.append("circle")
@@ -216,7 +265,8 @@
                             .attr("y", seatY - offset)
                             .attr("width", seatSize)
                             .attr("height", seatSize)
-                            .attr("transform", `rotate(${rotateDeg}, ${seatX}, ${seatY})`);
+                            .attr("transform", `rotate(${rotateDeg}, ${seatX}, ${seatY})`)
+                            .attr("opacity",0.8);
                     }
 
                     for (let j = 0; j < minPlayers; j++) {
@@ -248,7 +298,7 @@
                         .attr("r", 2)
                         .attr("stroke", "none")
                         .attr("stroke-width", 0)
-                        .attr("opacity",0.7);
+                        .attr("opacity", 0.7);
                 });
 
             let xRange = [minOwnedUsers, maxOwnedUsers], yRange = [0, maxRating];
@@ -270,7 +320,7 @@
                             .attr("r", 8)
                             .attr("stroke", "black")
                             .attr("stroke-width", 3)
-                            .attr("opacity",1);
+                            .attr("opacity", 1);
                         let tableColor = tableColorScale(d.domains1);
 
                         table.append("circle")
@@ -346,7 +396,8 @@
                                 .attr("y", seatY - offset)
                                 .attr("width", seatSize)
                                 .attr("height", seatSize)
-                                .attr("transform", `rotate(${rotateDeg}, ${seatX}, ${seatY})`);
+                                .attr("transform", `rotate(${rotateDeg}, ${seatX}, ${seatY})`)
+                                .attr("opacity",0.8);
                         }
 
                         for (let j = 0; j < minPlayers; j++) {
@@ -378,7 +429,7 @@
                             .attr("r", 2)
                             .attr("stroke", "none")
                             .attr("stroke-width", 0)
-                            .attr("opacity",0.7);
+                            .attr("opacity", 0.7);
                     });
 
                 updatedCircles.enter()
