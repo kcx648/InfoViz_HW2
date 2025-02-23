@@ -2,6 +2,10 @@
 <html>
 
 <head>
+    <!--
+        References:
+        - Code for range slider: https://codepen.io/predragdavidovic/pen/mdpMoWo
+    -->
     <title>INFO4310 HW2</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
@@ -52,10 +56,96 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            color: white;
+            font-family: 'Merriweather', serif;
         }
 
         .axis{
             color:white;
+        }
+
+        /* Range slider & input box */
+        .range_container {
+            display: flex;
+            flex-direction: column;
+            width: 200px;
+            margin: 20px auto 0px auto;
+        }
+
+        .sliders_control {
+            position: relative;
+            min-height: 15px;
+        }
+
+        .form_control {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            pointer-events: all;
+            width: 16px;
+            height: 16px;
+            background-color: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 0 1px #C6C6C6;
+            cursor: pointer;
+        }
+
+        input[type=range]::-webkit-slider-thumb:hover {
+            background: #fff;
+        }
+
+        input[type=range]::-webkit-slider-thumb:active {
+            box-shadow: inset 0 0 3px #387bbe, 0 0 9px #387bbe;
+            -webkit-box-shadow: inset 0 0 3px #387bbe, 0 0 9px #387bbe;
+        }
+
+        input[type="number"] {
+            width: 45px;
+            height: 25px;
+            font-size: 16px;
+            border: none;
+            background-color: #6b7280;
+            color: white;
+            border-radius: 3px;
+            margin-top: 5px;
+            font-family: 'Merriweather', serif;
+        }
+
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button {  
+            opacity: 1;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none; 
+            appearance: none;
+            height: 3.5px;
+            width: 100%;
+            position: absolute;
+            background-color: #C6C6C6;
+            pointer-events: none;
+        }
+
+        #fromSlider{
+            height: 0;
+            z-index: 1;
+        }
+
+        #fromSlider::-webkit-slider-thumb{
+            margin-top: 4px;
+        }
+
+        .form_control_container{
+            font-size: 14px
+        }
+        
+        .input_max{
+            margin-right: -25px
         }
     </style>
 </head>
@@ -81,8 +171,28 @@
             <button id="zoom-btn">Zoom</button>
             <button id="reset-btn">Reset</button>
         </div>
+        <div id="toolbar" width="1200" height="300" style="display: flex; flex-direction: row">
+            <div width="500">
+                <div class="range_container">
+                    <div class="sliders_control">
+                       <input id="fromSlider" type="range" value="1" min="1" max="30"/>
+                       <input id="toSlider" type="range" value="30" min="1" max="30"/>
+                    </div>
+                    <div class="form_control">
+                      <div class="form_control_container">
+                          <div class="form_control_container__time">Min</div>
+                          <input class="form_control_container__time__input" type="number" id="fromInput" value="1" min="1" max="30"/>
+                        </div>
+                        <div class="form_control_container">
+                          <div class="form_control_container__time input_max">Max</div>
+                          <input class="form_control_container__time__input input_max" type="number" id="toInput" value="30" min="1" max="30"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="viz" style="display: flex; flex-direction: row">
-            <svg id="scatter" width="800" height="800"></svg>
+            <svg id="scatter" width="600" height="600"></svg>
             <svg id="bggTable" width="500" height="500"></svg>
         </div>
     </div>
@@ -508,6 +618,112 @@
 
         }).catch(error => console.log("Error loading data:", error));
     </script>
+
+<script>
+    let inputTimeout = null; 
+
+    function controlFromInput(fromSlider, toSlider, fromInput, toInput) {
+        clearTimeout(inputTimeout);
+        inputTimeout = setTimeout(() => {
+        let [from, to] = getParsed(fromInput, toInput);
+        if (from < fromSlider.min){
+            from = fromSlider.min
+        }
+        if (from > to) { // invalid
+            fromSlider.value = to;
+            fromInput.value = to;
+        } else { // valid
+            fromSlider.value = from;
+            fromInput.value = from;
+        }
+        fillSlider(fromSlider, toSlider, '#C6C6C6', '#bef264');
+    }, 200);
+    }
+    
+    function controlToInput(fromSlider, toSlider, fromInput, toInput) {
+        clearTimeout(inputTimeout);
+        inputTimeout = setTimeout(() => {
+        let [from, to] = getParsed(fromInput, toInput);
+        setToggleAccessible(toInput);
+        if (to > toSlider.max){
+            to = toSlider.max
+        }
+        if (from <= to) { // valid
+            toSlider.value = to;
+            toInput.value = to;
+        } else { // invalid
+            toSlider.value = from;
+            toInput.value = from;
+        }
+        fillSlider(fromSlider, toSlider, '#C6C6C6', '#bef264');
+    }, 200);
+    }
+
+    function controlFromSlider(fromSlider, toSlider, fromInput) {
+        const [from, to] = getParsed(fromSlider, toSlider);
+        if (from > to) { // invalid
+            fromSlider.value = to;
+            fromInput.value = to;
+        } else {
+            fromInput.value = from;
+        }
+        fillSlider(fromSlider, toSlider, '#C6C6C6', '#bef264');
+        }
+
+    function controlToSlider(fromSlider, toSlider, toInput) {
+        const [from, to] = getParsed(fromSlider, toSlider);
+        setToggleAccessible(toSlider);
+        if (from <= to) { // valid
+            toInput.value = to;
+        } else {
+            toInput.value = from;
+            toSlider.value = from;
+        }
+        fillSlider(fromSlider, toSlider, '#C6C6C6', '#bef264');
+    }
+
+    function getParsed(currentFrom, currentTo) {
+        const from = parseInt(currentFrom.value, 10);
+        const to = parseInt(currentTo.value, 10);
+        return [from, to];
+    }
+
+    function fillSlider(fromSlider, toSlider, sliderColor, rangeColor) {
+        const rangeDistance = toSlider.max - toSlider.min;
+        const fromPosition = fromSlider.value - toSlider.min;
+        const toPosition = toSlider.value - toSlider.min;
+        toSlider.style.background = `linear-gradient(
+            to right,
+            ${sliderColor} 0%,
+            ${sliderColor} ${(fromPosition)/(rangeDistance)*100}%,
+            ${rangeColor} ${((fromPosition)/(rangeDistance))*100}%,
+            ${rangeColor} ${(toPosition)/(rangeDistance)*100}%, 
+            ${sliderColor} ${(toPosition)/(rangeDistance)*100}%, 
+            ${sliderColor} 100%)`;
+    }
+
+    function setToggleAccessible(currentTarget) {
+        const toSlider = document.querySelector('#toSlider');
+        if (Number(currentTarget.value) <= 0 ) {
+            toSlider.style.zIndex = 2;
+        } else {
+            toSlider.style.zIndex = 0;
+        }
+    };
+
+const fromSlider_players = document.querySelector('#fromSlider');
+const toSlider_players = document.querySelector('#toSlider');
+const fromInput_players = document.querySelector('#fromInput');
+const toInput_players = document.querySelector('#toInput');
+fillSlider(fromSlider_players, toSlider_players, '#C6C6C6', '#bef264');
+setToggleAccessible(toSlider_players);
+
+fromSlider_players.oninput = () => controlFromSlider(fromSlider_players, toSlider_players, fromInput_players);
+toSlider_players.oninput = () => controlToSlider(fromSlider_players, toSlider_players, toInput_players);
+fromInput_players.oninput = () => controlFromInput(fromSlider_players, toSlider_players, fromInput_players, toInput_players);
+toInput_players.oninput = () => controlToInput(fromSlider_players, toSlider_players, fromInput_players, toInput_players);
+
+</script>
 
 </body>
 
