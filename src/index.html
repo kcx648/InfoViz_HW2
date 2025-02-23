@@ -4,7 +4,7 @@
 <head>
     <!--
         References:
-        - Code for range slider: https://codepen.io/predragdavidovic/pen/mdpMoWo
+        1. Code for dual range slider: https://codepen.io/predragdavidovic/pen/mdpMoWo
     -->
     <title>INFO4310 HW2</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -18,25 +18,17 @@
             margin: 10px;
         }
 
-        .title {
-            font-size: 36px;
-            color: rgb(241, 241, 241);
-            font-family: 'Merriweather', serif;
-        }
-
-        .text {
-            font-size: 16px;
-            color: rgb(241, 241, 241);
+        .text, .label {
+            font-size: 14px;
             font-family: 'Merriweather', serif;
         }
 
         .label {
-            font-size: 12px;
-            font-family: 'Merriweather', serif;
+            font-size: 13px 
         }
 
-        button {
-            padding: 10px;
+        .button-container button {
+            padding: 8px;
             font-size: 14px;
             margin-right: 10px;
             font-family: 'Merriweather', serif;
@@ -64,12 +56,23 @@
             color:white;
         }
 
-        /* Range slider & input box */
+        /* Toolbar styles */
+        .filter{
+            background-color: #11029c;
+            padding: 12px;
+            border-radius: 5px;
+            width: 200px
+        }
+
+        #domain-filter, #playtime-filter, #complexity-filter, #players-filter{
+            margin-bottom: 1%
+        }
+
         .range_container {
             display: flex;
             flex-direction: column;
-            width: 200px;
-            margin: 20px auto 0px auto;
+            width: 180px;
+            margin: 0px;
         }
 
         .sliders_control {
@@ -81,14 +84,14 @@
             position: relative;
             display: flex;
             justify-content: space-between;
-            font-size: 18px;
+            font-size: 16px;
         }
 
         input[type=range]::-webkit-slider-thumb {
             -webkit-appearance: none;
             pointer-events: all;
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             background-color: #fff;
             border-radius: 50%;
             box-shadow: 0 0 0 1px #C6C6C6;
@@ -107,13 +110,21 @@
         input[type="number"] {
             width: 45px;
             height: 25px;
-            font-size: 16px;
+            font-size: 14px;
             border: none;
             background-color: #6b7280;
             color: white;
             border-radius: 3px;
             margin-top: 5px;
             font-family: 'Merriweather', serif;
+        }
+
+        #players-filter input, #age-filter input{
+            margin-top: 0px;
+        }
+
+        #toInput_time, #input_players{
+            width: 55px;
         }
 
         input[type=number]::-webkit-inner-spin-button, 
@@ -131,76 +142,197 @@
             pointer-events: none;
         }
 
-        #fromSlider{
+        #fromSlider_time, #fromSlider_complexity{
             height: 0;
             z-index: 1;
         }
 
-        #fromSlider::-webkit-slider-thumb{
+        #fromSlider_time::-webkit-slider-thumb, 
+        #fromSlider_complexity::-webkit-slider-thumb{
             margin-top: 4px;
         }
 
         .form_control_container{
-            font-size: 14px
+            font-size: 12px
         }
         
         .input_max{
             margin-right: -25px
         }
+
+        #domain-filter{
+            display: flex;
+            flex-direction: row;
+        }
+
+        .domain-btn {
+            padding:6px;
+            font-size: 12px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            border-radius: 3px;
+            width: 48%;
+            font-family: 'Merriweather', serif;
+        }
+
+        .domain-btn:hover {
+            opacity: 0.85;
+        }
+
+        .domain-btn.active {
+            border: 2px solid white; 
+            box-shadow: 0px 0px 10px white;
+            opacity: 0.85;
+        }
+
+        .filter .label{
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        #players-filter .range_container, #age-filter .range_container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        #players-filter .label, #age-filter .label {
+            margin-right: 5px;
+        }
+
+        #players-filter input,  #age-filter input{
+            margin-top: 0
+        }
     </style>
 </head>
 
 <body>
-    <h1 style="font-family: Gill Sans, 'Times New Roman', Times, serif; color:azure; font-size: 40px;">Pick the Perfect
-        <span style="color: #ffe608; font-size: 50px;">B</span><span
-            style="color: #fa7646; font-size: 50px;">O</span><span style="color:#fec2ff; font-size: 50px;">A</span><span
-            style="color:#4ec8fc; font-size: 50px; padding-left: 2px;">R</span><span
-            style="color: #c291fa; font-size: 50px; padding-left: 2px">D</span>
+    <h1 style="color:white; font-size: 28px;">Pick the Perfect
+        <span style="color: #ffdb28; padding-right: 1px;">B</span><span 
+        style="color: #f28200; padding-right: 1px;">O</span><span 
+        style="color:#fb4fd9; padding-right: 1px;">A</span><span
+        style="color:#007bd8; padding-right: 1px;">R</span><span
+        style="color: #8f2be7; padding-right: 1px;">D</span>
         GAME for Tonight's Game Night!
     </h1>
-    "Strategy Games": "#4ec8fc",
-    "Thematic Games": "#fcc544",
-    "Family Games": "#ffe608",
-    "Customizable Games": "#c291fa",
-    "Abstract Games": "#48e05c",
-    "Party Games": "#fa7646",
-    "Wargames": "#ba3440",
-    "Children's Games": "#fec2ff"
-    <div>
-        <div class="button-container">
-            <button id="zoom-btn">Zoom</button>
-            <button id="reset-btn">Reset</button>
-        </div>
-        <div id="toolbar" width="1200" height="300" style="display: flex; flex-direction: row">
-            <div width="500">
+    <!--
+    "Strategy Games": "#007bd8",
+    "Thematic Games": "#00e1da",
+    "Family Games": "#ffdb28",
+    "Customizable Games": "#8f2be7",
+    "Abstract Games": "#1fb819",
+    "Party Games": "#f28200",
+    "Wargames": "#e9162d",
+    "Children's Games": "#fb4fd9" 
+    -->      
+    <div class="viz" style="display: flex; flex-direction: row">
+        <div id="toolbar" height="800" width="180" style="display: flex; flex-direction: column;">
+            <!--Game Domain-->
+            <div id="domain-filter" class="filter" style="display: flex; flex-direction: column;">
+                <div class="label" style="margin-bottom: 10px;">Game Domain:</div>
+                <div style="display: flex; margin-bottom: 5px">
+                    <button class="domain-btn active" data-domain="any" style="background-color: #ccc; margin-right: 4%">Any</button>
+                    <button class="domain-btn" data-domain="Strategy Games" style="background-color: #007bd8;">Strategy</button>
+                </div>
+                <div style="display: flex; margin-bottom: 5px">
+                    <button class="domain-btn" data-domain="Family Games" style="background-color: #ffdb28; margin-right: 4%">Family</button>
+                    <button class="domain-btn" data-domain="Customizable Games" style="background-color: #8f2be7;">Customizable</button>
+                </div>
+                <div style="display: flex; margin-bottom: 5px">
+                    <button class="domain-btn" data-domain="Abstract Games" style="background-color: #1fb819; margin-right: 4%">Abstract</button>
+                    <button class="domain-btn" data-domain="Party Games" style="background-color: #f28200;">Party</button>
+                </div>
+                <div style="display: flex; margin-bottom: 5px">
+                    <button class="domain-btn" data-domain="Wargames" style="background-color: #e9162d; margin-right: 4%">Wargames</button>
+                    <button class="domain-btn" data-domain="Thematic Games" style="background-color: #00e1da;">Thematic</button>
+                </div>
+                <div style="display: flex;">
+                    <button class="domain-btn" data-domain="Children's Games" style="background-color: #fb4fd9; margin-right: 4%">Children's</button>
+                </div>
+            </div>
+
+            <!--Play time-->
+            <div class="filter" id="playtime-filter">
                 <div class="range_container">
-                    <div class="sliders_control">
-                       <input id="fromSlider" type="range" value="1" min="1" max="30"/>
-                       <input id="toSlider" type="range" value="30" min="1" max="30"/>
-                    </div>
+                    <div class="label">Play Time Range:</div>
+                        <div class="sliders_control" style="margin-top: 10px">
+                            <input id="fromSlider_time" type="range" value="1" min="1" max="360"/>
+                            <input id="toSlider_time" type="range" value="360" min="1" max="360"/>
+                        </div>
                     <div class="form_control">
-                      <div class="form_control_container">
-                          <div class="form_control_container__time">Min</div>
-                          <input class="form_control_container__time__input" type="number" id="fromInput" value="1" min="1" max="30"/>
+                        <div class="form_control_container">
+                            <div class="form_control_container__time">Min</div>
+                            <input class="form_control_container__time__input" type="number" id="fromInput_time" value="1" min="1" max="360"/>
                         </div>
                         <div class="form_control_container">
-                          <div class="form_control_container__time input_max">Max</div>
-                          <input class="form_control_container__time__input input_max" type="number" id="toInput" value="30" min="1" max="30"/>
+                            <div class="form_control_container__time input_max">Max</div>
+                            <input class="form_control_container__time__input input_max" type="number" id="toInput_time" value="360" min="1" max="360"/>
                         </div>
                     </div>
                 </div>
             </div>
+        
+            <!--Complexity-->
+            <div class="filter" id="complexity-filter">
+                <div class="range_container">
+                    <div class="label">Game Complexity Range:</div>
+                    <div class="sliders_control" style="margin-top: 10px">
+                        <input id="fromSlider_complexity" type="range" value="1" min="1" max="5"/>
+                        <input id="toSlider_complexity" type="range" value="5" min="1" max="5"/>
+                     </div>
+                    <div class="form_control">
+                        <div class="form_control_container">
+                            <div class="form_control_container__time">Min</div>
+                            <input class="form_control_container__time__input" type="number" id="fromInput_complexity" value="1" min="1" max="5"/>
+                        </div>
+                        <div class="form_control_container">
+                            <div class="form_control_container__time input_max">Max</div>
+                            <input class="form_control_container__time__input input_max" type="number" id="toInput_complexity" value="5" min="1" max="5"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Number of players -->
+            <div class="filter" id="players-filter">
+                <div class="range_container">
+                    <span class="label">Number of Players (1 to 30):</span>
+                    <input type="number" id="input_players" min="1" max="30"/>
+                </div>
+            </div>
+                    
+            <!-- Age limit -->
+            <div class="filter" id="age-filter">
+                <div class="range_container">
+                    <span class="label">Age Restriction:</span>
+                    <input type="number" id="input_age" min="0" max="21" value="21"/>
+                    <span style="font-size: 11px; margin-left: 5px;">or less allowed</span>
+                </div>
+            </div>
         </div>
-        <div class="viz" style="display: flex; flex-direction: row">
-            <svg id="scatter" width="600" height="600"></svg>
-            <svg id="bggTable" width="500" height="500"></svg>
+
+        <div>
+            <div class="button-container">
+                <button id="zoom-btn">Zoom</button>
+                <button id="reset-btn">Reset Zoom</button>
+            </div>
+            <svg id="scatter" width="530" height="550" style="margin-left: 20px;"></svg>
         </div>
+
+        <svg id="bggTable" width="420" height="420" style="margin-top: 100px;"></svg>
+
     </div>
 
     <script>
+        const svg = d3.select("#scatter");
+        const width = svg.attr("width");
+        const height = svg.attr("height");
         const table = d3.select("#bggTable");
         const tableWidth = table.attr("width");
         const tableHeight = table.attr("height");
+        let selectedDomain = "any";
+
         d3.json("./bgg_dataset_cleaned.json").then(function (data) {
             data.forEach((d, i) => {
                 d.owned_users = +d.owned_users;
@@ -208,379 +340,325 @@
                 d.index = i;
             });
 
-            let visibleIndices = data.map(d => d.index);
-
-            const width = 600, height = 600, margin = { top: 50, right: 50, bottom: 50, left: 100 };
+            const margin = {top: 30, right: 20, bottom: 80, left: 80};
             const minOwnedUsers = Math.max(1, d3.min(data, d => d.owned_users));
             const maxOwnedUsers = d3.max(data, d => d.owned_users);
             const maxRating = d3.max(data, d => d.rating_average);
+            const minRating = d3.min(data, d => d.rating_average);
+            let xRange = [minOwnedUsers, maxOwnedUsers];
+            let yRange = [minRating, maxRating];
 
             let xScale = d3.scaleLog()
                 .domain([minOwnedUsers, maxOwnedUsers])
                 .range([margin.left, width - margin.right]);
 
-            let yScale = d3.scaleLinear().domain([0, maxRating]).range([height - margin.bottom, margin.top]);
+            let yScale = d3.scaleLinear()
+                .domain([minRating, maxRating])
+                .range([height - margin.bottom, margin.top]);
 
-            const svg = d3.select("#scatter");
-            let xAxis = svg.append("g").attr("class","axis").attr("transform", `translate(0,${height - margin.bottom})`).call(d3.axisBottom(xScale).ticks(10, "~s"));
-            let yAxis = svg.append("g").attr("class","axis").attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(yScale));
+            let xAxis = svg.append("g")
+                .attr("class","axis")
+                .attr("transform", `translate(0,${height - margin.bottom})`)
+                .call(d3.axisBottom(xScale).ticks(10, "~s"));
+
+            let yAxis = svg.append("g")
+                .attr("class","axis")
+                .attr("transform", `translate(${margin.left},0)`)
+                .call(d3.axisLeft(yScale));
 
             svg.append("text")
                 .attr("class", "label")
-                .attr("text-anchor", "end")
-                .attr("x", width / 2 + margin.left)
-                .attr("y", height + margin.bottom - 40)
-                .attr("fill","white")
+                .attr("text-anchor", "middle")
+                .attr("x", width / 2 + 20)
+                .attr("y", height - 30)
+                .style("fill", "white")
                 .text("Popularity (Log Scale)");
 
             svg.append("text")
                 .attr("class", "label")
                 .attr("text-anchor", "end")
-                .attr("x", -height / 2 + margin.top)
+                .attr("x", -height / 2 + 80)
                 .attr("y", margin.left - 60)
                 .attr("dy", ".75em")
                 .attr("transform", "rotate(-90)")
-                .attr("fill","white")
+                .style("fill", "white")
                 .text("Average Rating");
 
             let uniqueDomains = Array.from(new Set(data.map(d => d.domains1)));
-            console.log(uniqueDomains);
 
             let domainColors = {
-                "Strategy Games": "#4ec8fc",
-                "Thematic Games": "#fcc544",
-                "Family Games": "#ffe608",
-                "Customizable Games": "#c291fa",
-                "Abstract Games": "#48e05c",
-                "Party Games": "#fa7646",
-                "Wargames": "#ba3440",
-                "Children's Games": "#fec2ff"
+                "Strategy Games": "#007bd8",
+                "Thematic Games": "#00e1da",
+                "Family Games": "#ffdb28",
+                "Customizable Games": "#8f2be7",
+                "Abstract Games": "#1fb819",
+                "Party Games": "#f28200",
+                "Wargames": "#e9162d",
+                "Children's Games": "#fb4fd9"
             };
 
             let tableColorScale = d3.scaleOrdinal().domain(Object.keys(domainColors)).range(Object.values(domainColors));
 
-            table.append("circle")
-                .attr("class", "default-table")
-                .attr("cx", 250)
-                .attr("cy", 250)
-                .attr("r", 170)
-                .attr("fill", "none")
-                .attr("stroke-width", 3)
-                .attr("stroke", "grey");
-
-            table.append("text")
-                .attr("transform", "translate(250, 220)")
-                .attr("text-anchor", "middle")
-                .attr("font-family", "Gill Sans")
-                .attr("font-size", "18px")
-                .text(String.fromCodePoint(0x1F50D) + " Hoever a dot on the left to")
-                .attr("fill", "white");
-
-            table.append("text")
-                .attr("transform", "translate(250, 250)")
-                .attr("text-anchor", "middle")
-                .attr("font-family", "Gill Sans")
-                .attr("font-size", "18px")
-                .text("pick a boardgame for details " + String.fromCodePoint(0x1F50D))
-                .attr("fill", "white");
-
-
-            let circles = svg.selectAll("circle")
-                .data(data)
-                .enter()
-                .append("circle")
-                .attr("cx", d => xScale(d.owned_users))
-                .attr("cy", d => yScale(d.rating_average))
-                .attr("r", 2)
-                .attr("fill", d => tableColorScale(d.domains1))
-                .attr("opacity", 0.7)
-                .on("mouseover", function (event, d) {
-                    d3.select(this)
-                        .transition()
-                        .duration(200)
-                        .attr("r", 8)
-                        .attr("stroke", "black")
-                        .attr("stroke-width", 3)
-                        .attr("opacity", 1);
-
-                    let tableColor = tableColorScale(d.domains1);
-                    table.append("circle")
-                        .attr("class", "hover-table")
-                        .attr("cx", 250)
-                        .attr("cy", 250)
-                        .attr("r", 170)
-                        .attr("fill", tableColor)
-                        .attr("stroke-width", 3)
-                        .attr("stroke", "grey");
-
-                    let textGroup = table.append("g")
-                        .attr("class", "table-text")
-                        .attr("transform", "translate(250, 230)")
-                        .attr("text-anchor", "middle")
-                        .attr("font-family", "Gill Sans")
-                        .attr("font-size", "12px")
-
-                    const words = d.name.split(/\s+/);
-                    const firstPart = words.slice(0, 4).join(' ');
-                    const rest = words.slice(4).join(' ');
-                    textGroup.append("text")
-                        .text(firstPart)
-                        .attr("y", -40)
-                        .attr("font-weight", "bold");
-                    textGroup.append("text")
-                        .text(rest)
-                        .attr("y", -20)
-                        .attr("font-weight", "bold");
-                    textGroup.append("text")
-                        .text(`Year published: ${d.year_published}`)
-                        .attr("y", 0);
-                    textGroup.append("text")
-                        .text(`Players allowed: ${d.min_players} (Min) - ${d.max_players} (Max)`)
-                        .attr("y", 20);
-                    textGroup.append("text")
-                        .text(`Suggested play time: ${d.play_time} min`)
-                        .attr("y", 40);
-                    textGroup.append("text")
-                        .text(`Game Age Limit: ${d.min_age}+`)
-                        .attr("y", 60);
-                    textGroup.append("text")
-                        .text(`Rating for the game: ${d.rating_average}`)
-                        .attr("y", 80);
-                    textGroup.append("text")
-                        .text(`Game Complexity : ${d.complexity_average}`)
-                        .attr("y", 100);
-                    textGroup.append("text")
-                        .text(`Number of people downloaded : ${d.owned_users}`)
-                        .attr("y", 120);
-
-                    let centerX = 250;
-                    let centerY = 250;
-                    let radius = 170;
-                    let maxPlayers = parseInt(d["max_players"], 10)
-                    console.log(maxPlayers);
-
-                    for (let i = 0; i < maxPlayers; i++) {
-                        let angle = (i / maxPlayers) * 2 * Math.PI;
-                        let seatX = centerX + (radius + 40) * Math.cos(angle);
-                        let seatY = centerY + (radius + 40) * Math.sin(angle);
-                        let rotateDeg = (angle * 180) / Math.PI + 90;
-
-                        let seatSize = maxPlayers > 10 ? 35 : 60;
-                        let offset = seatSize / 2;
-
-                        table.append("image")
-                            .attr("class", "seat-icon")
-                            .attr("xlink:href", "seat_empty.png")
-                            .attr("x", seatX - offset)
-                            .attr("y", seatY - offset)
-                            .attr("width", seatSize)
-                            .attr("height", seatSize)
-                            .attr("transform", `rotate(${rotateDeg}, ${seatX}, ${seatY})`)
-                            .attr("opacity",0.8);
-                    }
-
-                    for (let j = 0; j < minPlayers; j++) {
-                        let angle = (j / maxPlayers) * 2 * Math.PI;
-                        let seatX = centerX + (radius + 40) * Math.cos(angle);
-                        let seatY = centerY + (radius + 40) * Math.sin(angle);
-                        let rotateDeg = (angle * 180) / Math.PI + 90;
-
-                        let seatSize = maxPlayers > 15 ? 40 : 60;
-                        let offset = seatSize / 2;
-
-                        table.append("image")
-                            .attr("class", "seat-icon")
-                            .attr("xlink:href", "seat_default.png")
-                            .attr("x", seatX - offset)
-                            .attr("y", seatY - offset)
-                            .attr("width", seatSize)
-                            .attr("height", seatSize)
-                            .attr("transform", `rotate(${rotateDeg}, ${seatX}, ${seatY})`);
-                    }
-                })
-                .on("mouseout", function () {
-                    table.selectAll(".hover-table").remove();
-                    table.selectAll(".seat-icon").remove();
-                    table.selectAll(".table-text").remove();
-                    d3.select(this)
-                        .transition()
-                        .duration(200)
-                        .attr("r", 2)
-                        .attr("stroke", "none")
-                        .attr("stroke-width", 0)
-                        .attr("opacity", 0.7);
-                });
-
-            let xRange = [minOwnedUsers, maxOwnedUsers], yRange = [0, maxRating];
-
-            function updateChart() {
-                const filteredData = data.filter(d =>
-                    d.owned_users >= xRange[0] && d.owned_users <= xRange[1] &&
-                    d.rating_average >= yRange[0] && d.rating_average <= yRange[1]
-                );
-
-                visibleIndices = filteredData.map(d => d.index);
-                console.log("Visible Indices:", visibleIndices);
-
-                let updatedCircles = svg.selectAll("circle").data(filteredData, d => d.id)
-                    .on("mouseover", function (event, d) {
-                        d3.select(this)
-                            .transition()
-                            .duration(200)
-                            .attr("r", 8)
-                            .attr("stroke", "black")
-                            .attr("stroke-width", 3)
-                            .attr("opacity", 1);
-                        let tableColor = tableColorScale(d.domains1);
-
-                        table.append("circle")
-                            .attr("class", "hover-table")
-                            .attr("cx", 250)
-                            .attr("cy", 250)
-                            .attr("r", 170)
-                            .attr("fill", tableColor)
-                            .attr("stroke-width", 3)
-                            .attr("stroke", "grey");
-
-                        let textGroup = table.append("g")
-                            .attr("class", "table-text")
-                            .attr("transform", "translate(250, 230)")
-                            .attr("text-anchor", "middle")
-                            .attr("font-family", "Gill Sans")
-                            .attr("font-size", "13px")
-
-                        const words = d.name.split(/\s+/);
-                        const firstPart = words.slice(0, 4).join(' ');
-                        const rest = words.slice(4).join(' ');
-                        textGroup.append("text")
-                            .text(firstPart)
-                            .attr("y", -60)
-                            .attr("font-weight", "bold");
-                        textGroup.append("text")
-                            .text(rest)
-                            .attr("y", -40)
-                            .attr("font-weight", "bold");
-                        textGroup.append("text")
-                            .text(`Year published: ${d.year_published}`)
-                            .attr("y", -20);
-                        textGroup.append("text")
-                            .text(`Players allowed: ${d.min_players} (Min) - ${d.max_players} (Max)`)
-                            .attr("y", 0);
-                        textGroup.append("text")
-                            .text(`Suggested play time: ${d.play_time} min`)
-                            .attr("y", 20);
-                        textGroup.append("text")
-                            .text(`Game Age Limit: ${d.min_age}+`)
-                            .attr("y", 40);
-                        textGroup.append("text")
-                            .text(`Rating for the game: ${d.rating_average}`)
-                            .attr("y", 60);
-                        textGroup.append("text")
-                            .text(`Game Complexity : ${d.complexity_average}`)
-                            .attr("y", 80);
-                        textGroup.append("text")
-                            .text(`Number of people downloaded : ${d.owned_users}`)
-                            .attr("y", 100);
-
-
-                        let centerX = 250;
-                        let centerY = 250;
-                        let radius = 170;
-                        let maxPlayers = parseInt(d["max_players"], 10)
-                        let minPlayers = parseInt(d["min_players"], 10)
-                        console.log(maxPlayers);
-
-                        for (let i = 0; i < maxPlayers; i++) {
-                            let angle = (i / maxPlayers) * 2 * Math.PI;
-                            let seatX = centerX + (radius + 40) * Math.cos(angle);
-                            let seatY = centerY + (radius + 40) * Math.sin(angle);
-                            let rotateDeg = (angle * 180) / Math.PI + 90;
-
-                            let seatSize = maxPlayers > 15 ? 40 : 60;
-                            let offset = seatSize / 2;
-
-                            table.append("image")
-                                .attr("class", "seat-icon")
-                                .attr("xlink:href", "seat_empty.png")
-                                .attr("x", seatX - offset)
-                                .attr("y", seatY - offset)
-                                .attr("width", seatSize)
-                                .attr("height", seatSize)
-                                .attr("transform", `rotate(${rotateDeg}, ${seatX}, ${seatY})`)
-                                .attr("opacity",0.8);
-                        }
-
-                        for (let j = 0; j < minPlayers; j++) {
-                            let angle = (j / maxPlayers) * 2 * Math.PI;
-                            let seatX = centerX + (radius + 40) * Math.cos(angle);
-                            let seatY = centerY + (radius + 40) * Math.sin(angle);
-                            let rotateDeg = (angle * 180) / Math.PI + 90;
-
-                            let seatSize = maxPlayers > 15 ? 40 : 60;
-                            let offset = seatSize / 2;
-
-                            table.append("image")
-                                .attr("class", "seat-icon")
-                                .attr("xlink:href", "seat_default.png")
-                                .attr("x", seatX - offset)
-                                .attr("y", seatY - offset)
-                                .attr("width", seatSize)
-                                .attr("height", seatSize)
-                                .attr("transform", `rotate(${rotateDeg}, ${seatX}, ${seatY})`);
-                        }
-                    })
-                    .on("mouseout", function () {
-                        table.selectAll(".hover-table").remove();
-                        table.selectAll(".seat-icon").remove();
-                        table.selectAll(".table-text").remove();
-                        d3.select(this)
-                            .transition()
-                            .duration(200)
-                            .attr("r", 2)
-                            .attr("stroke", "none")
-                            .attr("stroke-width", 0)
-                            .attr("opacity", 0.7);
-                    });
-
-                updatedCircles.enter()
-                    .append("circle")
-                    .attr("cx", d => xScale(d.owned_users))
-                    .attr("cy", d => yScale(d.rating_average))
-                    .attr("r", 2)
-                    .attr("fill", d => tableColorScale(d.domains1))
-                    .attr("opacity", 0.7)
-                    .merge(updatedCircles)
-                    .transition().duration(200)
-                    .attr("cx", d => xScale(d.owned_users))
-                    .attr("cy", d => yScale(d.rating_average))
-
-                updatedCircles.exit().remove();
+            // Function to draw or update circles
+            function drawCircles(svg, data, xScale, yScale, tableColorScale, table) {
+                svg.selectAll("circle")
+                    .data(data, d => d.id)
+                    .join(
+                        enter => enter.append("circle")
+                                    .attr("cx", d => xScale(d.owned_users))
+                                    .attr("cy", d => yScale(d.rating_average))
+                                    .attr("r", 2.5)
+                                    .attr("fill", d => tableColorScale(d.domains1))
+                                    .attr("opacity", 0.7)
+                                    .on("mouseover", (event, d) => handleMouseover(event, d, table, tableColorScale))
+                                    .on("mouseout", (event, d) => handleMouseout(event, d, table)),
+                        update => update
+                                    .attr("cx", d => xScale(d.owned_users))
+                                    .attr("cy", d => yScale(d.rating_average))
+                                    .attr("fill", d => tableColorScale(d.domains1)),
+                        exit => exit.remove()
+                    );
             }
 
+            // Function to initialize info table 
+            function initializeTableContent(){
+                table.append("circle")
+                    .attr("class", "default-table")
+                    .attr("cx", tableWidth/2)
+                    .attr("cy", tableHeight/2)
+                    .attr("r", 140)
+                    .attr("fill", "none")
+                    .attr("stroke-width", 3)
+                    .attr("stroke", "grey");
+
+                table.append("text")
+                    .attr("transform", `translate(${tableWidth/2}, ${tableHeight/2 - 15})`)
+                    .attr("text-anchor", "middle")
+                    .attr("font-size", "16px")
+                    .text(String.fromCodePoint(0x1F50D) + " Hover a dot on the left to view")
+                    .attr("fill", "white")
+                    .attr("class", "text");
+
+                table.append("text")
+                    .attr("transform", `translate(${tableWidth/2}, ${tableHeight/2 + 15})`)
+                    .attr("text-anchor", "middle")
+                    .attr("font-size", "16px")
+                    .text("details about a board game " + String.fromCodePoint(0x1F50D))
+                    .attr("fill", "white")
+                    .attr("class", "text");
+            }
+
+            // Function to handle mouseover event
+            let hoverTimeout;
+            function handleMouseover(event, d, table, tableColorScale) {
+                d3.select(event.currentTarget)
+                    .raise()
+                    .transition()
+                    .duration(200)
+                    .attr("r", 8)
+                    .attr("stroke", "white")
+                    .attr("stroke-width", 3)
+                    .attr("opacity", 1);
+                
+                table.selectAll("*").remove();
+                
+                clearTimeout(hoverTimeout);
+
+                hoverTimeout = setTimeout(() => {
+                    renderTableContent(table, d, tableColorScale);
+                    renderSeats(table, d);
+                }, 80);
+            }
+
+            // Function to handle mouseout event
+            function handleMouseout(event, d, table) {
+                clearTimeout(hoverTimeout);
+
+                table.selectAll("*").remove();
+                initializeTableContent();
+
+                d3.select(event.currentTarget)
+                    .transition()
+                    .duration(200)
+                    .attr("r", 2.5)
+                    .attr("stroke", "none")
+                    .attr("stroke-width", 0)
+                    .attr("opacity", 0.7);
+            }
+
+            // Function to render table content on mouseover
+            function renderTableContent(table, d, tableColorScale) {
+                let tableColor = tableColorScale(d.domains1);
+                table.append("circle")
+                    .attr("cx", tableWidth/2)
+                    .attr("cy", tableHeight/2)
+                    .attr("r", 140)
+                    .attr("fill", tableColor)
+                    .attr("opacity", 0.8)
+                    .attr("stroke-width", 3)
+                    .attr("stroke", "grey");
+
+                let textGroup = table.append("g")
+                    .attr("class", "table-text")
+                    .attr("transform", `translate(${tableWidth / 2}, ${tableHeight / 2})`)
+                    .attr("text-anchor", "middle")
+                    .attr("font-family", "Gill Sans")
+                    .attr("font-size", "12px");
+
+                const words = d.name.split(/\s+/);
+                const firstPart = words.slice(0, 4).join(' ');
+                const rest = words.slice(4).join(' ');
+                textGroup.append("text")
+                    .text(firstPart)
+                    .attr("y", -70)
+                    .attr("font-weight", "bold");
+                textGroup.append("text")
+                    .text(rest)
+                    .attr("y", -50)
+                    .attr("font-weight", "bold");
+                textGroup.append("text")
+                    .text(`Year Published: ${d.year_published}`)
+                    .attr("y", -30);
+                textGroup.append("text")
+                    .text(`Number of Players: ${d.min_players === d.max_players ? d.min_players : `${d.min_players} - ${d.max_players}`}`)
+                    .attr("y", -10);
+                textGroup.append("text")
+                    .text(`Suggested Play Time: ${d.play_time} minutes`)
+                    .attr("y", 10);
+                textGroup.append("text")
+                    .text(`Age Restriction: ${d.min_age}+`)
+                    .attr("y", 30);
+                textGroup.append("text")
+                    .text(`Overall Rating (out of 10): ${d.rating_average}`)
+                    .attr("y", 50);
+                textGroup.append("text")
+                    .text(`Game Complexity (out of 5): ${d.complexity_average}`)
+                    .attr("y", 70);
+                textGroup.append("text")
+                    .text(`Number of Owners: ${d.owned_users}`)
+                    .attr("y", 90);
+            }
+
+            // Function to render seats around the table
+            function renderSeats(table, d) {
+                let centerX = tableWidth/2;
+                let centerY = tableHeight/2;
+                let radius = 140;
+                let maxPlayers = parseInt(d["max_players"], 10);
+                let minPlayers = parseInt(d["min_players"], 10);
+
+                for (let i = 0; i < maxPlayers; i++) {
+                    let angle = (i / maxPlayers) * 2 * Math.PI;
+                    let seatX = centerX + (radius + 40) * Math.cos(angle);
+                    let seatY = centerY + (radius + 40) * Math.sin(angle);
+                    let rotateDeg = (angle * 180) / Math.PI + 90;
+
+                    let seatSize = maxPlayers > 10 ? 30 : 55;
+                    let offset = seatSize / 2;
+
+                    table.append("image")
+                        .attr("class", "seat-icon")
+                        .attr("xlink:href", "seat_empty.png")
+                        .attr("x", seatX - offset)
+                        .attr("y", seatY - offset)
+                        .attr("width", seatSize)
+                        .attr("height", seatSize)
+                        .attr("transform", `rotate(${rotateDeg}, ${seatX}, ${seatY})`);
+                }
+
+                for (let j = 0; j < minPlayers; j++) {
+                    let angle = (j / maxPlayers) * 2 * Math.PI;
+                    let seatX = centerX + (radius + 40) * Math.cos(angle);
+                    let seatY = centerY + (radius + 40) * Math.sin(angle);
+                    let rotateDeg = (angle * 180) / Math.PI + 90;
+
+                    let seatSize = maxPlayers > 15 ? 30 : 55;
+                    let offset = seatSize / 2;
+
+                table.append("image")
+                    .attr("class", "seat-icon")
+                    .attr("xlink:href", "seat_default.png")
+                    .attr("x", seatX - offset)
+                    .attr("y", seatY - offset)
+                    .attr("width", seatSize)
+                    .attr("height", seatSize)
+                    .attr("transform", `rotate(${rotateDeg}, ${seatX}, ${seatY})`);
+                }
+            }
+
+            // Function to filter data based on current filter values
+            function filterData(data, xRange, yRange, fromTime, toTime, fromComplexity, toComplexity, fromPlayers, toPlayers, age, selectedDomain) {
+                return data.filter(d =>
+                    d.owned_users >= xRange[0] && d.owned_users <= xRange[1] &&
+                    d.rating_average >= yRange[0] && d.rating_average <= yRange[1] &&
+                    (d.play_time >= fromTime && d.play_time <= toTime) &&
+                    (d.complexity_average >= fromComplexity && d.complexity_average <= toComplexity) &&
+                    (d.max_players >= fromPlayers && d.min_players <= toPlayers) &&
+                    (d.min_age <= age) &&
+                    (selectedDomain === "any" || d.domains1 === selectedDomain)
+                );
+            }
+
+            // Function to update the chart with filtered data
+            function updateChart(resetRanges = false) {
+                if (resetRanges) {
+                    xRange = [minOwnedUsers, maxOwnedUsers];
+                    yRange = [minRating, maxRating];
+                    xScale.domain(xRange);
+                    yScale.domain(yRange);
+                }
+
+                // Get filter values
+                const fromTime = parseInt(document.getElementById("fromSlider_time").value, 10);
+                const toTime = parseInt(document.getElementById("toSlider_time").value, 10);
+                const fromComplexity = parseInt(document.getElementById("fromSlider_complexity").value, 10);
+                const toComplexity = parseInt(document.getElementById("toSlider_complexity").value, 10);
+                let fromPlayers = 1;
+                let toPlayers = 30;
+                const players = parseInt(document.getElementById("input_players").value, 10);
+                if (!isNaN(players)) {
+                    fromPlayers = players;
+                    toPlayers = players;
+                }
+                const age = parseInt(document.getElementById("input_age").value, 10);
+
+                const filteredData = filterData(data, xRange, yRange, fromTime, toTime, fromComplexity, toComplexity, fromPlayers, toPlayers, age, selectedDomain);
+
+                drawCircles(svg, filteredData, xScale, yScale, tableColorScale, table);
+            }
+
+            // Initialize the visualization
+            initializeTableContent()
+            drawCircles(svg, data, xScale, yScale, tableColorScale, table);
+
+            // Define x and y axis brushes
             const xBrush = d3.brushX()
-                .extent([[margin.left, height - margin.bottom + 5], [width - margin.right, height - margin.bottom + 25]])
+                .extent([[margin.left, height - margin.bottom], [width - margin.right, height - margin.bottom + 25]])
                 .on("brush end", (event) => {
                     if (event.selection) {
                         xRange = [xScale.invert(event.selection[0]), xScale.invert(event.selection[1])];
                     } else {
-                        xRange = [0, maxPlayTime];
+                        xRange = [minOwnedUsers, maxOwnedUsers];
                     }
                     updateChart();
                 });
-
             const xBrushG = svg.append("g").attr("class", "brush x-brush").call(xBrush);
+
+            console.log(yRange)
             const yBrush = d3.brushY()
-                .extent([[margin.left - 25, margin.top], [margin.left - 5, height - margin.bottom]])
+                .extent([[margin.left - 30, margin.top], [margin.left, height - margin.bottom]])
                 .on("brush end", (event) => {
                     if (event.selection) {
                         yRange = [yScale.invert(event.selection[1]), yScale.invert(event.selection[0])];
                     } else {
-                        yRange = [0, maxRating];
+                        yRange = [minRating, maxRating];
                     }
                     updateChart();
+                    console.log(yRange)
                 });
-
             const yBrushG = svg.append("g").attr("class", "brush y-brush").call(yBrush);
+            console.log(yRange)
+            
             xBrushG.call(xBrush.move, [margin.left, width - margin.right]);
             yBrushG.call(yBrush.move, [margin.top, height - margin.bottom]);
 
@@ -589,25 +667,18 @@
                 yScale.domain(yRange);
                 xAxis.transition().duration(500).call(d3.axisBottom(xScale));
                 yAxis.transition().duration(500).call(d3.axisLeft(yScale));
-                svg.selectAll("circle")
-                    .transition().duration(500)
-                    .attr("cx", d => xScale(d.owned_users))
-                    .attr("cy", d => yScale(d.rating_average));
+                
+                updateChart();
 
                 xBrushG.call(xBrush.move, [xScale(xRange[0]), xScale(xRange[1])]);
                 yBrushG.call(yBrush.move, [yScale(yRange[1]), yScale(yRange[0])]);
             }
 
             function resetChart() {
-                xScale.domain([minOwnedUsers, maxOwnedUsers]);
-                yScale.domain([0, maxRating]);
-                xRange = [minOwnedUsers, maxOwnedUsers];
-                yRange = [0, maxRating];
+                updateChart(true);
 
                 xAxis.transition().duration(500).call(d3.axisBottom(xScale));
                 yAxis.transition().duration(500).call(d3.axisLeft(yScale));
-
-                updateChart();
 
                 xBrushG.call(xBrush.move, [margin.left, width - margin.right]);
                 yBrushG.call(yBrush.move, [margin.top, height - margin.bottom]);
@@ -616,112 +687,168 @@
             document.getElementById("zoom-btn").addEventListener("click", zoomChart);
             document.getElementById("reset-btn").addEventListener("click", resetChart);
 
-        }).catch(error => console.log("Error loading data:", error));
-    </script>
+            // Helper functions for toolbar control
+            let inputTimeout = null; 
 
-<script>
-    let inputTimeout = null; 
-
-    function controlFromInput(fromSlider, toSlider, fromInput, toInput) {
-        clearTimeout(inputTimeout);
-        inputTimeout = setTimeout(() => {
-        let [from, to] = getParsed(fromInput, toInput);
-        if (from < fromSlider.min){
-            from = fromSlider.min
-        }
-        if (from > to) { // invalid
-            fromSlider.value = to;
-            fromInput.value = to;
-        } else { // valid
-            fromSlider.value = from;
-            fromInput.value = from;
-        }
-        fillSlider(fromSlider, toSlider, '#C6C6C6', '#bef264');
-    }, 200);
-    }
+            function controlFromInput(fromSlider, toSlider, fromInput, toInput) {
+                clearTimeout(inputTimeout);
+                inputTimeout = setTimeout(() => {
+                    let [from, to] = getParsed(fromInput, toInput);
+                    if (from < fromSlider.min){
+                        from = fromSlider.min
+                    }
+                    if (from > to) { // invalid
+                        fromSlider.value = to;
+                        fromInput.value = to;
+                    } else { // valid
+                        fromSlider.value = from;
+                        fromInput.value = from;
+                    }
+                    fillSlider(fromSlider, toSlider, '#C6C6C6', '#bef264');
+                    updateChart();
+                }, 250);
+            }
     
-    function controlToInput(fromSlider, toSlider, fromInput, toInput) {
-        clearTimeout(inputTimeout);
-        inputTimeout = setTimeout(() => {
-        let [from, to] = getParsed(fromInput, toInput);
-        setToggleAccessible(toInput);
-        if (to > toSlider.max){
-            to = toSlider.max
-        }
-        if (from <= to) { // valid
-            toSlider.value = to;
-            toInput.value = to;
-        } else { // invalid
-            toSlider.value = from;
-            toInput.value = from;
-        }
-        fillSlider(fromSlider, toSlider, '#C6C6C6', '#bef264');
-    }, 200);
-    }
+            function controlToInput(fromSlider, toSlider, fromInput, toInput, idName) {
+                clearTimeout(inputTimeout);
+                inputTimeout = setTimeout(() => {
+                    let [from, to] = getParsed(fromInput, toInput);
+                    setToggleAccessible(toInput, idName);
+                    if (to > toSlider.max){
+                        to = toSlider.max
+                    };
+                    if (from <= to) { // valid
+                        toSlider.value = to;
+                        toInput.value = to;
+                    } else { // invalid
+                        toSlider.value = from;
+                        toInput.value = from;
+                    }
+                    fillSlider(fromSlider, toSlider, '#C6C6C6', '#bef264');
+                    updateChart();
+                }, 250);
+            }
 
-    function controlFromSlider(fromSlider, toSlider, fromInput) {
-        const [from, to] = getParsed(fromSlider, toSlider);
-        if (from > to) { // invalid
-            fromSlider.value = to;
-            fromInput.value = to;
-        } else {
-            fromInput.value = from;
-        }
-        fillSlider(fromSlider, toSlider, '#C6C6C6', '#bef264');
-        }
+            function controlFromSlider(fromSlider, toSlider, fromInput) {
+                const [from, to] = getParsed(fromSlider, toSlider);
+                if (from > to) { // invalid
+                    fromSlider.value = to;
+                    fromInput.value = to;
+                } else {
+                    fromInput.value = from;
+                }
+                fillSlider(fromSlider, toSlider, '#C6C6C6', '#bef264');
+                updateChart();
+            }
 
-    function controlToSlider(fromSlider, toSlider, toInput) {
-        const [from, to] = getParsed(fromSlider, toSlider);
-        setToggleAccessible(toSlider);
-        if (from <= to) { // valid
-            toInput.value = to;
-        } else {
-            toInput.value = from;
-            toSlider.value = from;
-        }
-        fillSlider(fromSlider, toSlider, '#C6C6C6', '#bef264');
-    }
+            function controlToSlider(fromSlider, toSlider, toInput, idName) {
+                const [from, to] = getParsed(fromSlider, toSlider);
+                setToggleAccessible(toSlider, idName);
+                if (from <= to) { // valid
+                    toInput.value = to;
+                } else {
+                    toInput.value = from;
+                    toSlider.value = from;
+                }
+                fillSlider(fromSlider, toSlider, '#C6C6C6', '#bef264');
+                updateChart();
+            }
 
-    function getParsed(currentFrom, currentTo) {
-        const from = parseInt(currentFrom.value, 10);
-        const to = parseInt(currentTo.value, 10);
-        return [from, to];
-    }
+            function controlGeneralInput(input, varName){
+                clearTimeout(inputTimeout);
 
-    function fillSlider(fromSlider, toSlider, sliderColor, rangeColor) {
-        const rangeDistance = toSlider.max - toSlider.min;
-        const fromPosition = fromSlider.value - toSlider.min;
-        const toPosition = toSlider.value - toSlider.min;
-        toSlider.style.background = `linear-gradient(
-            to right,
-            ${sliderColor} 0%,
-            ${sliderColor} ${(fromPosition)/(rangeDistance)*100}%,
-            ${rangeColor} ${((fromPosition)/(rangeDistance))*100}%,
-            ${rangeColor} ${(toPosition)/(rangeDistance)*100}%, 
-            ${sliderColor} ${(toPosition)/(rangeDistance)*100}%, 
-            ${sliderColor} 100%)`;
-    }
+                inputTimeout = setTimeout(() => {
+                    let val = parseInt(input.value, 10);
+                    if (!isNaN(val)){
+                        if (val < parseInt(input.min, 10)){
+                            input.value = input.min
+                        } else if (val > parseInt(input.max, 10)){
+                            input.value = input.max
+                        }
+                    } else{
+                        if (varName === "age"){
+                            input.value = input.min
+                        }
+                    }
+                    updateChart();
+                }, 250);
+            }
 
-    function setToggleAccessible(currentTarget) {
-        const toSlider = document.querySelector('#toSlider');
-        if (Number(currentTarget.value) <= 0 ) {
-            toSlider.style.zIndex = 2;
-        } else {
-            toSlider.style.zIndex = 0;
-        }
-    };
+            function getParsed(currentFrom, currentTo) {
+                const from = parseInt(currentFrom.value, 10);
+                const to = parseInt(currentTo.value, 10);
+                return [from, to];
+            }
 
-const fromSlider_players = document.querySelector('#fromSlider');
-const toSlider_players = document.querySelector('#toSlider');
-const fromInput_players = document.querySelector('#fromInput');
-const toInput_players = document.querySelector('#toInput');
-fillSlider(fromSlider_players, toSlider_players, '#C6C6C6', '#bef264');
-setToggleAccessible(toSlider_players);
+            function fillSlider(fromSlider, toSlider, sliderColor, rangeColor) {
+                const rangeDistance = toSlider.max - toSlider.min;
+                const fromPosition = fromSlider.value - toSlider.min;
+                const toPosition = toSlider.value - toSlider.min;
+                toSlider.style.background = `linear-gradient(
+                    to right,
+                    ${sliderColor} 0%,
+                    ${sliderColor} ${(fromPosition)/(rangeDistance)*100}%,
+                    ${rangeColor} ${((fromPosition)/(rangeDistance))*100}%,
+                    ${rangeColor} ${(toPosition)/(rangeDistance)*100}%, 
+                    ${sliderColor} ${(toPosition)/(rangeDistance)*100}%, 
+                    ${sliderColor} 100%)`;
+            }
 
-fromSlider_players.oninput = () => controlFromSlider(fromSlider_players, toSlider_players, fromInput_players);
-toSlider_players.oninput = () => controlToSlider(fromSlider_players, toSlider_players, toInput_players);
-fromInput_players.oninput = () => controlFromInput(fromSlider_players, toSlider_players, fromInput_players, toInput_players);
-toInput_players.oninput = () => controlToInput(fromSlider_players, toSlider_players, fromInput_players, toInput_players);
+            function setToggleAccessible(currentTarget, idName) {
+                const toSlider = document.querySelector(idName);
+                if (Number(currentTarget.value) <= 0 ) {
+                    toSlider.style.zIndex = 2;
+                } else {
+                toSlider.style.zIndex = 0;
+                }
+            };
+
+            // Play time range slider
+            const fromSlider_time = document.querySelector('#fromSlider_time');
+            const toSlider_time = document.querySelector('#toSlider_time');
+            const fromInput_time = document.querySelector('#fromInput_time');
+            const toInput_time = document.querySelector('#toInput_time');
+            fillSlider(fromSlider_time, toSlider_time, '#C6C6C6', '#bef264');
+            setToggleAccessible(toSlider_time, '#toSlider_time');
+
+            fromSlider_time.oninput = () => controlFromSlider(fromSlider_time, toSlider_time, fromInput_time);
+            toSlider_time.oninput = () => controlToSlider(fromSlider_time, toSlider_time, toInput_time, '#toSlider_time');
+            fromInput_time.oninput = () => controlFromInput(fromSlider_time, toSlider_time, fromInput_time, toInput_time);
+            toInput_time.oninput = () => controlToInput(fromSlider_time, toSlider_time, fromInput_time, toInput_time, '#toSlider_time');
+
+            // Game complexity range slider
+            const fromSlider_complexity = document.querySelector('#fromSlider_complexity');
+            const toSlider_complexity = document.querySelector('#toSlider_complexity');
+            const fromInput_complexity = document.querySelector('#fromInput_complexity');
+            const toInput_complexity = document.querySelector('#toInput_complexity');
+            fillSlider(fromSlider_complexity, toSlider_complexity, '#C6C6C6', '#bef264');
+            setToggleAccessible(toSlider_complexity, '#toSlider_complexity');
+
+            fromSlider_complexity.oninput = () => controlFromSlider(fromSlider_complexity, toSlider_complexity, fromInput_complexity);
+            toSlider_complexity.oninput = () => controlToSlider(fromSlider_complexity, toSlider_complexity, toInput_complexity, '#toSlider_complexity');
+            fromInput_complexity.oninput = () => controlFromInput(fromSlider_complexity, toSlider_complexity, fromInput_complexity, toInput_complexity);
+            toInput_complexity.oninput = () => controlToInput(fromSlider_complexity, toSlider_complexity, fromInput_complexity, toInput_complexity, '#toSlider_complexity');
+
+            // Number of players & age limit input fields
+            const input_players = document.querySelector('#input_players');
+            input_players.oninput = () => controlGeneralInput(input_players, "players")
+
+            const input_age = document.querySelector('#input_age');
+            input_age.oninput = () => controlGeneralInput(input_age, "age")
+
+            // Game domain buttons
+            document.querySelectorAll(".domain-btn").forEach(button => {
+                button.addEventListener("click", function() {
+                document.querySelectorAll(".domain-btn").forEach(btn => btn.classList.remove("active"));
+                this.classList.add("active");
+                selectedDomain = this.getAttribute("data-domain");
+                updateChart();
+            });
+        });
+
+
+
+}).catch(error => console.log("Error loading data:", error));
 
 </script>
 
