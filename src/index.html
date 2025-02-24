@@ -18,7 +18,8 @@
             margin: 10px;
         }
 
-        .text, .label {
+        .text,
+        .label {
             font-size: 14px;
             font-family: 'Merriweather', serif;
         }
@@ -53,19 +54,22 @@
             font-family: 'Merriweather', serif;
         }
 
-        .axis{
-            color:white;
+        .axis {
+            color: white;
         }
 
         /* Toolbar styles */
-        .filter{
+        .filter {
             background-color: #11029c;
             padding: 12px;
             border-radius: 5px;
             width: 200px
         }
 
-        #domain-filter, #playtime-filter, #complexity-filter, #players-filter{
+        #domain-filter,
+        #playtime-filter,
+        #complexity-filter,
+        #players-filter {
             margin-bottom: 1%
         }
 
@@ -120,21 +124,23 @@
             font-family: 'Merriweather', serif;
         }
 
-        #players-filter input, #age-filter input{
+        #players-filter input,
+        #age-filter input {
             margin-top: 0px;
         }
 
-        #toInput_time, #input_players{
+        #toInput_time,
+        #input_players {
             width: 55px;
         }
 
-        input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button {  
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
             opacity: 1;
         }
 
         input[type="range"] {
-            -webkit-appearance: none; 
+            -webkit-appearance: none;
             appearance: none;
             height: 3.5px;
             width: 100%;
@@ -143,31 +149,32 @@
             pointer-events: none;
         }
 
-        #fromSlider_time, #fromSlider_complexity{
+        #fromSlider_time,
+        #fromSlider_complexity {
             height: 0;
             z-index: 1;
         }
 
-        #fromSlider_time::-webkit-slider-thumb, 
-        #fromSlider_complexity::-webkit-slider-thumb{
+        #fromSlider_time::-webkit-slider-thumb,
+        #fromSlider_complexity::-webkit-slider-thumb {
             margin-top: 4px;
         }
 
-        .form_control_container{
+        .form_control_container {
             font-size: 12px
         }
-        
-        .input_max{
+
+        .input_max {
             margin-right: -25px
         }
 
-        #domain-filter{
+        #domain-filter {
             display: flex;
             flex-direction: row;
         }
 
         .domain-btn {
-            padding:6px;
+            padding: 6px;
             font-size: 12px;
             border: 2px solid transparent;
             cursor: pointer;
@@ -182,27 +189,30 @@
         }
 
         .domain-btn.active {
-            border: 2px solid white; 
+            border: 2px solid white;
             box-shadow: 0px 0px 10px white;
             opacity: 0.85;
         }
 
-        .filter .label{
+        .filter .label {
             font-size: 14px;
             font-weight: 800;
         }
 
-        #players-filter .range_container, #age-filter .range_container {
+        #players-filter .range_container,
+        #age-filter .range_container {
             display: flex;
             flex-direction: row;
             align-items: center;
         }
 
-        #players-filter .label, #age-filter .label {
+        #players-filter .label,
+        #age-filter .label {
             margin-right: 5px;
         }
 
-        #players-filter input,  #age-filter input{
+        #players-filter input,
+        #age-filter input {
             margin-top: 0
         }
     </style>
@@ -210,16 +220,16 @@
 
 <body>
     <h1 style="color:white; font-size: 36px;">Pick the Perfect
-        <span style="font-size: 48px; color: #ffdb28; padding-right: 1px;">B</span><span 
-        style="font-size: 48px; color: #f28200; padding-right: 1px;">O</span><span
-        style="font-size: 48px; color:#fb4fd9; padding-right: 1px;">A</span><span
-        style="font-size: 48px; color:#007bd8; padding-right: 1px;">R</span><span
-        style="font-size: 48px; color: #8f2be7; padding-right: 1px;">D</span>
-        
+        <span style="font-size: 48px; color: #ffdb28; padding-right: 1px;">B</span><span
+            style="font-size: 48px; color: #f28200; padding-right: 1px;">O</span><span
+            style="font-size: 48px; color:#fb4fd9; padding-right: 1px;">A</span><span
+            style="font-size: 48px; color:#007bd8; padding-right: 1px;">R</span><span
+            style="font-size: 48px; color: #8f2be7; padding-right: 1px;">D</span>
+
         <span style="font-size: 48px; color: #ffdb28; padding-right: 1px;">G</span><span
-         style="font-size: 48px; color: #f28200; padding-right: 1px;">A</span><span
-          style="font-size: 48px; color:#fb4fd9; padding-right: 1px;">M</span><span
-           style="font-size: 48px; color:#007bd8; padding-right: 1px;">E</span>
+            style="font-size: 48px; color: #f28200; padding-right: 1px;">A</span><span
+            style="font-size: 48px; color:#fb4fd9; padding-right: 1px;">M</span><span
+            style="font-size: 48px; color:#007bd8; padding-right: 1px;">E</span>
         for Today's Game Night!
     </h1>
     <!--
@@ -231,30 +241,39 @@
     "Party Games": "#f28200",
     "Wargames": "#e9162d",
     "Children's Games": "#fb4fd9" 
-    -->      
+    -->
     <div class="viz" style="display: flex; flex-direction: row; justify-content: space-between; gap:20px;">
         <div id="toolbar" height="800" width="180" style="display: flex; flex-direction: column;">
             <!--Game Domain-->
             <div id="domain-filter" class="filter" style="display: flex; flex-direction: column;">
                 <div class="label" style="margin-bottom: 10px;">Game Domain:</div>
                 <div style="display: flex; margin-bottom: 5px">
-                    <button class="domain-btn active" data-domain="any" style="background-color: #ccc; margin-right: 4%">Any</button>
-                    <button class="domain-btn" data-domain="Strategy Games" style="background-color: #007bd8;">Strategy</button>
+                    <button class="domain-btn active" data-domain="any"
+                        style="background-color: #ccc; margin-right: 4%">Any</button>
+                    <button class="domain-btn" data-domain="Strategy Games"
+                        style="background-color: #007bd8;">Strategy</button>
                 </div>
                 <div style="display: flex; margin-bottom: 5px">
-                    <button class="domain-btn" data-domain="Family Games" style="background-color: #ffdb28; margin-right: 4%">Family</button>
-                    <button class="domain-btn" data-domain="Customizable Games" style="background-color: #8f2be7;">Customizable</button>
+                    <button class="domain-btn" data-domain="Family Games"
+                        style="background-color: #ffdb28; margin-right: 4%">Family</button>
+                    <button class="domain-btn" data-domain="Customizable Games"
+                        style="background-color: #8f2be7;">Customizable</button>
                 </div>
                 <div style="display: flex; margin-bottom: 5px">
-                    <button class="domain-btn" data-domain="Abstract Games" style="background-color: #1fb819; margin-right: 4%">Abstract</button>
-                    <button class="domain-btn" data-domain="Party Games" style="background-color: #f28200;">Party</button>
+                    <button class="domain-btn" data-domain="Abstract Games"
+                        style="background-color: #1fb819; margin-right: 4%">Abstract</button>
+                    <button class="domain-btn" data-domain="Party Games"
+                        style="background-color: #f28200;">Party</button>
                 </div>
                 <div style="display: flex; margin-bottom: 5px">
-                    <button class="domain-btn" data-domain="Wargames" style="background-color: #e9162d; margin-right: 4%">Wargames</button>
-                    <button class="domain-btn" data-domain="Thematic Games" style="background-color: #00e1da;">Thematic</button>
+                    <button class="domain-btn" data-domain="Wargames"
+                        style="background-color: #e9162d; margin-right: 4%">Wargames</button>
+                    <button class="domain-btn" data-domain="Thematic Games"
+                        style="background-color: #00e1da;">Thematic</button>
                 </div>
                 <div style="display: flex;">
-                    <button class="domain-btn" data-domain="Children's Games" style="background-color: #fb4fd9; margin-right: 4%">Children's</button>
+                    <button class="domain-btn" data-domain="Children's Games"
+                        style="background-color: #fb4fd9; margin-right: 4%">Children's</button>
                 </div>
             </div>
 
@@ -262,57 +281,61 @@
             <div class="filter" id="playtime-filter">
                 <div class="range_container">
                     <div class="label">Play Time Range:</div>
-                        <div class="sliders_control" style="margin-top: 10px">
-                            <input id="fromSlider_time" type="range" value="1" min="1" max="360"/>
-                            <input id="toSlider_time" type="range" value="360" min="1" max="360"/>
-                        </div>
+                    <div class="sliders_control" style="margin-top: 10px">
+                        <input id="fromSlider_time" type="range" value="1" min="1" max="360" />
+                        <input id="toSlider_time" type="range" value="360" min="1" max="360" />
+                    </div>
                     <div class="form_control">
                         <div class="form_control_container">
                             <div class="form_control_container__time">Min</div>
-                            <input class="form_control_container__time__input" type="number" id="fromInput_time" value="1" min="1" max="360"/>
+                            <input class="form_control_container__time__input" type="number" id="fromInput_time"
+                                value="1" min="1" max="360" />
                         </div>
                         <div class="form_control_container">
                             <div class="form_control_container__time input_max">Max</div>
-                            <input class="form_control_container__time__input input_max" type="number" id="toInput_time" value="360" min="1" max="360"/>
+                            <input class="form_control_container__time__input input_max" type="number" id="toInput_time"
+                                value="360" min="1" max="360" />
                         </div>
                     </div>
                 </div>
             </div>
-        
+
             <!--Complexity-->
             <div class="filter" id="complexity-filter">
                 <div class="range_container">
                     <div class="label">Game Complexity Range:</div>
                     <div class="sliders_control" style="margin-top: 10px">
-                        <input id="fromSlider_complexity" type="range" value="1" min="1" max="5"/>
-                        <input id="toSlider_complexity" type="range" value="5" min="1" max="5"/>
-                     </div>
+                        <input id="fromSlider_complexity" type="range" value="1" min="1" max="5" />
+                        <input id="toSlider_complexity" type="range" value="5" min="1" max="5" />
+                    </div>
                     <div class="form_control">
                         <div class="form_control_container">
                             <div class="form_control_container__time">Min</div>
-                            <input class="form_control_container__time__input" type="number" id="fromInput_complexity" value="1" min="1" max="5"/>
+                            <input class="form_control_container__time__input" type="number" id="fromInput_complexity"
+                                value="1" min="1" max="5" />
                         </div>
                         <div class="form_control_container">
                             <div class="form_control_container__time input_max">Max</div>
-                            <input class="form_control_container__time__input input_max" type="number" id="toInput_complexity" value="5" min="1" max="5"/>
+                            <input class="form_control_container__time__input input_max" type="number"
+                                id="toInput_complexity" value="5" min="1" max="5" />
                         </div>
                     </div>
                 </div>
             </div>
-        
+
             <!-- Number of players -->
             <div class="filter" id="players-filter">
                 <div class="range_container">
                     <span class="label">Number of Players (1 to 30):</span>
-                    <input type="number" id="input_players" min="1" max="30"/>
+                    <input type="number" id="input_players" min="1" max="30" />
                 </div>
             </div>
-                    
+
             <!-- Age limit -->
             <div class="filter" id="age-filter">
                 <div class="range_container">
                     <span class="label">Age Restriction:</span>
-                    <input type="number" id="input_age" min="0" max="21" value="21"/>
+                    <input type="number" id="input_age" min="0" max="21" value="21" />
                     <span style="font-size: 11px; margin-left: 5px;">or less allowed</span>
                 </div>
             </div>
@@ -326,7 +349,7 @@
             <svg id="scatter" width="530" height="550" style="margin-left: 20px;"></svg>
         </div>
 
-        <svg id="bggTable" width="420" height="420" style="margin-top: 100px;padding-left:30px;"></svg>
+        <svg id="bggTable" width="420" height="500" style="margin-top: 10px;padding-left:30px;"></svg>
 
     </div>
 
@@ -346,7 +369,7 @@
                 d.index = i;
             });
 
-            const margin = {top: 30, right: 20, bottom: 80, left: 80};
+            const margin = { top: 30, right: 20, bottom: 80, left: 80 };
             const minOwnedUsers = Math.max(1, d3.min(data, d => d.owned_users));
             const maxOwnedUsers = d3.max(data, d => d.owned_users);
             const maxRating = d3.max(data, d => d.rating_average);
@@ -363,12 +386,12 @@
                 .range([height - margin.bottom, margin.top]);
 
             let xAxis = svg.append("g")
-                .attr("class","axis")
+                .attr("class", "axis")
                 .attr("transform", `translate(0,${height - margin.bottom})`)
                 .call(d3.axisBottom(xScale).ticks(10, "~s"));
 
             let yAxis = svg.append("g")
-                .attr("class","axis")
+                .attr("class", "axis")
                 .attr("transform", `translate(${margin.left},0)`)
                 .call(d3.axisLeft(yScale));
 
@@ -411,34 +434,34 @@
                     .data(data, d => d.id)
                     .join(
                         enter => enter.append("circle")
-                                    .attr("cx", d => xScale(d.owned_users))
-                                    .attr("cy", d => yScale(d.rating_average))
-                                    .attr("r", 2.5)
-                                    .attr("fill", d => tableColorScale(d.domains1))
-                                    .attr("opacity", 0.7)
-                                    .on("mouseover", (event, d) => handleMouseover(event, d, table, tableColorScale))
-                                    .on("mouseout", (event, d) => handleMouseout(event, d, table)),
+                            .attr("cx", d => xScale(d.owned_users))
+                            .attr("cy", d => yScale(d.rating_average))
+                            .attr("r", 2.5)
+                            .attr("fill", d => tableColorScale(d.domains1))
+                            .attr("opacity", 0.7)
+                            .on("mouseover", (event, d) => handleMouseover(event, d, table, tableColorScale))
+                            .on("mouseout", (event, d) => handleMouseout(event, d, table)),
                         update => update
-                                    .attr("cx", d => xScale(d.owned_users))
-                                    .attr("cy", d => yScale(d.rating_average))
-                                    .attr("fill", d => tableColorScale(d.domains1)),
+                            .attr("cx", d => xScale(d.owned_users))
+                            .attr("cy", d => yScale(d.rating_average))
+                            .attr("fill", d => tableColorScale(d.domains1)),
                         exit => exit.remove()
                     );
             }
 
             // Function to initialize info table 
-            function initializeTableContent(){
+            function initializeTableContent() {
                 table.append("circle")
                     .attr("class", "default-table")
-                    .attr("cx", tableWidth/2)
-                    .attr("cy", tableHeight/2)
+                    .attr("cx", tableWidth / 2)
+                    .attr("cy", tableHeight / 2)
                     .attr("r", 140)
-                    .attr("fill", "none")
+                    .attr("fill", "#11029c")
                     .attr("stroke-width", 3)
                     .attr("stroke", "grey");
 
                 table.append("text")
-                    .attr("transform", `translate(${tableWidth/2}, ${tableHeight/2 - 15})`)
+                    .attr("transform", `translate(${tableWidth / 2}, ${tableHeight / 2 - 15})`)
                     .attr("text-anchor", "middle")
                     .attr("font-size", "16px")
                     .text(String.fromCodePoint(0x1F50D) + " Hover a dot on the left to view")
@@ -446,7 +469,7 @@
                     .attr("class", "text");
 
                 table.append("text")
-                    .attr("transform", `translate(${tableWidth/2}, ${tableHeight/2 + 15})`)
+                    .attr("transform", `translate(${tableWidth / 2}, ${tableHeight / 2 + 15})`)
                     .attr("text-anchor", "middle")
                     .attr("font-size", "16px")
                     .text("details about a board game " + String.fromCodePoint(0x1F50D))
@@ -465,9 +488,9 @@
                     .attr("stroke", "white")
                     .attr("stroke-width", 3)
                     .attr("opacity", 1);
-                
+
                 table.selectAll("*").remove();
-                
+
                 clearTimeout(hoverTimeout);
 
                 hoverTimeout = setTimeout(() => {
@@ -496,8 +519,8 @@
             function renderTableContent(table, d, tableColorScale) {
                 let tableColor = tableColorScale(d.domains1);
                 table.append("circle")
-                    .attr("cx", tableWidth/2)
-                    .attr("cy", tableHeight/2)
+                    .attr("cx", tableWidth / 2)
+                    .attr("cy", tableHeight / 2)
                     .attr("r", 140)
                     .attr("fill", tableColor)
                     .attr("stroke-width", 3)
@@ -511,44 +534,117 @@
                     .attr("font-size", "12px");
 
                 const words = d.name.split(/\s+/);
-                const firstPart = words.slice(0, 4).join(' ');
-                const rest = words.slice(4).join(' ');
+                const firstPart = words.slice(0, 3).join(' ');
+                const rest = words.slice(3, 7).join(' ');
+                let fontColor;
+
+                if (tableColor === "#e9162d" || tableColor === "#007bd8" || tableColor === "#8f2be7") {
+                    fontColor = "#d9d9d9";
+                } else {
+                    fontColor = "black";
+                }
                 textGroup.append("text")
                     .text(firstPart)
+                    .attr("fill", fontColor)
                     .attr("y", -70)
                     .attr("font-weight", "bold")
-                    .attr("font-size", "15px");
+                    .attr("font-size", "14px");
                 textGroup.append("text")
                     .text(rest)
+                    .attr("fill", fontColor)
                     .attr("y", -50)
-                    .attr("font-weight", "bold");
+                    .attr("font-weight", "bold")
+                    .attr("font-size", "14px");
                 textGroup.append("text")
                     .text(`Year Published: ${d.year_published}`)
-                    .attr("y", -30);
+                    .attr("fill", fontColor)
+                    .attr("y", -30)
+                    .attr("font-size", "13px");
                 textGroup.append("text")
+                    .attr("fill", fontColor)
                     .text(`Number of Players: ${d.min_players === d.max_players ? d.min_players : `${d.min_players} - ${d.max_players}`}`)
-                    .attr("y", -10);
+                    .attr("y", -10)
+                    .attr("font-size", "13px");
                 textGroup.append("text")
+                    .attr("fill", fontColor)
                     .text(`Suggested Play Time: ${d.play_time} minutes`)
-                    .attr("y", 10);
+                    .attr("y", 10)
+                    .attr("font-size", "13px");
                 textGroup.append("text")
+                    .attr("fill", fontColor)
                     .text(`Age Restriction: ${d.min_age}+`)
-                    .attr("y", 30);
+                    .attr("y", 30)
+                    .attr("font-size", "13px");
                 textGroup.append("text")
+                    .attr("fill", fontColor)
                     .text(`Overall Rating (out of 10): ${d.rating_average}`)
-                    .attr("y", 50);
+                    .attr("y", 50)
+                    .attr("font-size", "13px");
                 textGroup.append("text")
+                    .attr("fill", fontColor)
                     .text(`Game Complexity (out of 5): ${d.complexity_average}`)
-                    .attr("y", 70);
+                    .attr("y", 70)
+                    .attr("font-size", "13px");
                 textGroup.append("text")
+                    .attr("fill", fontColor)
                     .text(`Number of Owners: ${d.owned_users}`)
-                    .attr("y", 90);
+                    .attr("y", 90)
+                    .attr("font-size", "13px");
+
+                const tableLegend = table.append("g")
+                    .attr("transform", "translate(45, 480)");
+
+                tableLegend.append("image")
+                    .attr("xlink:href", "seat_default.png")
+                    .attr("width", 20)
+                    .attr("height", 20)
+                    .attr("x", -10)
+                    .attr("y", -10);
+
+                tableLegend.append("text")
+                    .text("Minimum players")
+                    .attr("fill", "white")
+                    .attr("font-size", "12px")
+                    .attr("text-anchor", "start")
+                    .attr("x", 15)
+                    .attr("y", 5);
+
+                tableLegend.append("image")
+                    .attr("xlink:href", "seat_default.png")
+                    .attr("width", 20)
+                    .attr("height", 20)
+                    .attr("x", 180)
+                    .attr("y", -10);
+
+                tableLegend.append("text")
+                    .text("+")
+                    .attr("fill", "white")
+                    .attr("font-size", "15px")
+                    .attr("text-anchor", "start")
+                    .attr("x", 200)
+                    .attr("y", 5);
+
+                tableLegend.append("image")
+                    .attr("xlink:href", "seat_empty.png")
+                    .attr("width", 20)
+                    .attr("height", 20)
+                    .attr("opacity", 0.5)
+                    .attr("x", 210)
+                    .attr("y", -10);
+
+                tableLegend.append("text")
+                    .text("Maximum Players")
+                    .attr("fill", "white")
+                    .attr("font-size", "12px")
+                    .attr("text-anchor", "start")
+                    .attr("x", 235)
+                    .attr("y", 5);
             }
 
             // Function to render seats around the table
             function renderSeats(table, d) {
-                let centerX = tableWidth/2;
-                let centerY = tableHeight/2;
+                let centerX = tableWidth / 2;
+                let centerY = tableHeight / 2;
                 let radius = 140;
                 let maxPlayers = parseInt(d["max_players"], 10);
                 let minPlayers = parseInt(d["min_players"], 10);
@@ -569,7 +665,8 @@
                         .attr("y", seatY - offset)
                         .attr("width", seatSize)
                         .attr("height", seatSize)
-                        .attr("transform", `rotate(${rotateDeg}, ${seatX}, ${seatY})`);
+                        .attr("transform", `rotate(${rotateDeg}, ${seatX}, ${seatY})`)
+                        .attr("opacity", 0.5);
                 }
 
                 for (let j = 0; j < minPlayers; j++) {
@@ -578,17 +675,17 @@
                     let seatY = centerY + (radius + 40) * Math.sin(angle);
                     let rotateDeg = (angle * 180) / Math.PI + 90;
 
-                    let seatSize = maxPlayers > 15 ? 30 : 55;
+                    let seatSize = maxPlayers > 10 ? 30 : 55;
                     let offset = seatSize / 2;
 
-                table.append("image")
-                    .attr("class", "seat-icon")
-                    .attr("xlink:href", "seat_default.png")
-                    .attr("x", seatX - offset)
-                    .attr("y", seatY - offset)
-                    .attr("width", seatSize)
-                    .attr("height", seatSize)
-                    .attr("transform", `rotate(${rotateDeg}, ${seatX}, ${seatY})`);
+                    table.append("image")
+                        .attr("class", "seat-icon")
+                        .attr("xlink:href", "seat_default.png")
+                        .attr("x", seatX - offset)
+                        .attr("y", seatY - offset)
+                        .attr("width", seatSize)
+                        .attr("height", seatSize)
+                        .attr("transform", `rotate(${rotateDeg}, ${seatX}, ${seatY})`);
                 }
             }
 
@@ -664,7 +761,7 @@
                 });
             const yBrushG = svg.append("g").attr("class", "brush y-brush").call(yBrush);
             console.log(yRange)
-            
+
             xBrushG.call(xBrush.move, [margin.left, width - margin.right]);
             yBrushG.call(yBrush.move, [margin.top, height - margin.bottom]);
 
@@ -673,7 +770,7 @@
                 yScale.domain(yRange);
                 xAxis.transition().duration(500).call(d3.axisBottom(xScale));
                 yAxis.transition().duration(500).call(d3.axisLeft(yScale));
-                
+
                 updateChart();
 
                 xBrushG.call(xBrush.move, [xScale(xRange[0]), xScale(xRange[1])]);
@@ -694,13 +791,13 @@
             document.getElementById("reset-btn").addEventListener("click", resetChart);
 
             // Helper functions for toolbar control
-            let inputTimeout = null; 
+            let inputTimeout = null;
 
             function controlFromInput(fromSlider, toSlider, fromInput, toInput) {
                 clearTimeout(inputTimeout);
                 inputTimeout = setTimeout(() => {
                     let [from, to] = getParsed(fromInput, toInput);
-                    if (from < fromSlider.min){
+                    if (from < fromSlider.min) {
                         from = fromSlider.min
                     }
                     if (from > to) { // invalid
@@ -714,13 +811,13 @@
                     updateChart();
                 }, 250);
             }
-    
+
             function controlToInput(fromSlider, toSlider, fromInput, toInput, idName) {
                 clearTimeout(inputTimeout);
                 inputTimeout = setTimeout(() => {
                     let [from, to] = getParsed(fromInput, toInput);
                     setToggleAccessible(toInput, idName);
-                    if (to > toSlider.max){
+                    if (to > toSlider.max) {
                         to = toSlider.max
                     };
                     if (from <= to) { // valid
@@ -760,19 +857,19 @@
                 updateChart();
             }
 
-            function controlGeneralInput(input, varName){
+            function controlGeneralInput(input, varName) {
                 clearTimeout(inputTimeout);
 
                 inputTimeout = setTimeout(() => {
                     let val = parseInt(input.value, 10);
-                    if (!isNaN(val)){
-                        if (val < parseInt(input.min, 10)){
+                    if (!isNaN(val)) {
+                        if (val < parseInt(input.min, 10)) {
                             input.value = input.min
-                        } else if (val > parseInt(input.max, 10)){
+                        } else if (val > parseInt(input.max, 10)) {
                             input.value = input.max
                         }
-                    } else{
-                        if (varName === "age"){
+                    } else {
+                        if (varName === "age") {
                             input.value = input.min
                         }
                     }
@@ -793,19 +890,19 @@
                 toSlider.style.background = `linear-gradient(
                     to right,
                     ${sliderColor} 0%,
-                    ${sliderColor} ${(fromPosition)/(rangeDistance)*100}%,
-                    ${rangeColor} ${((fromPosition)/(rangeDistance))*100}%,
-                    ${rangeColor} ${(toPosition)/(rangeDistance)*100}%, 
-                    ${sliderColor} ${(toPosition)/(rangeDistance)*100}%, 
+                    ${sliderColor} ${(fromPosition) / (rangeDistance) * 100}%,
+                    ${rangeColor} ${((fromPosition) / (rangeDistance)) * 100}%,
+                    ${rangeColor} ${(toPosition) / (rangeDistance) * 100}%, 
+                    ${sliderColor} ${(toPosition) / (rangeDistance) * 100}%, 
                     ${sliderColor} 100%)`;
             }
 
             function setToggleAccessible(currentTarget, idName) {
                 const toSlider = document.querySelector(idName);
-                if (Number(currentTarget.value) <= 0 ) {
+                if (Number(currentTarget.value) <= 0) {
                     toSlider.style.zIndex = 2;
                 } else {
-                toSlider.style.zIndex = 0;
+                    toSlider.style.zIndex = 0;
                 }
             };
 
@@ -844,19 +941,19 @@
 
             // Game domain buttons
             document.querySelectorAll(".domain-btn").forEach(button => {
-                button.addEventListener("click", function() {
-                document.querySelectorAll(".domain-btn").forEach(btn => btn.classList.remove("active"));
-                this.classList.add("active");
-                selectedDomain = this.getAttribute("data-domain");
-                updateChart();
+                button.addEventListener("click", function () {
+                    document.querySelectorAll(".domain-btn").forEach(btn => btn.classList.remove("active"));
+                    this.classList.add("active");
+                    selectedDomain = this.getAttribute("data-domain");
+                    updateChart();
+                });
             });
-        });
 
 
 
-}).catch(error => console.log("Error loading data:", error));
+        }).catch(error => console.log("Error loading data:", error));
 
-</script>
+    </script>
 
 </body>
 
