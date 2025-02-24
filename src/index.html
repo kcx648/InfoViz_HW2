@@ -20,7 +20,7 @@
 
         .text,
         .label {
-            font-size: 14px;
+            font-size: 16px;
             font-family: 'Merriweather', serif;
         }
 
@@ -381,7 +381,7 @@
                 <button id="zoom-btn">Zoom into Axis Selection</button>
                 <button id="reset-btn">&#128071; Reset Zoom</button>
             </div>
-            <svg id="scatter" width="530" height="550" style="margin-left: 20px;"></svg>
+            <svg id="scatter" width="530" height="650" style="margin-left: 20px;"></svg>
         </div>
 
         <svg id="bggTable" width="420" height="500" style="margin-top: 10px;padding-left:30px;"></svg>
@@ -404,7 +404,7 @@
                 d.index = i;
             });
 
-            const margin = { top: 30, right: 20, bottom: 80, left: 80 };
+            const margin = { top: 30, right: 20, bottom: 150, left: 80 };
             const minOwnedUsers = Math.max(1, d3.min(data, d => d.owned_users));
             const maxOwnedUsers = d3.max(data, d => d.owned_users);
             const maxRating = d3.max(data, d => d.rating_average);
@@ -457,7 +457,7 @@
                 .attr("class", "label")
                 .attr("text-anchor", "middle")
                 .attr("x", width / 2 + 20)
-                .attr("y", height - 30)
+                .attr("y", height - 80)
                 .style("fill", "white")
                 .text("Popularity (Log Scale)");
 
@@ -465,14 +465,31 @@
                 .attr("class", "instruction")
                 .attr("text-anchor", "middle")
                 .attr("x", width / 2 + 20)
-                .attr("y", height - 5 )
+                .attr("y", height - 50 )
                 .style("fill", "white")
-                .text("Draw box for quick zooming // Adjust axis for detailed zooming");    
+                .text("Draw box for quick zooming");    
+
+                svg.append("text")
+                .attr("class", "instruction")
+                .attr("text-anchor", "middle")
+                .attr("x", width / 2 + 20)
+                .attr("y", height -30  )
+                .style("fill", "white")
+                .text("//");  
+
+
+                svg.append("text")
+                .attr("class", "instruction")
+                .attr("text-anchor", "middle")
+                .attr("x", width / 2 + 20)
+                .attr("y", height -10 )
+                .style("fill", "white")
+                .text("Adjust axis then click 'zoom into axis selection' for detailed zooming");  
 
             svg.append("text")
                 .attr("class", "label")
                 .attr("text-anchor", "end")
-                .attr("x", -height / 2 + 80)
+                .attr("x", -height / 2 + 120)
                 .attr("y", margin.left - 60)
                 .attr("dy", ".75em")
                 .attr("transform", "rotate(-90)")
@@ -814,6 +831,7 @@
                 const filteredData = filterData(data, xRange, yRange, fromTime, toTime, fromComplexity, toComplexity, fromYear, toYear, fromPlayers, toPlayers, age, selectedDomain);
 
                 drawCircles(svg, filteredData, xScale, yScale, tableColorScale, table);
+
             }
 
             // Initialize the visualization
