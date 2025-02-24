@@ -526,10 +526,6 @@
             // Function to handle mouseout event
             function handleMouseout(event, d, table) {
                 clearTimeout(hoverTimeout);
-
-                table.selectAll("*").remove();
-                initializeTableContent();
-
                 d3.select(event.currentTarget)
                     .transition()
                     .duration(200)
