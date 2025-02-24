@@ -16,6 +16,7 @@
 
         .button-container {
             margin: 10px;
+            margin-left: -40px;
         }
 
         .text,
@@ -31,7 +32,7 @@
         .button-container button {
             padding: 10px;
             font-size: 14px;
-            margin-left: 40px;
+            margin-left: 30px;
             color: white;
             font-family: 'Merriweather', serif;
             background-color: #11029c;
@@ -375,7 +376,7 @@
         <div style="padding-left: 20px;">
             <div class="button-container">
                 <button id="clear-filters-btn">&#128072; Clear Filters</button>
-                <button id="zoom-btn">Zoom into Selection</button>
+                <button id="zoom-btn">&#128071; Zoom into Selection</button>
                 <button id="reset-btn">&#128071; Reset Zoom</button>
             </div>
             <svg id="scatter" width="530" height="550" style="margin-left: 20px;"></svg>
@@ -553,11 +554,10 @@
                     .attr("stroke-width", 3)
                     .attr("opacity", 1);
 
-                table.selectAll("*").remove();
-
                 clearTimeout(hoverTimeout);
 
                 hoverTimeout = setTimeout(() => {
+                    table.selectAll("*").remove();
                     renderTableContent(table, d, tableColorScale);
                     renderSeats(table, d);
                 }, 80);
