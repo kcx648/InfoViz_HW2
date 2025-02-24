@@ -24,16 +24,17 @@
         }
 
         .label {
-            font-size: 13px 
+            font-size: 14px;
         }
 
         .button-container button {
-            padding: 8px;
+            padding: 10px;
             font-size: 14px;
-            margin-right: 10px;
+            margin-left: 110px;
+            color: white;
             font-family: 'Merriweather', serif;
-            background-color: rgba(214, 214, 231, 0.494);
-            stroke-width: 1.5px;
+            background-color: #11029c;
+            border: none;
             cursor: pointer;
         }
 
@@ -208,13 +209,18 @@
 </head>
 
 <body>
-    <h1 style="color:white; font-size: 28px;">Pick the Perfect
-        <span style="color: #ffdb28; padding-right: 1px;">B</span><span 
-        style="color: #f28200; padding-right: 1px;">O</span><span 
-        style="color:#fb4fd9; padding-right: 1px;">A</span><span
-        style="color:#007bd8; padding-right: 1px;">R</span><span
-        style="color: #8f2be7; padding-right: 1px;">D</span>
-        GAME for Tonight's Game Night!
+    <h1 style="color:white; font-size: 36px;">Pick the Perfect
+        <span style="font-size: 48px; color: #ffdb28; padding-right: 1px;">B</span><span 
+        style="font-size: 48px; color: #f28200; padding-right: 1px;">O</span><span
+        style="font-size: 48px; color:#fb4fd9; padding-right: 1px;">A</span><span
+        style="font-size: 48px; color:#007bd8; padding-right: 1px;">R</span><span
+        style="font-size: 48px; color: #8f2be7; padding-right: 1px;">D</span>
+        
+        <span style="font-size: 48px; color: #ffdb28; padding-right: 1px;">G</span><span
+         style="font-size: 48px; color: #f28200; padding-right: 1px;">A</span><span
+          style="font-size: 48px; color:#fb4fd9; padding-right: 1px;">M</span><span
+           style="font-size: 48px; color:#007bd8; padding-right: 1px;">E</span>
+        for Today's Game Night!
     </h1>
     <!--
     "Strategy Games": "#007bd8",
@@ -314,7 +320,7 @@
 
         <div>
             <div class="button-container">
-                <button id="zoom-btn">Zoom</button>
+                <button id="zoom-btn">Zoom into Selection</button>
                 <button id="reset-btn">Reset Zoom</button>
             </div>
             <svg id="scatter" width="530" height="550" style="margin-left: 20px;"></svg>
@@ -511,7 +517,8 @@
                 textGroup.append("text")
                     .text(firstPart)
                     .attr("y", -70)
-                    .attr("font-weight", "bold");
+                    .attr("font-weight", "bold")
+                    .attr("font-size", "15px");
                 textGroup.append("text")
                     .text(rest)
                     .attr("y", -50)
