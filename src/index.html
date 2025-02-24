@@ -24,9 +24,12 @@
             font-family: 'Merriweather', serif;
         }
 
-        .label {
-            font-size: 14px;
+        .instruction {
+            font-size: 10px;
+            font-family: 'Merriweather', serif;
         }
+
+       
 
         .button-container button {
             padding: 10px;
@@ -375,7 +378,7 @@
         <div style="padding-left: 20px;">
             <div class="button-container">
                 <button id="clear-filters-btn">&#128072; Clear Filters</button>
-                <button id="zoom-btn">Zoom into Selection</button>
+                <button id="zoom-btn">Zoom into Axis Selection</button>
                 <button id="reset-btn">&#128071; Reset Zoom</button>
             </div>
             <svg id="scatter" width="530" height="550" style="margin-left: 20px;"></svg>
@@ -457,6 +460,14 @@
                 .attr("y", height - 30)
                 .style("fill", "white")
                 .text("Popularity (Log Scale)");
+
+                svg.append("text")
+                .attr("class", "instruction")
+                .attr("text-anchor", "middle")
+                .attr("x", width / 2 + 20)
+                .attr("y", height - 5 )
+                .style("fill", "white")
+                .text("Draw box for quick zooming // Adjust axis for detailed zooming");    
 
             svg.append("text")
                 .attr("class", "label")
