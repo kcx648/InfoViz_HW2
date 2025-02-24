@@ -25,9 +25,12 @@
             font-family: 'Merriweather', serif;
         }
 
-        .label {
-            font-size: 14px;
+        .instruction {
+            font-size: 10px;
+            font-family: 'Merriweather', serif;
         }
+
+       
 
         .button-container button {
             padding: 10px;
@@ -458,6 +461,14 @@
                 .attr("y", height - 30)
                 .style("fill", "white")
                 .text("Popularity (Log Scale)");
+
+                svg.append("text")
+                .attr("class", "instruction")
+                .attr("text-anchor", "middle")
+                .attr("x", width / 2 + 20)
+                .attr("y", height - 5 )
+                .style("fill", "white")
+                .text("Draw box for quick zooming // Adjust axis for detailed zooming");    
 
             svg.append("text")
                 .attr("class", "label")
