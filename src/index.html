@@ -558,8 +558,29 @@
                     .attr("font-size", "12px");
 
                 const words = d.name.split(/\s+/);
-                const firstPart = words.slice(0, 3).join(' ');
-                const rest = words.slice(3, 7).join(' ');
+                const maxLineLength = 30;
+                let lines = [];
+                let currentLine = "";
+                words.forEach(word => {
+                    if ((currentLine + " " + word).trim().length <= maxLineLength) {
+                        currentLine += (currentLine ? " " : "") + word;
+                    } else {
+                        lines.push(currentLine);
+                        currentLine = word;
+                    }
+                });
+                if (currentLine) lines.push(currentLine); 
+
+                let pixel_start = -80;
+                let length_lines = lines.length;
+
+                if (length_lines === 2){
+                    pixel_start = -70;
+                } else if (length_lines === 1){
+                    pixel_start = -60;
+                }
+
+
                 let fontColor;
 
                 if (tableColor === "#e9162d" || tableColor === "#007bd8" || tableColor === "#8f2be7") {
@@ -567,53 +588,44 @@
                 } else {
                     fontColor = "black";
                 }
+
+                // Append each line dynamically
+                lines.forEach((line, index) => {
                 textGroup.append("text")
-                    .text(firstPart)
-                    .attr("fill", fontColor)
-                    .attr("y", -70)
+                    .text(line)
+                    .attr("y", pixel_start + index * 20) // Adjust line spacing dynamically
                     .attr("font-weight", "bold")
-                    .attr("font-size", "14px");
-                textGroup.append("text")
-                    .text(rest)
+                    .attr("font-size", "13px")
                     .attr("fill", fontColor)
-                    .attr("y", -50)
-                    .attr("font-weight", "bold")
-                    .attr("font-size", "14px");
+                });
                 textGroup.append("text")
                     .text(`Year Published: ${d.year_published}`)
-                    .attr("fill", fontColor)
-                    .attr("y", -30)
-                    .attr("font-size", "13px");
+                    .attr("y", pixel_start + (length_lines) * 20)
+                    .attr("fill", fontColor);
                 textGroup.append("text")
-                    .attr("fill", fontColor)
                     .text(`Number of Players: ${d.min_players === d.max_players ? d.min_players : `${d.min_players} - ${d.max_players}`}`)
-                    .attr("y", -10)
-                    .attr("font-size", "13px");
+                    .attr("y", pixel_start + (length_lines + 1) * 20)
+                    .attr("fill", fontColor);
                 textGroup.append("text")
-                    .attr("fill", fontColor)
                     .text(`Suggested Play Time: ${d.play_time} minutes`)
-                    .attr("y", 10)
-                    .attr("font-size", "13px");
+                    .attr("y", pixel_start + (length_lines + 2) * 20)
+                    .attr("fill", fontColor);
                 textGroup.append("text")
-                    .attr("fill", fontColor)
                     .text(`Age Restriction: ${d.min_age}+`)
-                    .attr("y", 30)
-                    .attr("font-size", "13px");
+                    .attr("y", pixel_start + (length_lines + 3) * 20)
+                    .attr("fill", fontColor);
                 textGroup.append("text")
-                    .attr("fill", fontColor)
                     .text(`Overall Rating (out of 10): ${d.rating_average}`)
-                    .attr("y", 50)
-                    .attr("font-size", "13px");
+                    .attr("y", pixel_start + (length_lines + 4) * 20)
+                    .attr("fill", fontColor);
                 textGroup.append("text")
-                    .attr("fill", fontColor)
                     .text(`Game Complexity (out of 5): ${d.complexity_average}`)
-                    .attr("y", 70)
-                    .attr("font-size", "13px");
+                    .attr("y", pixel_start + (length_lines + 5) * 20)
+                    .attr("fill", fontColor);
                 textGroup.append("text")
-                    .attr("fill", fontColor)
                     .text(`Number of Owners: ${d.owned_users}`)
-                    .attr("y", 90)
-                    .attr("font-size", "13px");
+                    .attr("y", pixel_start + (length_lines + 6) * 20)
+                    .attr("fill", fontColor);
 
                 const tableLegend = table.append("g")
                     .attr("transform", "translate(45, 480)");
