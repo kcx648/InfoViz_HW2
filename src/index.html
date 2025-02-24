@@ -232,7 +232,7 @@
     "Wargames": "#e9162d",
     "Children's Games": "#fb4fd9" 
     -->      
-    <div class="viz" style="display: flex; flex-direction: row">
+    <div class="viz" style="display: flex; flex-direction: row; justify-content: space-between; gap:20px;">
         <div id="toolbar" height="800" width="180" style="display: flex; flex-direction: column;">
             <!--Game Domain-->
             <div id="domain-filter" class="filter" style="display: flex; flex-direction: column;">
@@ -326,7 +326,7 @@
             <svg id="scatter" width="530" height="550" style="margin-left: 20px;"></svg>
         </div>
 
-        <svg id="bggTable" width="420" height="420" style="margin-top: 100px;"></svg>
+        <svg id="bggTable" width="420" height="420" style="margin-top: 100px;padding-left:30px;"></svg>
 
     </div>
 
@@ -500,7 +500,6 @@
                     .attr("cy", tableHeight/2)
                     .attr("r", 140)
                     .attr("fill", tableColor)
-                    .attr("opacity", 0.8)
                     .attr("stroke-width", 3)
                     .attr("stroke", "grey");
 
