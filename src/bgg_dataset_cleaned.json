@@ -868,20 +868,6 @@
         "domains1":"Family Games"
     },
     {
-        "index":64,
-        "id":521,
-        "name":"Crokinole",
-        "year_published":1876,
-        "min_players":2,
-        "max_players":4,
-        "play_time":30,
-        "min_age":8,
-        "rating_average":7.91,
-        "complexity_average":1.25,
-        "owned_users":10561,
-        "domains1":"Family Games"
-    },
-    {
         "index":65,
         "id":157354,
         "name":"Five Tribes",
@@ -5950,20 +5936,6 @@
         "domains1":"Family Games"
     },
     {
-        "index":434,
-        "id":171,
-        "name":"Chess",
-        "year_published":1475,
-        "min_players":2,
-        "max_players":2,
-        "play_time":60,
-        "min_age":6,
-        "rating_average":7.13,
-        "complexity_average":3.7,
-        "owned_users":40068,
-        "domains1":"Abstract Games"
-    },
-    {
         "index":435,
         "id":144797,
         "name":"Argent: The Consortium",
@@ -8400,20 +8372,6 @@
         "domains1":"Thematic Games"
     },
     {
-        "index":613,
-        "id":2398,
-        "name":"Cribbage",
-        "year_published":1630,
-        "min_players":2,
-        "max_players":4,
-        "play_time":30,
-        "min_age":10,
-        "rating_average":7.05,
-        "complexity_average":1.9,
-        "owned_users":12471,
-        "domains1":"Abstract Games"
-    },
-    {
         "index":614,
         "id":38996,
         "name":"Washington's War",
@@ -9336,20 +9294,6 @@
         "complexity_average":1.96,
         "owned_users":12277,
         "domains1":"Strategy Games"
-    },
-    {
-        "index":684,
-        "id":45,
-        "name":"Perudo",
-        "year_published":1800,
-        "min_players":2,
-        "max_players":6,
-        "play_time":30,
-        "min_age":8,
-        "rating_average":6.9,
-        "complexity_average":1.26,
-        "owned_users":16159,
-        "domains1":"Family Games"
     },
     {
         "index":686,
@@ -10414,20 +10358,6 @@
         "complexity_average":3.74,
         "owned_users":3164,
         "domains1":"Strategy Games"
-    },
-    {
-        "index":762,
-        "id":2093,
-        "name":"Mahjong",
-        "year_published":1850,
-        "min_players":3,
-        "max_players":4,
-        "play_time":120,
-        "min_age":8,
-        "rating_average":7.02,
-        "complexity_average":2.57,
-        "owned_users":9160,
-        "domains1":"Abstract Games"
     },
     {
         "index":763,
@@ -14112,20 +14042,6 @@
         "domains1":"Family Games"
     },
     {
-        "index":1030,
-        "id":1115,
-        "name":"Poker",
-        "year_published":1810,
-        "min_players":2,
-        "max_players":10,
-        "play_time":60,
-        "min_age":12,
-        "rating_average":6.72,
-        "complexity_average":2.45,
-        "owned_users":7978,
-        "domains1":"Strategy Games"
-    },
-    {
         "index":1031,
         "id":1159,
         "name":"Evo",
@@ -17514,20 +17430,6 @@
         "domains1":"Strategy Games"
     },
     {
-        "index":1290,
-        "id":2065,
-        "name":"Shogi",
-        "year_published":1587,
-        "min_players":2,
-        "max_players":2,
-        "play_time":60,
-        "min_age":8,
-        "rating_average":7.37,
-        "complexity_average":3.82,
-        "owned_users":2603,
-        "domains1":"Abstract Games"
-    },
-    {
         "index":1291,
         "id":116954,
         "name":"Indigo",
@@ -18898,20 +18800,6 @@
         "complexity_average":3.1,
         "owned_users":2921,
         "domains1":"Strategy Games"
-    },
-    {
-        "index":1395,
-        "id":2393,
-        "name":"Xiangqi",
-        "year_published":762,
-        "min_players":2,
-        "max_players":2,
-        "play_time":60,
-        "min_age":8,
-        "rating_average":7.12,
-        "complexity_average":3.59,
-        "owned_users":2884,
-        "domains1":"Abstract Games"
     },
     {
         "index":1396,
@@ -21460,20 +21348,6 @@
         "complexity_average":2.23,
         "owned_users":4256,
         "domains1":"Thematic Games"
-    },
-    {
-        "index":1601,
-        "id":6901,
-        "name":"Euchre",
-        "year_published":1848,
-        "min_players":2,
-        "max_players":7,
-        "play_time":45,
-        "min_age":8,
-        "rating_average":6.8,
-        "complexity_average":1.69,
-        "owned_users":1644,
-        "domains1":"Family Games"
     },
     {
         "index":1602,
@@ -24696,20 +24570,6 @@
         "domains1":"Thematic Games"
     },
     {
-        "index":1849,
-        "id":6887,
-        "name":"Hearts",
-        "year_published":1850,
-        "min_players":3,
-        "max_players":7,
-        "play_time":30,
-        "min_age":8,
-        "rating_average":6.44,
-        "complexity_average":1.77,
-        "owned_users":2028,
-        "domains1":"Family Games"
-    },
-    {
         "index":1850,
         "id":19764,
         "name":"P\u00dcNCT",
@@ -25072,20 +24932,6 @@
         "complexity_average":1.08,
         "owned_users":1621,
         "domains1":"Party Games"
-    },
-    {
-        "index":1880,
-        "id":6819,
-        "name":"Skat",
-        "year_published":1810,
-        "min_players":3,
-        "max_players":3,
-        "play_time":30,
-        "min_age":10,
-        "rating_average":7.25,
-        "complexity_average":3.07,
-        "owned_users":1413,
-        "domains1":"Strategy Games"
     },
     {
         "index":1881,
@@ -27634,20 +27480,6 @@
         "complexity_average":1.76,
         "owned_users":2526,
         "domains1":"Thematic Games"
-    },
-    {
-        "index":2079,
-        "id":9364,
-        "name":"Doppelkopf",
-        "year_published":1895,
-        "min_players":3,
-        "max_players":6,
-        "play_time":120,
-        "min_age":7,
-        "rating_average":7.51,
-        "complexity_average":2.92,
-        "owned_users":824,
-        "domains1":"Family Games"
     },
     {
         "index":2080,
@@ -31780,20 +31612,6 @@
         "domains1":"Strategy Games"
     },
     {
-        "index":2438,
-        "id":6866,
-        "name":"Mus",
-        "year_published":1745,
-        "min_players":4,
-        "max_players":4,
-        "play_time":10,
-        "min_age":7,
-        "rating_average":7.94,
-        "complexity_average":2.25,
-        "owned_users":415,
-        "domains1":"Family Games"
-    },
-    {
         "index":2439,
         "id":19301,
         "name":"Mesopotamia",
@@ -31862,20 +31680,6 @@
         "complexity_average":2.0,
         "owned_users":1769,
         "domains1":"Customizable Games"
-    },
-    {
-        "index":2444,
-        "id":4583,
-        "name":"Pinochle",
-        "year_published":1864,
-        "min_players":2,
-        "max_players":4,
-        "play_time":45,
-        "min_age":10,
-        "rating_average":6.85,
-        "complexity_average":2.3,
-        "owned_users":1098,
-        "domains1":"Family Games"
     },
     {
         "index":2445,
@@ -35196,20 +35000,6 @@
         "domains1":"Thematic Games"
     },
     {
-        "index":2736,
-        "id":2932,
-        "name":"Hnefatafl",
-        "year_published":400,
-        "min_players":2,
-        "max_players":2,
-        "play_time":20,
-        "min_age":7,
-        "rating_average":6.57,
-        "complexity_average":2.55,
-        "owned_users":2448,
-        "domains1":"Abstract Games"
-    },
-    {
         "index":2738,
         "id":29773,
         "name":"Cheeky Monkey",
@@ -35348,20 +35138,6 @@
         "complexity_average":1.95,
         "owned_users":1824,
         "domains1":"Family Games"
-    },
-    {
-        "index":2751,
-        "id":2389,
-        "name":"Othello",
-        "year_published":1883,
-        "min_players":2,
-        "max_players":2,
-        "play_time":30,
-        "min_age":8,
-        "rating_average":6.1,
-        "complexity_average":2.1,
-        "owned_users":10960,
-        "domains1":"Abstract Games"
     },
     {
         "index":2752,
@@ -38906,20 +38682,6 @@
         "domains1":"Wargames"
     },
     {
-        "index":3088,
-        "id":4505,
-        "name":"Tarot",
-        "year_published":1425,
-        "min_players":2,
-        "max_players":8,
-        "play_time":30,
-        "min_age":12,
-        "rating_average":6.82,
-        "complexity_average":2.45,
-        "owned_users":1379,
-        "domains1":"Abstract Games"
-    },
-    {
         "index":3089,
         "id":243797,
         "name":"Mezo",
@@ -40026,20 +39788,6 @@
         "domains1":"Strategy Games"
     },
     {
-        "index":3190,
-        "id":5451,
-        "name":"Hanafuda",
-        "year_published":1701,
-        "min_players":2,
-        "max_players":7,
-        "play_time":60,
-        "min_age":8,
-        "rating_average":6.72,
-        "complexity_average":1.71,
-        "owned_users":1966,
-        "domains1":"Family Games"
-    },
-    {
         "index":3192,
         "id":250561,
         "name":"Kick-Ass: The Board Game",
@@ -41088,20 +40836,6 @@
         "complexity_average":3.18,
         "owned_users":1093,
         "domains1":"Thematic Games"
-    },
-    {
-        "index":3292,
-        "id":15889,
-        "name":"Scopa",
-        "year_published":1600,
-        "min_players":2,
-        "max_players":6,
-        "play_time":30,
-        "min_age":8,
-        "rating_average":6.55,
-        "complexity_average":1.51,
-        "owned_users":1541,
-        "domains1":"Family Games"
     },
     {
         "index":3293,
@@ -45234,20 +44968,6 @@
         "domains1":"Strategy Games"
     },
     {
-        "index":3729,
-        "id":2448,
-        "name":"Kalah",
-        "year_published":700,
-        "min_players":2,
-        "max_players":2,
-        "play_time":10,
-        "min_age":5,
-        "rating_average":5.92,
-        "complexity_average":1.62,
-        "owned_users":11063,
-        "domains1":"Abstract Games"
-    },
-    {
         "index":3732,
         "id":129614,
         "name":"Rondo",
@@ -46254,20 +45974,6 @@
         "complexity_average":1.93,
         "owned_users":556,
         "domains1":"Family Games"
-    },
-    {
-        "index":3840,
-        "id":6817,
-        "name":"Schafkopf",
-        "year_published":1780,
-        "min_players":4,
-        "max_players":4,
-        "play_time":30,
-        "min_age":7,
-        "rating_average":7.53,
-        "complexity_average":2.61,
-        "owned_users":375,
-        "domains1":"Abstract Games"
     },
     {
         "index":3841,
@@ -54012,20 +53718,6 @@
         "domains1":"Wargames"
     },
     {
-        "index":4759,
-        "id":13337,
-        "name":"Whist",
-        "year_published":1663,
-        "min_players":2,
-        "max_players":4,
-        "play_time":60,
-        "min_age":12,
-        "rating_average":6.43,
-        "complexity_average":2.03,
-        "owned_users":352,
-        "domains1":"Abstract Games"
-    },
-    {
         "index":4760,
         "id":4637,
         "name":"Max",
@@ -56770,20 +56462,6 @@
         "domains1":"Abstract Games"
     },
     {
-        "index":5134,
-        "id":11582,
-        "name":"Schnapsen",
-        "year_published":1715,
-        "min_players":2,
-        "max_players":2,
-        "play_time":20,
-        "min_age":8,
-        "rating_average":6.98,
-        "complexity_average":2.08,
-        "owned_users":234,
-        "domains1":"Abstract Games"
-    },
-    {
         "index":5135,
         "id":172073,
         "name":"MammuZ",
@@ -58084,20 +57762,6 @@
         "complexity_average":2.6,
         "owned_users":391,
         "domains1":"Wargames"
-    },
-    {
-        "index":5294,
-        "id":28302,
-        "name":"Oware",
-        "year_published":550,
-        "min_players":2,
-        "max_players":2,
-        "play_time":20,
-        "min_age":10,
-        "rating_average":6.46,
-        "complexity_average":2.14,
-        "owned_users":545,
-        "domains1":"Abstract Games"
     },
     {
         "index":5295,
@@ -60828,20 +60492,6 @@
         "complexity_average":3.22,
         "owned_users":310,
         "domains1":"Wargames"
-    },
-    {
-        "index":5664,
-        "id":12131,
-        "name":"42",
-        "year_published":1885,
-        "min_players":4,
-        "max_players":4,
-        "play_time":30,
-        "min_age":10,
-        "rating_average":7.05,
-        "complexity_average":2.2,
-        "owned_users":143,
-        "domains1":"Abstract Games"
     },
     {
         "index":5665,
@@ -64862,20 +64512,6 @@
         "domains1":"Family Games"
     },
     {
-        "index":6286,
-        "id":11929,
-        "name":"Go-Moku",
-        "year_published":700,
-        "min_players":2,
-        "max_players":2,
-        "play_time":5,
-        "min_age":8,
-        "rating_average":5.99,
-        "complexity_average":1.88,
-        "owned_users":518,
-        "domains1":"Abstract Games"
-    },
-    {
         "index":6288,
         "id":11202,
         "name":"The First World War",
@@ -65168,20 +64804,6 @@
         "complexity_average":3.35,
         "owned_users":280,
         "domains1":"Wargames"
-    },
-    {
-        "index":6317,
-        "id":26952,
-        "name":"International Checkers",
-        "year_published":1600,
-        "min_players":2,
-        "max_players":2,
-        "play_time":40,
-        "min_age":5,
-        "rating_average":6.55,
-        "complexity_average":2.33,
-        "owned_users":289,
-        "domains1":"Abstract Games"
     },
     {
         "index":6318,
@@ -65882,20 +65504,6 @@
         "complexity_average":1.14,
         "owned_users":381,
         "domains1":"Party Games"
-    },
-    {
-        "index":6439,
-        "id":18121,
-        "name":"Casino",
-        "year_published":1800,
-        "min_players":2,
-        "max_players":4,
-        "play_time":30,
-        "min_age":10,
-        "rating_average":6.29,
-        "complexity_average":1.4,
-        "owned_users":183,
-        "domains1":"Abstract Games"
     },
     {
         "index":6444,
@@ -67956,20 +67564,6 @@
         "domains1":"Customizable Games"
     },
     {
-        "index":6751,
-        "id":15878,
-        "name":"Rummy",
-        "year_published":1887,
-        "min_players":2,
-        "max_players":6,
-        "play_time":60,
-        "min_age":8,
-        "rating_average":5.77,
-        "complexity_average":1.42,
-        "owned_users":1538,
-        "domains1":"Family Games"
-    },
-    {
         "index":6756,
         "id":28705,
         "name":"Pizza Box Baseball",
@@ -68331,20 +67925,6 @@
         "rating_average":5.97,
         "complexity_average":1.88,
         "owned_users":817,
-        "domains1":"Family Games"
-    },
-    {
-        "index":6807,
-        "id":17530,
-        "name":"Go Stop",
-        "year_published":1889,
-        "min_players":2,
-        "max_players":5,
-        "play_time":60,
-        "min_age":8,
-        "rating_average":6.64,
-        "complexity_average":2.17,
-        "owned_users":296,
         "domains1":"Family Games"
     },
     {
@@ -69018,20 +68598,6 @@
         "complexity_average":3.09,
         "owned_users":475,
         "domains1":"Wargames"
-    },
-    {
-        "index":6912,
-        "id":4386,
-        "name":"Fanorona",
-        "year_published":1680,
-        "min_players":2,
-        "max_players":2,
-        "play_time":20,
-        "min_age":7,
-        "rating_average":6.41,
-        "complexity_average":2.59,
-        "owned_users":285,
-        "domains1":"Abstract Games"
     },
     {
         "index":6913,
@@ -78288,20 +77854,6 @@
         "domains1":"Wargames"
     },
     {
-        "index":8497,
-        "id":6121,
-        "name":"Tablut",
-        "year_published":1700,
-        "min_players":2,
-        "max_players":2,
-        "play_time":45,
-        "min_age":8,
-        "rating_average":6.32,
-        "complexity_average":2.5,
-        "owned_users":274,
-        "domains1":"Abstract Games"
-    },
-    {
         "index":8498,
         "id":4918,
         "name":"Great War at Sea: U.S. Navy Plan Orange",
@@ -80806,20 +80358,6 @@
         "complexity_average":2.39,
         "owned_users":1106,
         "domains1":"Wargames"
-    },
-    {
-        "index":8967,
-        "id":2173,
-        "name":"4 Player Chess",
-        "year_published":1881,
-        "min_players":2,
-        "max_players":4,
-        "play_time":45,
-        "min_age":8,
-        "rating_average":5.95,
-        "complexity_average":2.9,
-        "owned_users":813,
-        "domains1":"Abstract Games"
     },
     {
         "index":8968,
@@ -87164,20 +86702,6 @@
         "domains1":"Wargames"
     },
     {
-        "index":10248,
-        "id":315,
-        "name":"Bagh Chal",
-        "year_published":1000,
-        "min_players":2,
-        "max_players":2,
-        "play_time":20,
-        "min_age":8,
-        "rating_average":5.91,
-        "complexity_average":2.42,
-        "owned_users":398,
-        "domains1":"Abstract Games"
-    },
-    {
         "index":10250,
         "id":8818,
         "name":"Gopher It!",
@@ -91166,20 +90690,6 @@
         "complexity_average":3.0,
         "owned_users":149,
         "domains1":"Wargames"
-    },
-    {
-        "index":11254,
-        "id":21935,
-        "name":"Chu Shogi",
-        "year_published":1300,
-        "min_players":2,
-        "max_players":2,
-        "play_time":120,
-        "min_age":8,
-        "rating_average":8.39,
-        "complexity_average":4.25,
-        "owned_users":38,
-        "domains1":"Abstract Games"
     },
     {
         "index":11257,
@@ -98476,20 +97986,6 @@
         "domains1":"Wargames"
     },
     {
-        "index":13023,
-        "id":8122,
-        "name":"Konane",
-        "year_published":1775,
-        "min_players":2,
-        "max_players":2,
-        "play_time":20,
-        "min_age":6,
-        "rating_average":6.17,
-        "complexity_average":2.0,
-        "owned_users":145,
-        "domains1":"Abstract Games"
-    },
-    {
         "index":13030,
         "id":10394,
         "name":"Avalanche: The Salerno Landings",
@@ -103446,20 +102942,6 @@
         "domains1":"Wargames"
     },
     {
-        "index":14366,
-        "id":18011,
-        "name":"Chaturanga",
-        "year_published":650,
-        "min_players":2,
-        "max_players":4,
-        "play_time":30,
-        "min_age":8,
-        "rating_average":5.92,
-        "complexity_average":2.25,
-        "owned_users":302,
-        "domains1":"Abstract Games"
-    },
-    {
         "index":14367,
         "id":3247,
         "name":"Planet Busters",
@@ -106932,20 +106414,6 @@
         "domains1":"Abstract Games"
     },
     {
-        "index":15296,
-        "id":11464,
-        "name":"Alquerque",
-        "year_published":1000,
-        "min_players":2,
-        "max_players":2,
-        "play_time":20,
-        "min_age":8,
-        "rating_average":5.72,
-        "complexity_average":1.91,
-        "owned_users":176,
-        "domains1":"Abstract Games"
-    },
-    {
         "index":15298,
         "id":20888,
         "name":"Assault on Narvik",
@@ -107503,20 +106971,6 @@
         "rating_average":5.95,
         "complexity_average":0.0,
         "owned_users":84,
-        "domains1":"Abstract Games"
-    },
-    {
-        "index":15461,
-        "id":13654,
-        "name":"Yut Nori",
-        "year_published":500,
-        "min_players":2,
-        "max_players":8,
-        "play_time":30,
-        "min_age":6,
-        "rating_average":5.66,
-        "complexity_average":1.33,
-        "owned_users":209,
         "domains1":"Abstract Games"
     },
     {
@@ -110416,20 +109870,6 @@
         "complexity_average":2.89,
         "owned_users":201,
         "domains1":"Wargames"
-    },
-    {
-        "index":16304,
-        "id":25988,
-        "name":"Asalto",
-        "year_published":1803,
-        "min_players":2,
-        "max_players":2,
-        "play_time":20,
-        "min_age":10,
-        "rating_average":5.67,
-        "complexity_average":1.86,
-        "owned_users":162,
-        "domains1":"Abstract Games"
     },
     {
         "index":16315,
@@ -118370,20 +117810,6 @@
         "domains1":"Wargames"
     },
     {
-        "index":18836,
-        "id":38950,
-        "name":"Halma",
-        "year_published":1884,
-        "min_players":2,
-        "max_players":4,
-        "play_time":30,
-        "min_age":8,
-        "rating_average":5.37,
-        "complexity_average":1.82,
-        "owned_users":475,
-        "domains1":"Abstract Games"
-    },
-    {
         "index":18850,
         "id":386,
         "name":"Pirateer",
@@ -121506,20 +120932,6 @@
         "domains1":"Children's Games"
     },
     {
-        "index":19771,
-        "id":5878,
-        "name":"Loteria",
-        "year_published":1887,
-        "min_players":2,
-        "max_players":10,
-        "play_time":10,
-        "min_age":4,
-        "rating_average":4.7,
-        "complexity_average":1.21,
-        "owned_users":198,
-        "domains1":"Family Games"
-    },
-    {
         "index":19772,
         "id":10043,
         "name":"LEGO Racers Super Speedway Game",
@@ -121672,20 +121084,6 @@
         "complexity_average":3.69,
         "owned_users":403,
         "domains1":"Wargames"
-    },
-    {
-        "index":19799,
-        "id":2394,
-        "name":"Dominoes",
-        "year_published":1500,
-        "min_players":2,
-        "max_players":10,
-        "play_time":30,
-        "min_age":5,
-        "rating_average":5.47,
-        "complexity_average":1.38,
-        "owned_users":11311,
-        "domains1":"Abstract Games"
     },
     {
         "index":19801,
@@ -122556,20 +121954,6 @@
         "domains1":"Abstract Games"
     },
     {
-        "index":20020,
-        "id":10815,
-        "name":"Craps",
-        "year_published":1125,
-        "min_players":1,
-        "max_players":16,
-        "play_time":60,
-        "min_age":10,
-        "rating_average":4.99,
-        "complexity_average":1.79,
-        "owned_users":183,
-        "domains1":"Abstract Games"
-    },
-    {
         "index":20021,
         "id":1217,
         "name":"Secret Labyrinth",
@@ -122752,20 +122136,6 @@
         "domains1":"Children's Games"
     },
     {
-        "index":20061,
-        "id":17106,
-        "name":"Boxes",
-        "year_published":1889,
-        "min_players":2,
-        "max_players":2,
-        "play_time":15,
-        "min_age":7,
-        "rating_average":4.7,
-        "complexity_average":1.51,
-        "owned_users":146,
-        "domains1":"Abstract Games"
-    },
-    {
         "index":20062,
         "id":46748,
         "name":"Robo Champ",
@@ -122920,20 +122290,6 @@
         "domains1":"Children's Games"
     },
     {
-        "index":20086,
-        "id":9812,
-        "name":"Gone Fishin'",
-        "year_published":1890,
-        "min_players":1,
-        "max_players":4,
-        "play_time":10,
-        "min_age":4,
-        "rating_average":4.01,
-        "complexity_average":1.0,
-        "owned_users":240,
-        "domains1":"Children's Games"
-    },
-    {
         "index":20092,
         "id":9921,
         "name":"Headache",
@@ -122990,20 +122346,6 @@
         "domains1":"Party Games"
     },
     {
-        "index":20098,
-        "id":10213,
-        "name":"Fox and Geese",
-        "year_published":1400,
-        "min_players":2,
-        "max_players":2,
-        "play_time":20,
-        "min_age":8,
-        "rating_average":4.72,
-        "complexity_average":1.55,
-        "owned_users":433,
-        "domains1":"Abstract Games"
-    },
-    {
         "index":20100,
         "id":3845,
         "name":"Yahtzee Jr.",
@@ -123029,20 +122371,6 @@
         "rating_average":5.14,
         "complexity_average":1.02,
         "owned_users":1122,
-        "domains1":"Children's Games"
-    },
-    {
-        "index":20104,
-        "id":21389,
-        "name":"Happy Families",
-        "year_published":1851,
-        "min_players":2,
-        "max_players":4,
-        "play_time":30,
-        "min_age":4,
-        "rating_average":4.76,
-        "complexity_average":1.06,
-        "owned_users":635,
         "domains1":"Children's Games"
     },
     {
@@ -123130,20 +122458,6 @@
         "domains1":"Children's Games"
     },
     {
-        "index":20119,
-        "id":12746,
-        "name":"Dreidel",
-        "year_published":1500,
-        "min_players":2,
-        "max_players":6,
-        "play_time":10,
-        "min_age":4,
-        "rating_average":3.66,
-        "complexity_average":1.0,
-        "owned_users":146,
-        "domains1":"Children's Games"
-    },
-    {
         "index":20124,
         "id":1730,
         "name":"Trap the Cap",
@@ -123183,34 +122497,6 @@
         "rating_average":4.54,
         "complexity_average":1.27,
         "owned_users":708,
-        "domains1":"Party Games"
-    },
-    {
-        "index":20132,
-        "id":11670,
-        "name":"The Game of Authors",
-        "year_published":1861,
-        "min_players":2,
-        "max_players":6,
-        "play_time":15,
-        "min_age":7,
-        "rating_average":4.5,
-        "complexity_average":1.03,
-        "owned_users":563,
-        "domains1":"Children's Games"
-    },
-    {
-        "index":20133,
-        "id":5122,
-        "name":"Charades",
-        "year_published":1550,
-        "min_players":2,
-        "max_players":20,
-        "play_time":30,
-        "min_age":8,
-        "rating_average":5.02,
-        "complexity_average":1.1,
-        "owned_users":352,
         "domains1":"Party Games"
     },
     {
@@ -123366,20 +122652,6 @@
         "complexity_average":1.05,
         "owned_users":845,
         "domains1":"Children's Games"
-    },
-    {
-        "index":20159,
-        "id":10400,
-        "name":"Patience",
-        "year_published":1783,
-        "min_players":1,
-        "max_players":1,
-        "play_time":10,
-        "min_age":8,
-        "rating_average":4.85,
-        "complexity_average":1.27,
-        "owned_users":219,
-        "domains1":"Abstract Games"
     },
     {
         "index":20160,
@@ -123984,20 +123256,6 @@
         "domains1":"Children's Games"
     },
     {
-        "index":20244,
-        "id":9851,
-        "name":"Shut the Box",
-        "year_published":1750,
-        "min_players":2,
-        "max_players":4,
-        "play_time":30,
-        "min_age":8,
-        "rating_average":5.06,
-        "complexity_average":1.08,
-        "owned_users":2594,
-        "domains1":"Children's Games"
-    },
-    {
         "index":20245,
         "id":1527,
         "name":"Bitin' Off Hedz",
@@ -124124,20 +123382,6 @@
         "domains1":"Family Games"
     },
     {
-        "index":20262,
-        "id":17003,
-        "name":"Snap",
-        "year_published":1866,
-        "min_players":2,
-        "max_players":12,
-        "play_time":10,
-        "min_age":5,
-        "rating_average":3.36,
-        "complexity_average":1.15,
-        "owned_users":454,
-        "domains1":"Children's Games"
-    },
-    {
         "index":20269,
         "id":1094,
         "name":"Assassin",
@@ -124234,20 +123478,6 @@
         "complexity_average":1.2,
         "owned_users":2869,
         "domains1":"Family Games"
-    },
-    {
-        "index":20282,
-        "id":2386,
-        "name":"Chinese Checkers",
-        "year_published":1893,
-        "min_players":2,
-        "max_players":6,
-        "play_time":30,
-        "min_age":7,
-        "rating_average":5.12,
-        "complexity_average":1.59,
-        "owned_users":5282,
-        "domains1":"Abstract Games"
     },
     {
         "index":20283,
@@ -124404,34 +123634,6 @@
         "domains1":"Children's Games"
     },
     {
-        "index":20302,
-        "id":13713,
-        "name":"Solitaire",
-        "year_published":1687,
-        "min_players":1,
-        "max_players":1,
-        "play_time":15,
-        "min_age":6,
-        "rating_average":4.38,
-        "complexity_average":1.51,
-        "owned_users":1271,
-        "domains1":"Abstract Games"
-    },
-    {
-        "index":20303,
-        "id":10816,
-        "name":"Blackjack",
-        "year_published":1700,
-        "min_players":2,
-        "max_players":10,
-        "play_time":30,
-        "min_age":8,
-        "rating_average":4.66,
-        "complexity_average":1.5,
-        "owned_users":596,
-        "domains1":"Abstract Games"
-    },
-    {
         "index":20304,
         "id":1797,
         "name":"Pay Day",
@@ -124516,20 +123718,6 @@
         "domains1":"Abstract Games"
     },
     {
-        "index":20312,
-        "id":2083,
-        "name":"Checkers",
-        "year_published":1150,
-        "min_players":2,
-        "max_players":2,
-        "play_time":30,
-        "min_age":6,
-        "rating_average":4.88,
-        "complexity_average":1.77,
-        "owned_users":8701,
-        "domains1":"Abstract Games"
-    },
-    {
         "index":20313,
         "id":1931,
         "name":"Anti-Monopoly",
@@ -124572,34 +123760,6 @@
         "domains1":"Party Games"
     },
     {
-        "index":20318,
-        "id":2785,
-        "name":"Game of Goose",
-        "year_published":1587,
-        "min_players":2,
-        "max_players":6,
-        "play_time":20,
-        "min_age":5,
-        "rating_average":3.41,
-        "complexity_average":1.07,
-        "owned_users":930,
-        "domains1":"Children's Games"
-    },
-    {
-        "index":20319,
-        "id":15549,
-        "name":"Roulette",
-        "year_published":1796,
-        "min_players":2,
-        "max_players":6,
-        "play_time":1,
-        "min_age":8,
-        "rating_average":3.39,
-        "complexity_average":1.13,
-        "owned_users":548,
-        "domains1":"Family Games"
-    },
-    {
         "index":20320,
         "id":5894,
         "name":"Twister",
@@ -124612,20 +123772,6 @@
         "complexity_average":1.08,
         "owned_users":6693,
         "domains1":"Party Games"
-    },
-    {
-        "index":20321,
-        "id":6424,
-        "name":"Pick Up Sticks",
-        "year_published":1850,
-        "min_players":2,
-        "max_players":6,
-        "play_time":30,
-        "min_age":4,
-        "rating_average":4.26,
-        "complexity_average":1.05,
-        "owned_users":2753,
-        "domains1":"Children's Games"
     },
     {
         "index":20322,
@@ -124653,20 +123799,6 @@
         "rating_average":3.56,
         "complexity_average":1.03,
         "owned_users":1691,
-        "domains1":"Children's Games"
-    },
-    {
-        "index":20324,
-        "id":2136,
-        "name":"Pachisi",
-        "year_published":400,
-        "min_players":2,
-        "max_players":6,
-        "play_time":30,
-        "min_age":5,
-        "rating_average":4.49,
-        "complexity_average":1.21,
-        "owned_users":7349,
         "domains1":"Children's Games"
     },
     {
@@ -124723,20 +123855,6 @@
         "rating_average":4.52,
         "complexity_average":1.16,
         "owned_users":9740,
-        "domains1":"Children's Games"
-    },
-    {
-        "index":20330,
-        "id":10799,
-        "name":"Old Maid",
-        "year_published":1874,
-        "min_players":2,
-        "max_players":6,
-        "play_time":5,
-        "min_age":4,
-        "rating_average":3.62,
-        "complexity_average":1.05,
-        "owned_users":2021,
         "domains1":"Children's Games"
     },
     {

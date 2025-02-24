@@ -30,12 +30,14 @@
         .button-container button {
             padding: 10px;
             font-size: 14px;
-            margin-left: 110px;
+            margin-left: 40px;
             color: white;
             font-family: 'Merriweather', serif;
             background-color: #11029c;
-            border: none;
+            border-radius: 10px;
             cursor: pointer;
+            border: none;
+            box-shadow: 1px 1px grey;
         }
 
         .brush .selection {
@@ -58,6 +60,10 @@
         }
 
         /* Toolbar styles */
+        #toolbar{
+            margin-top: -40px;
+        }
+
         .filter{
             background-color: #11029c;
             padding: 12px;
@@ -65,7 +71,7 @@
             width: 200px
         }
 
-        #domain-filter, #playtime-filter, #complexity-filter, #players-filter{
+        #domain-filter, #playtime-filter, #complexity-filter, #players-filter, #year-filter{
             margin-bottom: 1%
         }
 
@@ -143,7 +149,7 @@
             pointer-events: none;
         }
 
-        #fromSlider_time, #fromSlider_complexity{
+        #fromSlider_time, #fromSlider_complexity, #fromSlider_year{
             height: 0;
             z-index: 1;
         }
@@ -299,6 +305,27 @@
                     </div>
                 </div>
             </div>
+
+            <!--Year Published-->
+            <div class="filter" id="year-filter">
+                <div class="range_container">
+                    <div class="label">Year Published:</div>
+                    <div class="sliders_control" style="margin-top: 10px">
+                        <input id="fromSlider_year" type="range" value="1903" min="1903" max="2021"/>
+                        <input id="toSlider_year" type="range" value="2021" min="1903" max="2021"/>
+                     </div>
+                    <div class="form_control">
+                        <div class="form_control_container">
+                            <div class="form_control_container__time">Min</div>
+                            <input class="form_control_container__time__input" type="number" id="fromInput_year" style="width: 60px;" value="1903" min="1903" max="2021" />
+                        </div>
+                        <div class="form_control_container">
+                            <div class="form_control_container__time input_max">Max</div>
+                            <input class="form_control_container__time__input input_max" type="number" id="toInput_year" style="width: 60px;" value="2021" min="1903" max="2021"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
         
             <!-- Number of players -->
             <div class="filter" id="players-filter">
@@ -320,8 +347,9 @@
 
         <div>
             <div class="button-container">
+                <button id="clear-filters-btn">&#128072; Clear Filters</button>
                 <button id="zoom-btn">Zoom into Selection</button>
-                <button id="reset-btn">Reset Zoom</button>
+                <button id="reset-btn">&#128071; Reset Zoom</button>
             </div>
             <svg id="scatter" width="530" height="550" style="margin-left: 20px;"></svg>
         </div>
@@ -593,7 +621,7 @@
             }
 
             // Function to filter data based on current filter values
-            function filterData(data, xRange, yRange, fromTime, toTime, fromComplexity, toComplexity, fromPlayers, toPlayers, age, selectedDomain) {
+            function filterData(data, xRange, yRange, fromTime, toTime, fromComplexity, toComplexity, fromYear, toYear, fromPlayers, toPlayers, age, selectedDomain) {
                 return data.filter(d =>
                     d.owned_users >= xRange[0] && d.owned_users <= xRange[1] &&
                     d.rating_average >= yRange[0] && d.rating_average <= yRange[1] &&
@@ -601,7 +629,8 @@
                     (d.complexity_average >= fromComplexity && d.complexity_average <= toComplexity) &&
                     (d.max_players >= fromPlayers && d.min_players <= toPlayers) &&
                     (d.min_age <= age) &&
-                    (selectedDomain === "any" || d.domains1 === selectedDomain)
+                    (selectedDomain === "any" || d.domains1 === selectedDomain) &&
+                    (d.year_published >= fromYear && d.year_published <= toYear)
                 );
             }
 
@@ -619,6 +648,8 @@
                 const toTime = parseInt(document.getElementById("toSlider_time").value, 10);
                 const fromComplexity = parseInt(document.getElementById("fromSlider_complexity").value, 10);
                 const toComplexity = parseInt(document.getElementById("toSlider_complexity").value, 10);
+                const fromYear = parseInt(document.getElementById("fromSlider_year").value, 10);
+                const toYear = parseInt(document.getElementById("toSlider_year").value, 10);
                 let fromPlayers = 1;
                 let toPlayers = 30;
                 const players = parseInt(document.getElementById("input_players").value, 10);
@@ -628,7 +659,7 @@
                 }
                 const age = parseInt(document.getElementById("input_age").value, 10);
 
-                const filteredData = filterData(data, xRange, yRange, fromTime, toTime, fromComplexity, toComplexity, fromPlayers, toPlayers, age, selectedDomain);
+                const filteredData = filterData(data, xRange, yRange, fromTime, toTime, fromComplexity, toComplexity, fromYear, toYear, fromPlayers, toPlayers, age, selectedDomain);
 
                 drawCircles(svg, filteredData, xScale, yScale, tableColorScale, table);
             }
@@ -690,8 +721,39 @@
                 yBrushG.call(yBrush.move, [margin.top, height - margin.bottom]);
             }
 
+            function clearFilters(){
+                let ids = ["fromInput_time", "toInput_time", "fromSlider_time", "toSlider_time",
+                "fromInput_complexity", "toInput_complexity", "fromSlider_complexity", "toSlider_complexity",
+                "fromInput_year", "toInput_year", "fromSlider_year", "toSlider_year",
+                "input_players", "input_age"];
+
+                for (let i = 0; i < ids.length; i++) {
+                    let elem = document.getElementById(ids[i]);
+                    if (elem) {
+                        elem.value = elem.defaultValue;
+                    }
+                }
+
+                fillSlider(document.querySelector('#fromSlider_time'), document.querySelector('#toSlider_time'), '#C6C6C6', '#bef264');
+                setToggleAccessible(document.querySelector('#toSlider_time'), '#toSlider_time');
+
+                fillSlider(document.querySelector('#fromSlider_year'), document.querySelector('#toSlider_year'), '#C6C6C6', '#bef264');
+                setToggleAccessible(document.querySelector('#toSlider_year'), '#toSlider_year');
+
+                fillSlider(document.querySelector('#fromSlider_complexity'), document.querySelector('#toSlider_complexity'), '#C6C6C6', '#bef264');
+                setToggleAccessible(document.querySelector('#toSlider_complexity'), '#toSlider_complexity');
+
+                document.querySelectorAll(".domain-btn").forEach(btn => btn.classList.remove("active"));
+                document.querySelector(".domain-btn[data-domain='any']").classList.add("active");
+
+                selectedDomain = "any"
+
+                updateChart();
+            }
+
             document.getElementById("zoom-btn").addEventListener("click", zoomChart);
             document.getElementById("reset-btn").addEventListener("click", resetChart);
+            document.getElementById("clear-filters-btn").addEventListener("click", clearFilters);
 
             // Helper functions for toolbar control
             let inputTimeout = null; 
@@ -834,6 +896,19 @@
             toSlider_complexity.oninput = () => controlToSlider(fromSlider_complexity, toSlider_complexity, toInput_complexity, '#toSlider_complexity');
             fromInput_complexity.oninput = () => controlFromInput(fromSlider_complexity, toSlider_complexity, fromInput_complexity, toInput_complexity);
             toInput_complexity.oninput = () => controlToInput(fromSlider_complexity, toSlider_complexity, fromInput_complexity, toInput_complexity, '#toSlider_complexity');
+
+            // Year published range slider
+            const fromSlider_year = document.querySelector('#fromSlider_year');
+            const toSlider_year = document.querySelector('#toSlider_year');
+            const fromInput_year = document.querySelector('#fromInput_year');
+            const toInput_year = document.querySelector('#toInput_year');
+            fillSlider(fromSlider_year, toSlider_year, '#C6C6C6', '#bef264');
+            setToggleAccessible(toSlider_year, '#toSlider_year');
+
+            fromSlider_year.oninput = () => controlFromSlider(fromSlider_year, toSlider_year, fromInput_year);
+            toSlider_year.oninput = () => controlToSlider(fromSlider_year, toSlider_year, toInput_year, '#toSlider_year');
+            fromInput_year.oninput = () => controlFromInput(fromSlider_year, toSlider_year, fromInput_year, toInput_year);
+            toInput_year.oninput = () => controlToInput(fromSlider_year, toSlider_year, fromInput_year, toInput_year, '#toSlider_year');
 
             // Number of players & age limit input fields
             const input_players = document.querySelector('#input_players');
