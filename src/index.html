@@ -438,6 +438,9 @@
             function brushed(event) {
                 if (!event.selection) return;
 
+                table.selectAll("*").remove();
+                initializeTableContent();
+
                 const [[x0, y0], [x1, y1]] = event.selection;
                 xScale.domain([xScale.invert(x0), xScale.invert(x1)]);
                 yScale.domain([yScale.invert(y1), yScale.invert(y0)]);
@@ -529,14 +532,14 @@
                                     ? "block" : "none")
                             .on("mouseover", (event, d) => handleMouseover(event, d, table, tableColorScale))
                             .on("mouseout", (event, d) => handleMouseout(event, d, table)),
-                        update => update.transition().duration(300)
+                        update => update.transition().duration(100)
                             .attr("cx", d => xScale(d.owned_users))
                             .attr("cy", d => yScale(d.rating_average))
                             .style("display", d =>
                                 (xScale(d.owned_users) >= margin.left && xScale(d.owned_users) <= width - margin.right &&
                                     yScale(d.rating_average) >= margin.top && yScale(d.rating_average) <= height - margin.bottom)
                                     ? "block" : "none"),
-                        exit => exit.transition().duration(300).attr("opacity", 0).remove()
+                        exit => exit.transition().duration(100).attr("opacity", 0).remove()
                     );
             }
 
@@ -702,7 +705,7 @@
                     .attr("y", -10);
 
                 tableLegend.append("text")
-                    .text("Minimum players")
+                    .text("Minimum Player Count")
                     .attr("fill", "white")
                     .attr("font-size", "12px")
                     .attr("text-anchor", "start")
@@ -733,7 +736,7 @@
                     .attr("y", -10);
 
                 tableLegend.append("text")
-                    .text("Maximum Players")
+                    .text("Maximum Player Count")
                     .attr("fill", "white")
                     .attr("font-size", "12px")
                     .attr("text-anchor", "start")
@@ -835,7 +838,7 @@
             }
 
             // Initialize the visualization
-            initializeTableContent()
+            initializeTableContent();
             drawCircles(svg, data, xScale, yScale, tableColorScale, table);
 
             // Define x and y axis brushes
@@ -844,6 +847,8 @@
                 .on("brush end", (event) => {
                     if (event.selection) {
                         xRange = [xScale.invert(event.selection[0]), xScale.invert(event.selection[1])];
+                        table.selectAll("*").remove();
+                        initializeTableContent();
                     } else {
                         xRange = [minOwnedUsers, maxOwnedUsers];
                     }
@@ -851,20 +856,19 @@
                 });
             const xBrushG = svg.append("g").attr("class", "brush x-brush").call(xBrush);
 
-            console.log(yRange)
             const yBrush = d3.brushY()
                 .extent([[margin.left - 30, margin.top], [margin.left, height - margin.bottom]])
                 .on("brush end", (event) => {
                     if (event.selection) {
                         yRange = [yScale.invert(event.selection[1]), yScale.invert(event.selection[0])];
+                        table.selectAll("*").remove();
+                        initializeTableContent();
                     } else {
                         yRange = [minRating, maxRating];
                     }
                     updateChart();
-                    console.log(yRange)
                 });
             const yBrushG = svg.append("g").attr("class", "brush y-brush").call(yBrush);
-            console.log(yRange)
 
             xBrushG.call(xBrush.move, [margin.left, width - margin.right]);
             yBrushG.call(yBrush.move, [margin.top, height - margin.bottom]);
