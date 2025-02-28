@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!--
+        References:
+        1. Code for dual range slider: https://codepen.io/predragdavidovic/pen/mdpMoWo
+    -->
+    <title>INFO4310 HW2</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .viz {
+            margin: 20px;
+        }
+
+        .button-container {
+            margin: 10px;
+            margin-left: -40px;
+        }
+
+        .text,
+        .label {
+            font-size: 16px;
+            font-family: 'Merriweather', serif;
+        }
+
+        .instruction {
+            font-size: 10px;
+            font-family: 'Merriweather', serif;
+        }
+
+       
+
+        .button-container button {
+            padding: 10px;
+            font-size: 14px;
+            margin-left: 30px;
+            color: white;
+            font-family: 'Merriweather', serif;
+            background-color: #11029c;
+            border-radius: 10px;
+            cursor: pointer;
+            border: none;
+            box-shadow: 1px 1px grey;
+        }
+
+        .brush .selection {
+            fill: rgba(214, 214, 231, 0.539);
+            stroke: rgba(255, 255, 255, 0.524);
+            stroke-width: 1.5px;
+        }
+
+        body {
+            background-color: #050030;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+            font-family: 'Merriweather', serif;
+        }
+
+        .axis {
+            color: white;
+        }
+
+        /* Toolbar styles */
+        #toolbar {
+            margin-top: -40px;
+        }
+
+        .filter {
+            background-color: #11029c;
+            padding: 12px;
+            border-radius: 5px;
+            width: 200px
+        }
+
+        #domain-filter,
+        #playtime-filter,
+        #complexity-filter,
+        #players-filter,
+        #year-filter {
+            margin-bottom: 1%
+        }
+
+        .range_container {
+            display: flex;
+            flex-direction: column;
+            width: 180px;
+            margin: 0px;
+        }
+
+        .sliders_control {
+            position: relative;
+            min-height: 15px;
+        }
+
+        .form_control {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            pointer-events: all;
+            width: 14px;
+            height: 14px;
+            background-color: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 0 1px #C6C6C6;
+            cursor: pointer;
+        }
+
+        input[type=range]::-webkit-slider-thumb:hover {
+            background: #fff;
+        }
+
+        input[type=range]::-webkit-slider-thumb:active {
+            box-shadow: inset 0 0 3px #387bbe, 0 0 9px #387bbe;
+            -webkit-box-shadow: inset 0 0 3px #387bbe, 0 0 9px #387bbe;
+        }
+
+        input[type="number"] {
+            width: 45px;
+            height: 25px;
+            font-size: 14px;
+            border: none;
+            background-color: #6b7280;
+            color: white;
+            border-radius: 3px;
+            margin-top: 5px;
+            font-family: 'Merriweather', serif;
+        }
+
+        #players-filter input,
+        #age-filter input {
+            margin-top: 0px;
+        }
+
+        #toInput_time,
+        #input_players {
+            width: 55px;
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            opacity: 1;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 3.5px;
+            width: 100%;
+            position: absolute;
+            background-color: #C6C6C6;
+            pointer-events: none;
+        }
+
+        #fromSlider_time,
+        #fromSlider_complexity,
+        #fromSlider_year {
+            height: 0;
+            z-index: 1;
+        }
+
+        #fromSlider_time::-webkit-slider-thumb,
+        #fromSlider_complexity::-webkit-slider-thumb {
+            margin-top: 4px;
+        }
+
+        .form_control_container {
+            font-size: 12px
+        }
+
+        .input_max {
+            margin-right: -25px
+        }
+
+        #domain-filter {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .domain-btn {
+            padding: 6px;
+            font-size: 12px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            border-radius: 3px;
+            width: 48%;
+            font-family: 'Merriweather', serif;
+        }
+
+        .domain-btn:hover {
+            opacity: 0.85;
+        }
+
+        .domain-btn.active {
+            border: 2px solid white;
+            box-shadow: 0px 0px 10px white;
+            opacity: 0.85;
+        }
+
+        .filter .label {
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        #players-filter .range_container,
+        #age-filter .range_container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        #players-filter .label,
+        #age-filter .label {
+            margin-right: 5px;
+        }
+
+        #players-filter input,
+        #age-filter input {
+            margin-top: 0
+        }
+    </style>
+</head>
+
+<body>
+    <h1 style="color:white; font-size: 36px;">Pick the Perfect
+        <span style="font-size: 48px; color: #ffdb28; padding-right: 1px;">B</span><span
+            style="font-size: 48px; color: #f28200; padding-right: 1px;">O</span><span
+            style="font-size: 48px; color:#fb4fd9; padding-right: 1px;">A</span><span
+            style="font-size: 48px; color:#007bd8; padding-right: 1px;">R</span><span
+            style="font-size: 48px; color: #8f2be7; padding-right: 1px;">D</span>
+
+        <span style="font-size: 48px; color: #ffdb28; padding-right: 1px;">G</span><span
+            style="font-size: 48px; color: #f28200; padding-right: 1px;">A</span><span
+            style="font-size: 48px; color:#fb4fd9; padding-right: 1px;">M</span><span
+            style="font-size: 48px; color:#007bd8; padding-right: 1px;">E</span>
+        for Today's Game Night!
+    </h1>
+    <!--
+    "Strategy Games": "#007bd8",
+    "Thematic Games": "#00e1da",
+    "Family Games": "#ffdb28",
+    "Customizable Games": "#8f2be7",
+    "Abstract Games": "#1fb819",
+    "Party Games": "#f28200",
+    "Wargames": "#e9162d",
+    "Children's Games": "#fb4fd9" 
+    -->
+    <div class="viz" style="display: flex; flex-direction: row; justify-content: space-between; gap:20px;">
+        <div id="toolbar" height="800" width="180" style="display: flex; flex-direction: column;padding-top: 50px;">
+            <!--Game Domain-->
+            <div id="domain-filter" class="filter" style="display: flex; flex-direction: column;">
+                <div class="label" style="margin-bottom: 10px;">Game Domain:</div>
+                <div style="display: flex; margin-bottom: 5px">
+                    <button class="domain-btn active" data-domain="any"
+                        style="background-color: #ccc; margin-right: 4%">Any</button>
+                    <button class="domain-btn" data-domain="Strategy Games"
+                        style="background-color: #007bd8;">Strategy</button>
+                </div>
+                <div style="display: flex; margin-bottom: 5px">
+                    <button class="domain-btn" data-domain="Family Games"
+                        style="background-color: #ffdb28; margin-right: 4%">Family</button>
+                    <button class="domain-btn" data-domain="Customizable Games"
+                        style="background-color: #8f2be7;">Customizable</button>
+                </div>
+                <div style="display: flex; margin-bottom: 5px">
+                    <button class="domain-btn" data-domain="Abstract Games"
+                        style="background-color: #1fb819; margin-right: 4%">Abstract</button>
+                    <button class="domain-btn" data-domain="Party Games"
+                        style="background-color: #f28200;">Party</button>
+                </div>
+                <div style="display: flex; margin-bottom: 5px">
+                    <button class="domain-btn" data-domain="Wargames"
+                        style="background-color: #e9162d; margin-right: 4%">Wargames</button>
+                    <button class="domain-btn" data-domain="Thematic Games"
+                        style="background-color: #00e1da;">Thematic</button>
+                </div>
+                <div style="display: flex;">
+                    <button class="domain-btn" data-domain="Children's Games"
+                        style="background-color: #fb4fd9; margin-right: 4%">Children's</button>
+                </div>
+            </div>
+
+            <!--Play time-->
+            <div class="filter" id="playtime-filter">
+                <div class="range_container">
+                    <div class="label">Play Time Range:</div>
+                    <div class="sliders_control" style="margin-top: 10px">
+                        <input id="fromSlider_time" type="range" value="1" min="1" max="360" />
+                        <input id="toSlider_time" type="range" value="360" min="1" max="360" />
+                    </div>
+                    <div class="form_control">
+                        <div class="form_control_container">
+                            <div class="form_control_container__time">Min</div>
+                            <input class="form_control_container__time__input" type="number" id="fromInput_time"
+                                value="1" min="1" max="360" />
+                        </div>
+                        <div class="form_control_container">
+                            <div class="form_control_container__time input_max">Max</div>
+                            <input class="form_control_container__time__input input_max" type="number" id="toInput_time"
+                                value="360" min="1" max="360" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Complexity-->
+            <div class="filter" id="complexity-filter">
+                <div class="range_container">
+                    <div class="label">Game Complexity Range:</div>
+                    <div class="sliders_control" style="margin-top: 10px">
+                        <input id="fromSlider_complexity" type="range" value="1" min="1" max="5" />
+                        <input id="toSlider_complexity" type="range" value="5" min="1" max="5" />
+                    </div>
+                    <div class="form_control">
+                        <div class="form_control_container">
+                            <div class="form_control_container__time">Min</div>
+                            <input class="form_control_container__time__input" type="number" id="fromInput_complexity"
+                                value="1" min="1" max="5" />
+                        </div>
+                        <div class="form_control_container">
+                            <div class="form_control_container__time input_max">Max</div>
+                            <input class="form_control_container__time__input input_max" type="number"
+                                id="toInput_complexity" value="5" min="1" max="5" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Year Published-->
+            <div class="filter" id="year-filter">
+                <div class="range_container">
+                    <div class="label">Year Published:</div>
+                    <div class="sliders_control" style="margin-top: 10px">
+                        <input id="fromSlider_year" type="range" value="1903" min="1903" max="2021" />
+                        <input id="toSlider_year" type="range" value="2021" min="1903" max="2021" />
+                    </div>
+                    <div class="form_control">
+                        <div class="form_control_container">
+                            <div class="form_control_container__time">Min</div>
+                            <input class="form_control_container__time__input" type="number" id="fromInput_year"
+                                style="width: 60px;" value="1903" min="1903" max="2021" />
+                        </div>
+                        <div class="form_control_container">
+                            <div class="form_control_container__time input_max">Max</div>
+                            <input class="form_control_container__time__input input_max" type="number" id="toInput_year"
+                                style="width: 60px;" value="2021" min="1903" max="2021" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Number of players -->
+            <div class="filter" id="players-filter">
+                <div class="range_container">
+                    <span class="label">Number of Players (1 to 30):</span>
+                    <input type="number" id="input_players" min="1" max="30" />
+                </div>
+            </div>
+
+            <!-- Age limit -->
+            <div class="filter" id="age-filter">
+                <div class="range_container">
+                    <span class="label">Age Restriction:</span>
+                    <input type="number" id="input_age" min="0" max="21" value="21" />
+                    <span style="font-size: 11px; margin-left: 5px;">or less allowed</span>
+                </div>
+            </div>
+        </div>
+
+        <div style="padding-left: 20px;">
+            <div class="button-container">
+                <button id="clear-filters-btn">&#128072; Clear Filters</button>
+                <button id="zoom-btn">&#128071; Zoom into Axis Selection</button>
+                <button id="reset-btn">&#128071; Reset Zoom</button>
+            </div>
+            <svg id="scatter" width="530" height="650" style="margin-left: 20px;"></svg>
+        </div>
+
+        <svg id="bggTable" width="420" height="500" style="margin-top: 10px;padding-left:30px;"></svg>
+
+    </div>
+
+    <script>
+        const svg = d3.select("#scatter");
+        const width = svg.attr("width");
+        const height = svg.attr("height");
+        const table = d3.select("#bggTable");
+        const tableWidth = table.attr("width");
+        const tableHeight = table.attr("height");
+        let selectedDomain = "any";
+
+        d3.json("./bgg_dataset_cleaned.json").then(function (data) {
+            data.forEach((d, i) => {
+                d.owned_users = +d.owned_users;
+                d.rating_average = +d.rating_average;
+                d.index = i;
+            });
+
+            const margin = { top: 30, right: 20, bottom: 150, left: 80 };
+            const minOwnedUsers = Math.max(1, d3.min(data, d => d.owned_users));
+            const maxOwnedUsers = d3.max(data, d => d.owned_users);
+            const maxRating = d3.max(data, d => d.rating_average);
+            const minRating = d3.min(data, d => d.rating_average);
+            let xRange = [minOwnedUsers, maxOwnedUsers];
+            let yRange = [minRating, maxRating];
+
+            let xScale = d3.scaleLog()
+                .domain([minOwnedUsers, maxOwnedUsers])
+                .range([margin.left, width - margin.right]);
+
+            let yScale = d3.scaleLinear()
+                .domain([minRating, maxRating])
+                .range([height - margin.bottom, margin.top]);
+
+            let xAxis = svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", `translate(0,${height - margin.bottom})`)
+                .call(d3.axisBottom(xScale).ticks(10, "~s"));
+
+            let yAxis = svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", `translate(${margin.left},0)`)
+                .call(d3.axisLeft(yScale));
+
+            const brush = d3.brush()
+                .extent([[margin.left, margin.top], [width - margin.right, height - margin.bottom]])
+                .on("end", brushed);
+
+            function brushed(event) {
+                if (!event.selection) return;
+
+                table.selectAll("*").remove();
+                initializeTableContent();
+
+                const [[x0, y0], [x1, y1]] = event.selection;
+                xScale.domain([xScale.invert(x0), xScale.invert(x1)]);
+                yScale.domain([yScale.invert(y1), yScale.invert(y0)]);
+
+                xAxis.transition().duration(500).call(d3.axisBottom(xScale));
+                yAxis.transition().duration(500).call(d3.axisLeft(yScale));
+
+                updateChart();
+                svg.select(".brush").call(brush.move, null);
+            }
+
+            svg.append("g")
+                .attr("class", "brush")
+                .call(brush);
+
+
+            svg.append("text")
+                .attr("class", "label")
+                .attr("text-anchor", "middle")
+                .attr("x", width / 2 + 20)
+                .attr("y", height - 80)
+                .style("fill", "white")
+                .text("Popularity (Log Scale)");
+
+                svg.append("text")
+                .attr("class", "instruction")
+                .attr("text-anchor", "middle")
+                .attr("x", width / 2 + 20)
+                .attr("y", height - 50 )
+                .style("fill", "white")
+                .text("Draw box for quick zooming");    
+
+                svg.append("text")
+                .attr("class", "instruction")
+                .attr("text-anchor", "middle")
+                .attr("x", width / 2 + 20)
+                .attr("y", height -30  )
+                .style("fill", "white")
+                .text("//");  
+
+
+                svg.append("text")
+                .attr("class", "instruction")
+                .attr("text-anchor", "middle")
+                .attr("x", width / 2 + 20)
+                .attr("y", height -10 )
+                .style("fill", "white")
+                .text("Adjust axis then click 'zoom into axis selection' for detailed zooming");  
+
+            svg.append("text")
+                .attr("class", "label")
+                .attr("text-anchor", "end")
+                .attr("x", -height / 2 + 120)
+                .attr("y", margin.left - 60)
+                .attr("dy", ".75em")
+                .attr("transform", "rotate(-90)")
+                .style("fill", "white")
+                .text("Average Rating");
+
+            let uniqueDomains = Array.from(new Set(data.map(d => d.domains1)));
+
+            let domainColors = {
+                "Strategy Games": "#007bd8",
+                "Thematic Games": "#00e1da",
+                "Family Games": "#ffdb28",
+                "Customizable Games": "#8f2be7",
+                "Abstract Games": "#1fb819",
+                "Party Games": "#f28200",
+                "Wargames": "#e9162d",
+                "Children's Games": "#fb4fd9"
+            };
+
+            let tableColorScale = d3.scaleOrdinal().domain(Object.keys(domainColors)).range(Object.values(domainColors));
+
+            // Function to draw or update circles
+            function drawCircles(svg, data, xScale, yScale, tableColorScale, table) {
+                svg.selectAll("circle")
+                    .data(data, d => d.id)
+                    .join(
+                        enter => enter.append("circle")
+                            .attr("cx", d => xScale(d.owned_users))
+                            .attr("cy", d => yScale(d.rating_average))
+                            .attr("r", 2.5)
+                            .attr("fill", d => tableColorScale(d.domains1))
+                            .attr("opacity", 0.7)
+                            .style("display", d =>
+                                (xScale(d.owned_users) >= margin.left && xScale(d.owned_users) <= width - margin.right &&
+                                    yScale(d.rating_average) >= margin.top && yScale(d.rating_average) <= height - margin.bottom)
+                                    ? "block" : "none")
+                            .on("mouseover", (event, d) => handleMouseover(event, d, table, tableColorScale))
+                            .on("mouseout", (event, d) => handleMouseout(event, d, table)),
+                        update => update.transition().duration(100)
+                            .attr("cx", d => xScale(d.owned_users))
+                            .attr("cy", d => yScale(d.rating_average))
+                            .style("display", d =>
+                                (xScale(d.owned_users) >= margin.left && xScale(d.owned_users) <= width - margin.right &&
+                                    yScale(d.rating_average) >= margin.top && yScale(d.rating_average) <= height - margin.bottom)
+                                    ? "block" : "none"),
+                        exit => exit.transition().duration(100).attr("opacity", 0).remove()
+                    );
+            }
+
+
+
+            // Function to initialize info table 
+            function initializeTableContent() {
+                table.append("circle")
+                    .attr("class", "default-table")
+                    .attr("cx", tableWidth / 2)
+                    .attr("cy", tableHeight / 2)
+                    .attr("r", 140)
+                    .attr("fill", "#11029c")
+                    .attr("stroke-width", 3)
+                    .attr("stroke", "grey");
+
+                table.append("text")
+                    .attr("transform", `translate(${tableWidth / 2}, ${tableHeight / 2 - 15})`)
+                    .attr("text-anchor", "middle")
+                    .attr("font-size", "16px")
+                    .text(String.fromCodePoint(0x1F50D) + " Hover a dot on the left to view")
+                    .attr("fill", "white")
+                    .attr("class", "text");
+
+                table.append("text")
+                    .attr("transform", `translate(${tableWidth / 2}, ${tableHeight / 2 + 15})`)
+                    .attr("text-anchor", "middle")
+                    .attr("font-size", "16px")
+                    .text("details about a board game " + String.fromCodePoint(0x1F50D))
+                    .attr("fill", "white")
+                    .attr("class", "text");
+            }
+
+            // Function to handle mouseover event
+            let hoverTimeout;
+            function handleMouseover(event, d, table, tableColorScale) {
+                d3.select(event.currentTarget)
+                    .raise()
+                    .transition()
+                    .duration(200)
+                    .attr("r", 8)
+                    .attr("stroke", "white")
+                    .attr("stroke-width", 3)
+                    .attr("opacity", 1);
+
+                clearTimeout(hoverTimeout);
+
+                hoverTimeout = setTimeout(() => {
+                    table.selectAll("*").remove();
+                    renderTableContent(table, d, tableColorScale);
+                    renderSeats(table, d);
+                }, 80);
+            }
+
+            // Function to handle mouseout event
+            function handleMouseout(event, d, table) {
+                clearTimeout(hoverTimeout);
+                d3.select(event.currentTarget)
+                    .transition()
+                    .duration(200)
+                    .attr("r", 2.5)
+                    .attr("stroke", "none")
+                    .attr("stroke-width", 0)
+                    .attr("opacity", 0.7);
+            }
+
+            // Function to render table content on mouseover
+            function renderTableContent(table, d, tableColorScale) {
+                let tableColor = tableColorScale(d.domains1);
+                table.append("circle")
+                    .attr("cx", tableWidth / 2)
+                    .attr("cy", tableHeight / 2)
+                    .attr("r", 140)
+                    .attr("fill", tableColor)
+                    .attr("stroke-width", 3)
+                    .attr("stroke", "grey");
+
+                let textGroup = table.append("g")
+                    .attr("class", "table-text")
+                    .attr("transform", `translate(${tableWidth / 2}, ${tableHeight / 2})`)
+                    .attr("text-anchor", "middle")
+                    .attr("font-family", "Gill Sans")
+                    .attr("font-size", "12px");
+
+                const words = d.name.split(/\s+/);
+                const maxLineLength = 30;
+                let lines = [];
+                let currentLine = "";
+                words.forEach(word => {
+                    if ((currentLine + " " + word).trim().length <= maxLineLength) {
+                        currentLine += (currentLine ? " " : "") + word;
+                    } else {
+                        lines.push(currentLine);
+                        currentLine = word;
+                    }
+                });
+                if (currentLine) lines.push(currentLine);
+
+                let pixel_start = -80;
+                let length_lines = lines.length;
+
+                if (length_lines === 2) {
+                    pixel_start = -70;
+                } else if (length_lines === 1) {
+                    pixel_start = -60;
+                }
+
+
+                let fontColor;
+
+                if (tableColor === "#e9162d" || tableColor === "#007bd8" || tableColor === "#8f2be7") {
+                    fontColor = "#d9d9d9";
+                } else {
+                    fontColor = "black";
+                }
+
+                // Append each line dynamically
+                lines.forEach((line, index) => {
+                    textGroup.append("text")
+                        .text(line)
+                        .attr("y", pixel_start + index * 20) // Adjust line spacing dynamically
+                        .attr("font-weight", "bold")
+                        .attr("font-size", "13px")
+                        .attr("fill", fontColor)
+                });
+                textGroup.append("text")
+                    .text(`Year Published: ${d.year_published}`)
+                    .attr("y", pixel_start + (length_lines) * 20)
+                    .attr("fill", fontColor);
+                textGroup.append("text")
+                    .text(`Number of Players: ${d.min_players === d.max_players ? d.min_players : `${d.min_players} - ${d.max_players}`}`)
+                    .attr("y", pixel_start + (length_lines + 1) * 20)
+                    .attr("fill", fontColor);
+                textGroup.append("text")
+                    .text(`Suggested Play Time: ${d.play_time} minutes`)
+                    .attr("y", pixel_start + (length_lines + 2) * 20)
+                    .attr("fill", fontColor);
+                textGroup.append("text")
+                    .text(`Age Restriction: ${d.min_age}+`)
+                    .attr("y", pixel_start + (length_lines + 3) * 20)
+                    .attr("fill", fontColor);
+                textGroup.append("text")
+                    .text(`Overall Rating (out of 10): ${d.rating_average}`)
+                    .attr("y", pixel_start + (length_lines + 4) * 20)
+                    .attr("fill", fontColor);
+                textGroup.append("text")
+                    .text(`Game Complexity (out of 5): ${d.complexity_average}`)
+                    .attr("y", pixel_start + (length_lines + 5) * 20)
+                    .attr("fill", fontColor);
+                textGroup.append("text")
+                    .text(`Number of Owners: ${d.owned_users}`)
+                    .attr("y", pixel_start + (length_lines + 6) * 20)
+                    .attr("fill", fontColor);
+
+                const tableLegend = table.append("g")
+                    .attr("transform", "translate(45, 480)");
+
+                tableLegend.append("image")
+                    .attr("xlink:href", "seat_default.png")
+                    .attr("width", 20)
+                    .attr("height", 20)
+                    .attr("x", -10)
+                    .attr("y", -10);
+
+                tableLegend.append("text")
+                    .text("Minimum Player Count")
+                    .attr("fill", "white")
+                    .attr("font-size", "12px")
+                    .attr("text-anchor", "start")
+                    .attr("x", 15)
+                    .attr("y", 5);
+
+                tableLegend.append("image")
+                    .attr("xlink:href", "seat_default.png")
+                    .attr("width", 20)
+                    .attr("height", 20)
+                    .attr("x", 180)
+                    .attr("y", -10);
+
+                tableLegend.append("text")
+                    .text("+")
+                    .attr("fill", "white")
+                    .attr("font-size", "15px")
+                    .attr("text-anchor", "start")
+                    .attr("x", 200)
+                    .attr("y", 5);
+
+                tableLegend.append("image")
+                    .attr("xlink:href", "seat_empty.png")
+                    .attr("width", 20)
+                    .attr("height", 20)
+                    .attr("opacity", 0.5)
+                    .attr("x", 210)
+                    .attr("y", -10);
+
+                tableLegend.append("text")
+                    .text("Maximum Player Count")
+                    .attr("fill", "white")
+                    .attr("font-size", "12px")
+                    .attr("text-anchor", "start")
+                    .attr("x", 235)
+                    .attr("y", 5);
+            }
+
+            // Function to render seats around the table
+            function renderSeats(table, d) {
+                let centerX = tableWidth / 2;
+                let centerY = tableHeight / 2;
+                let radius = 140;
+                let maxPlayers = parseInt(d["max_players"], 10);
+                let minPlayers = parseInt(d["min_players"], 10);
+
+                for (let i = 0; i < maxPlayers; i++) {
+                    let angle = (i / maxPlayers) * 2 * Math.PI;
+                    let seatX = centerX + (radius + 40) * Math.cos(angle);
+                    let seatY = centerY + (radius + 40) * Math.sin(angle);
+                    let rotateDeg = (angle * 180) / Math.PI + 90;
+
+                    let seatSize = maxPlayers > 10 ? 30 : 55;
+                    let offset = seatSize / 2;
+
+                    table.append("image")
+                        .attr("class", "seat-icon")
+                        .attr("xlink:href", "seat_empty.png")
+                        .attr("x", seatX - offset)
+                        .attr("y", seatY - offset)
+                        .attr("width", seatSize)
+                        .attr("height", seatSize)
+                        .attr("transform", `rotate(${rotateDeg}, ${seatX}, ${seatY})`)
+                        .attr("opacity", 0.5);
+                }
+
+                for (let j = 0; j < minPlayers; j++) {
+                    let angle = (j / maxPlayers) * 2 * Math.PI;
+                    let seatX = centerX + (radius + 40) * Math.cos(angle);
+                    let seatY = centerY + (radius + 40) * Math.sin(angle);
+                    let rotateDeg = (angle * 180) / Math.PI + 90;
+
+                    let seatSize = maxPlayers > 10 ? 30 : 55;
+                    let offset = seatSize / 2;
+
+                    table.append("image")
+                        .attr("class", "seat-icon")
+                        .attr("xlink:href", "seat_default.png")
+                        .attr("x", seatX - offset)
+                        .attr("y", seatY - offset)
+                        .attr("width", seatSize)
+                        .attr("height", seatSize)
+                        .attr("transform", `rotate(${rotateDeg}, ${seatX}, ${seatY})`);
+                }
+            }
+
+            // Function to filter data based on current filter values
+            function filterData(data, xRange, yRange, fromTime, toTime, fromComplexity, toComplexity, fromYear, toYear, fromPlayers, toPlayers, age, selectedDomain) {
+                return data.filter(d =>
+                    d.owned_users >= xRange[0] && d.owned_users <= xRange[1] &&
+                    d.rating_average >= yRange[0] && d.rating_average <= yRange[1] &&
+                    (d.play_time >= fromTime && d.play_time <= toTime) &&
+                    (d.complexity_average >= fromComplexity && d.complexity_average <= toComplexity) &&
+                    (d.max_players >= fromPlayers && d.min_players <= toPlayers) &&
+                    (d.min_age <= age) &&
+                    (selectedDomain === "any" || d.domains1 === selectedDomain) &&
+                    (d.year_published >= fromYear && d.year_published <= toYear)
+                );
+            }
+
+            // Function to update the chart with filtered data
+            function updateChart(resetRanges = false) {
+                if (resetRanges) {
+                    xRange = [minOwnedUsers, maxOwnedUsers];
+                    yRange = [minRating, maxRating];
+                    xScale.domain(xRange);
+                    yScale.domain(yRange);
+                }
+
+                // Get filter values
+                const fromTime = parseInt(document.getElementById("fromSlider_time").value, 10);
+                const toTime = parseInt(document.getElementById("toSlider_time").value, 10);
+                const fromComplexity = parseInt(document.getElementById("fromSlider_complexity").value, 10);
+                const toComplexity = parseInt(document.getElementById("toSlider_complexity").value, 10);
+                const fromYear = parseInt(document.getElementById("fromSlider_year").value, 10);
+                const toYear = parseInt(document.getElementById("toSlider_year").value, 10);
+                let fromPlayers = 1;
+                let toPlayers = 30;
+                const players = parseInt(document.getElementById("input_players").value, 10);
+                if (!isNaN(players)) {
+                    fromPlayers = players;
+                    toPlayers = players;
+                }
+                const age = parseInt(document.getElementById("input_age").value, 10);
+
+                const filteredData = filterData(data, xRange, yRange, fromTime, toTime, fromComplexity, toComplexity, fromYear, toYear, fromPlayers, toPlayers, age, selectedDomain);
+
+                drawCircles(svg, filteredData, xScale, yScale, tableColorScale, table);
+
+            }
+
+            // Initialize the visualization
+            initializeTableContent();
+            drawCircles(svg, data, xScale, yScale, tableColorScale, table);
+
+            // Define x and y axis brushes
+            const xBrush = d3.brushX()
+                .extent([[margin.left, height - margin.bottom], [width - margin.right, height - margin.bottom + 25]])
+                .on("brush end", (event) => {
+                    if (event.selection) {
+                        xRange = [xScale.invert(event.selection[0]), xScale.invert(event.selection[1])];
+                        table.selectAll("*").remove();
+                        initializeTableContent();
+                    } else {
+                        xRange = [minOwnedUsers, maxOwnedUsers];
+                    }
+                    updateChart();
+                });
+            const xBrushG = svg.append("g").attr("class", "brush x-brush").call(xBrush);
+
+            const yBrush = d3.brushY()
+                .extent([[margin.left - 30, margin.top], [margin.left, height - margin.bottom]])
+                .on("brush end", (event) => {
+                    if (event.selection) {
+                        yRange = [yScale.invert(event.selection[1]), yScale.invert(event.selection[0])];
+                        table.selectAll("*").remove();
+                        initializeTableContent();
+                    } else {
+                        yRange = [minRating, maxRating];
+                    }
+                    updateChart();
+                });
+            const yBrushG = svg.append("g").attr("class", "brush y-brush").call(yBrush);
+
+            xBrushG.call(xBrush.move, [margin.left, width - margin.right]);
+            yBrushG.call(yBrush.move, [margin.top, height - margin.bottom]);
+
+            function zoomChart() {
+                xScale.domain(xRange);
+                yScale.domain(yRange);
+                xAxis.transition().duration(500).call(d3.axisBottom(xScale));
+                yAxis.transition().duration(500).call(d3.axisLeft(yScale));
+
+                updateChart();
+
+                xBrushG.call(xBrush.move, [xScale(xRange[0]), xScale(xRange[1])]);
+                yBrushG.call(yBrush.move, [yScale(yRange[1]), yScale(yRange[0])]);
+            }
+
+            function resetChart() {
+                updateChart(true);
+
+                xAxis.transition().duration(500).call(d3.axisBottom(xScale));
+                yAxis.transition().duration(500).call(d3.axisLeft(yScale));
+
+                xBrushG.call(xBrush.move, [margin.left, width - margin.right]);
+                yBrushG.call(yBrush.move, [margin.top, height - margin.bottom]);
+            }
+
+            function clearFilters() {
+                let ids = ["fromInput_time", "toInput_time", "fromSlider_time", "toSlider_time",
+                    "fromInput_complexity", "toInput_complexity", "fromSlider_complexity", "toSlider_complexity",
+                    "fromInput_year", "toInput_year", "fromSlider_year", "toSlider_year",
+                    "input_players", "input_age"];
+
+                for (let i = 0; i < ids.length; i++) {
+                    let elem = document.getElementById(ids[i]);
+                    if (elem) {
+                        elem.value = elem.defaultValue;
+                    }
+                }
+
+                fillSlider(document.querySelector('#fromSlider_time'), document.querySelector('#toSlider_time'), '#C6C6C6', '#bef264');
+                setToggleAccessible(document.querySelector('#toSlider_time'), '#toSlider_time');
+
+                fillSlider(document.querySelector('#fromSlider_year'), document.querySelector('#toSlider_year'), '#C6C6C6', '#bef264');
+                setToggleAccessible(document.querySelector('#toSlider_year'), '#toSlider_year');
+
+                fillSlider(document.querySelector('#fromSlider_complexity'), document.querySelector('#toSlider_complexity'), '#C6C6C6', '#bef264');
+                setToggleAccessible(document.querySelector('#toSlider_complexity'), '#toSlider_complexity');
+
+                document.querySelectorAll(".domain-btn").forEach(btn => btn.classList.remove("active"));
+                document.querySelector(".domain-btn[data-domain='any']").classList.add("active");
+
+                selectedDomain = "any"
+
+                updateChart();
+            }
+
+            document.getElementById("zoom-btn").addEventListener("click", zoomChart);
+            document.getElementById("reset-btn").addEventListener("click", resetChart);
+            document.getElementById("clear-filters-btn").addEventListener("click", clearFilters);
+
+            // Helper functions for toolbar control
+            let inputTimeout = null;
+
+            function controlFromInput(fromSlider, toSlider, fromInput, toInput) {
+                clearTimeout(inputTimeout);
+                inputTimeout = setTimeout(() => {
+                    let [from, to] = getParsed(fromInput, toInput);
+                    if (from < fromSlider.min) {
+                        from = fromSlider.min
+                    }
+                    if (from > to) { // invalid
+                        fromSlider.value = to;
+                        fromInput.value = to;
+                    } else { // valid
+                        fromSlider.value = from;
+                        fromInput.value = from;
+                    }
+                    fillSlider(fromSlider, toSlider, '#C6C6C6', '#bef264');
+                    updateChart();
+                }, 250);
+            }
+
+            function controlToInput(fromSlider, toSlider, fromInput, toInput, idName) {
+                clearTimeout(inputTimeout);
+                inputTimeout = setTimeout(() => {
+                    let [from, to] = getParsed(fromInput, toInput);
+                    setToggleAccessible(toInput, idName);
+                    if (to > toSlider.max) {
+                        to = toSlider.max
+                    };
+                    if (from <= to) { // valid
+                        toSlider.value = to;
+                        toInput.value = to;
+                    } else { // invalid
+                        toSlider.value = from;
+                        toInput.value = from;
+                    }
+                    fillSlider(fromSlider, toSlider, '#C6C6C6', '#bef264');
+                    updateChart();
+                }, 250);
+            }
+
+            function controlFromSlider(fromSlider, toSlider, fromInput) {
+                const [from, to] = getParsed(fromSlider, toSlider);
+                if (from > to) { // invalid
+                    fromSlider.value = to;
+                    fromInput.value = to;
+                } else {
+                    fromInput.value = from;
+                }
+                fillSlider(fromSlider, toSlider, '#C6C6C6', '#bef264');
+                updateChart();
+            }
+
+            function controlToSlider(fromSlider, toSlider, toInput, idName) {
+                const [from, to] = getParsed(fromSlider, toSlider);
+                setToggleAccessible(toSlider, idName);
+                if (from <= to) { // valid
+                    toInput.value = to;
+                } else {
+                    toInput.value = from;
+                    toSlider.value = from;
+                }
+                fillSlider(fromSlider, toSlider, '#C6C6C6', '#bef264');
+                updateChart();
+            }
+
+            function controlGeneralInput(input, varName) {
+                clearTimeout(inputTimeout);
+
+                inputTimeout = setTimeout(() => {
+                    let val = parseInt(input.value, 10);
+                    if (!isNaN(val)) {
+                        if (val < parseInt(input.min, 10)) {
+                            input.value = input.min
+                        } else if (val > parseInt(input.max, 10)) {
+                            input.value = input.max
+                        }
+                    } else {
+                        if (varName === "age") {
+                            input.value = input.min
+                        }
+                    }
+                    updateChart();
+                }, 250);
+            }
+
+            function getParsed(currentFrom, currentTo) {
+                const from = parseInt(currentFrom.value, 10);
+                const to = parseInt(currentTo.value, 10);
+                return [from, to];
+            }
+
+            function fillSlider(fromSlider, toSlider, sliderColor, rangeColor) {
+                const rangeDistance = toSlider.max - toSlider.min;
+                const fromPosition = fromSlider.value - toSlider.min;
+                const toPosition = toSlider.value - toSlider.min;
+                toSlider.style.background = `linear-gradient(
+                    to right,
+                    ${sliderColor} 0%,
+                    ${sliderColor} ${(fromPosition) / (rangeDistance) * 100}%,
+                    ${rangeColor} ${((fromPosition) / (rangeDistance)) * 100}%,
+                    ${rangeColor} ${(toPosition) / (rangeDistance) * 100}%, 
+                    ${sliderColor} ${(toPosition) / (rangeDistance) * 100}%, 
+                    ${sliderColor} 100%)`;
+            }
+
+            function setToggleAccessible(currentTarget, idName) {
+                const toSlider = document.querySelector(idName);
+                if (Number(currentTarget.value) <= 0) {
+                    toSlider.style.zIndex = 2;
+                } else {
+                    toSlider.style.zIndex = 0;
+                }
+            };
+
+            // Play time range slider
+            const fromSlider_time = document.querySelector('#fromSlider_time');
+            const toSlider_time = document.querySelector('#toSlider_time');
+            const fromInput_time = document.querySelector('#fromInput_time');
+            const toInput_time = document.querySelector('#toInput_time');
+            fillSlider(fromSlider_time, toSlider_time, '#C6C6C6', '#bef264');
+            setToggleAccessible(toSlider_time, '#toSlider_time');
+
+            fromSlider_time.oninput = () => controlFromSlider(fromSlider_time, toSlider_time, fromInput_time);
+            toSlider_time.oninput = () => controlToSlider(fromSlider_time, toSlider_time, toInput_time, '#toSlider_time');
+            fromInput_time.oninput = () => controlFromInput(fromSlider_time, toSlider_time, fromInput_time, toInput_time);
+            toInput_time.oninput = () => controlToInput(fromSlider_time, toSlider_time, fromInput_time, toInput_time, '#toSlider_time');
+
+            // Game complexity range slider
+            const fromSlider_complexity = document.querySelector('#fromSlider_complexity');
+            const toSlider_complexity = document.querySelector('#toSlider_complexity');
+            const fromInput_complexity = document.querySelector('#fromInput_complexity');
+            const toInput_complexity = document.querySelector('#toInput_complexity');
+            fillSlider(fromSlider_complexity, toSlider_complexity, '#C6C6C6', '#bef264');
+            setToggleAccessible(toSlider_complexity, '#toSlider_complexity');
+
+            fromSlider_complexity.oninput = () => controlFromSlider(fromSlider_complexity, toSlider_complexity, fromInput_complexity);
+            toSlider_complexity.oninput = () => controlToSlider(fromSlider_complexity, toSlider_complexity, toInput_complexity, '#toSlider_complexity');
+            fromInput_complexity.oninput = () => controlFromInput(fromSlider_complexity, toSlider_complexity, fromInput_complexity, toInput_complexity);
+            toInput_complexity.oninput = () => controlToInput(fromSlider_complexity, toSlider_complexity, fromInput_complexity, toInput_complexity, '#toSlider_complexity');
+
+            // Year published range slider
+            const fromSlider_year = document.querySelector('#fromSlider_year');
+            const toSlider_year = document.querySelector('#toSlider_year');
+            const fromInput_year = document.querySelector('#fromInput_year');
+            const toInput_year = document.querySelector('#toInput_year');
+            fillSlider(fromSlider_year, toSlider_year, '#C6C6C6', '#bef264');
+            setToggleAccessible(toSlider_year, '#toSlider_year');
+
+            fromSlider_year.oninput = () => controlFromSlider(fromSlider_year, toSlider_year, fromInput_year);
+            toSlider_year.oninput = () => controlToSlider(fromSlider_year, toSlider_year, toInput_year, '#toSlider_year');
+            fromInput_year.oninput = () => controlFromInput(fromSlider_year, toSlider_year, fromInput_year, toInput_year);
+            toInput_year.oninput = () => controlToInput(fromSlider_year, toSlider_year, fromInput_year, toInput_year, '#toSlider_year');
+
+            // Number of players & age limit input fields
+            const input_players = document.querySelector('#input_players');
+            input_players.oninput = () => controlGeneralInput(input_players, "players")
+
+            const input_age = document.querySelector('#input_age');
+            input_age.oninput = () => controlGeneralInput(input_age, "age")
+
+            // Game domain buttons
+            document.querySelectorAll(".domain-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    document.querySelectorAll(".domain-btn").forEach(btn => btn.classList.remove("active"));
+                    this.classList.add("active");
+                    selectedDomain = this.getAttribute("data-domain");
+                    updateChart();
+                });
+            });
+
+
+
+        }).catch(error => console.log("Error loading data:", error));
+
+    </script>
+
+</body>
+
+</html>
